@@ -8,9 +8,7 @@
 import UIKit
 
 class BaseCollectionViewController: UIViewController {
-    
     var collectionView: UICollectionView!
-    
 }
 
 extension BaseCollectionViewController {

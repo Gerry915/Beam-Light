@@ -15,6 +15,8 @@ class HomeViewController: BaseCollectionViewController {
     var searchQuery: String = ""
     var imageService: ImageService
     
+    var analyticsService: AnalyticsEngine = FakeAnalyticsEngine()
+    
     var viewModel: HomeViewModel? {
         didSet {
             collectionView.reloadData()
@@ -41,9 +43,12 @@ class HomeViewController: BaseCollectionViewController {
         super.viewDidLoad()
         
         super.commonInitWithLayout()
+        analyticsService.log(event: HomeViewEvent.screenView)
         
         title = "Beam Light"
-        addTapToResignFirstResponder(with: #selector(resetSearchBarIfNeeded))
+        // TODO: - Handle search resign first responder
+//        addTapToResignFirstResponder(with: #selector(resetSearchBarIfNeeded))
+        addTapToResignFirstResponder()
         
         setupObserver()
         collectionViewConfiguration()
@@ -70,6 +75,7 @@ class HomeViewController: BaseCollectionViewController {
     }
     
     private func collectionViewConfiguration() {
+        collectionView.backgroundColor = .systemGray6
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -96,10 +102,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     private func generateCell(for indexPath: IndexPath) -> UICollectionViewCell {
-        return renderBodyCells(for: indexPath)
-    }
-    
-    private func renderBodyCells(for indexPath: IndexPath) -> UICollectionViewCell {
         guard let viewModel = viewModel else {
             fatalError("Cannot Dequeue Cell for view")
         }
@@ -198,7 +200,41 @@ extension HomeViewController: UISearchBarDelegate {
         )
         
         let navVC = UINavigationController(rootViewController: searchResultViewController)
+        searchBar.resignFirstResponder()
 
         navigationController?.present(navVC, animated: true, completion: nil)
+        
+        analyticsService.log(event: HomeViewEvent.buttonPressed)
+    }
+}
+
+extension HomeViewController {
+    private enum HomeViewEvent: AnalyticsEvent {
+        
+        case screenView
+        case buttonPressed
+        case loginFailed(reason: String)
+        
+        var name: String {
+            switch self {
+            case .screenView:
+                return "Screen Viewed"
+            case .buttonPressed:
+                return "Button Pressed"
+            case .loginFailed(let reason):
+                return reason
+            }
+        }
+        
+        var metaData: [String : String] {
+            switch self {
+            case .screenView:
+                return ["View": "1"]
+            case .buttonPressed:
+                return ["Pressed": "1"]
+            case .loginFailed(let reason):
+                return ["Reason": reason]
+            }
+        }
     }
 }

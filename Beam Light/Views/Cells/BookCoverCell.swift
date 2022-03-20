@@ -7,9 +7,19 @@
 
 import UIKit
 
+protocol BookCoverCellPresentable {
+    var trackName: String { get }
+    var artistName: String { get }
+    var coverSmall: String { get }
+}
+
+extension Book: BookCoverCellPresentable {}
+
 class BookCoverCell: UICollectionViewCell {
     
     private var imageRequest: Cancellable?
+    
+    var imageService: ImageCacheable?
     
     let imageView = UIImageView()
     
@@ -17,11 +27,18 @@ class BookCoverCell: UICollectionViewCell {
     let bookNameLabel = UILabel()
     
     var didTapBook: (() -> Void)?
-    
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        viewSetup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func viewSetup() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 5
@@ -49,6 +66,9 @@ class BookCoverCell: UICollectionViewCell {
         
         self.addGestureRecognizer(tap)
     }
+    override func prepareForReuse() {
+        imageRequest?.cancel()
+    }
     
     @objc fileprivate func didTapCover() {
         didTapBook?()
@@ -56,19 +76,15 @@ class BookCoverCell: UICollectionViewCell {
     
     // MARK: - Public API
     
-    func configuration(presentable: SearchResultPresentable, imageService: ImageService) {
-        
+    func configuration(presentable: BookCoverCellPresentable) {
+
         authorNameLabel.text = presentable.artistName
         bookNameLabel.text = presentable.trackName
         
         if let url = URL(string: presentable.coverSmall) {
-            imageRequest = imageService.cache(for: url, completion: { [weak self] image in
+            imageRequest = imageService?.cache(for: url, completion: { [weak self] image in
                 self?.imageView.image = image
             })
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

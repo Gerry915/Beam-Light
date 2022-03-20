@@ -10,6 +10,8 @@ import UIKit
 
 class BookshelfCollectionViewCell: UICollectionViewCell {
     
+    var imageService: ImageService?
+    
     var showBookDetailViewHandler: ((Book) -> Void)?
     var showBookshelfDetailHandler: ((Bookshelf) -> Void)?
     
@@ -21,8 +23,6 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
             }
         }
     }
-    
-    var imageService: ImageService?
     
     let emptyBookMessage: UILabel = {
         let lb = UILabel()
@@ -36,8 +36,6 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let lb = UILabel()
-        
-        lb.text = "Bookshelf Title"
         lb.font = .systemFont(ofSize: 20, weight: .light)
         
         return lb
@@ -62,6 +60,10 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
         
         return view
     }()
+    
+    override func prepareForReuse() {
+        emptyBookMessage.isHidden = false
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,6 +109,8 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit() {
+        
+        collectionView.backgroundColor = .systemGray6
         
         let hStack = UIStackView(arrangedSubviews: [titleLabel, seeAllButton])
         hStack.axis = .horizontal
@@ -161,7 +165,8 @@ extension BookshelfCollectionViewCell: UICollectionViewDataSource, UICollectionV
         }
         
         if let presentable = viewModel?.getBook(for: indexPath.row), let imageService = imageService {
-            cell.configuration(presentable: presentable, imageService: imageService)
+            cell.imageService = imageService
+            cell.configuration(presentable: presentable)
         }
         
         return cell

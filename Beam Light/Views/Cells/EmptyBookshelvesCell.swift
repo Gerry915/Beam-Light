@@ -45,6 +45,7 @@ class EmptyBookshelvesCell: UICollectionViewCell {
     }
     
     private func setupView() {
+        
         let stackView = UIStackView(arrangedSubviews: [emptyLabel, createButton])
         
         stackView.axis = .vertical

@@ -249,7 +249,7 @@ fileprivate extension ImageService {
     // MARK: - Extension -> Small helpers
     
     /// Create the directory for saving cache
-    func createImageCacheDirectory() {
+    private func createImageCacheDirectory() {
         do {
             try FileManager.default.createDirectory(at: imageCacheDirectory, withIntermediateDirectories: true, attributes: nil)
         } catch {
@@ -258,7 +258,7 @@ fileprivate extension ImageService {
     }
     
     /// Return the location on disk for giving image URL
-    func locationOnDisk(for url: URL) -> URL {
+    private func locationOnDisk(for url: URL) -> URL {
         // Define Filename
         let fileName = Data(url.absoluteString.utf8).base64EncodedString()
         

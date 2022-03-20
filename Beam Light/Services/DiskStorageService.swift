@@ -19,11 +19,16 @@ class DiskStorageService: StorageService {
     private let saveOnDiskQueue = DispatchQueue(label: "au.com.genggao.saveOnDiskQueue", qos: .background)
     
     private var saveDirectory: URL {
-        FileManager.default.urls(for: .applicationDirectory, in: .userDomainMask).first!.appendingPathComponent("BeamLight").appendingPathComponent("bookshelf")
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("BeamLight").appendingPathComponent("bookshelf")
     }
     
     private init() {
         createDirectory()
+    }
+    
+    func update(id: String, completion: ((Bool) -> Void)?) {
+        let path = locationOnDisk(for: id)
+        print(path)
     }
     
     func save<T>(id: String, data: T, completion: ((Bool) -> Void)?) where T : Decodable, T : Encodable {
@@ -109,7 +114,8 @@ class DiskStorageService: StorageService {
     private func createDirectory() {
         do {
             try FileManager.default.createDirectory(at: saveDirectory, withIntermediateDirectories: true, attributes: nil)
-        } catch {
+        } catch let error {
+            print(error)
             fatalError("Unable to create dir")
         }
     }

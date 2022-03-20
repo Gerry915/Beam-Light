@@ -12,6 +12,7 @@ class BookshelvesViewController: UITableViewController {
     // MARK: - Properties
     
     var storageService: StorageService?
+    var footerView: BookshelfFooter!
     
     var viewModel: BookshelfViewModel? {
         didSet {
@@ -45,8 +46,33 @@ class BookshelvesViewController: UITableViewController {
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
+        
         super.setEditing(editing, animated: animated)
         tableView.setEditing(editing, animated: true)
+        
+        isEditingMode(tableView.isEditing)
+    }
+    
+    private func isEditingMode(_ mode: Bool) {
+        if mode {
+            navigationController?.setToolbarHidden(false, animated: true)
+            
+            toggleElementsForEditingMode(opacity: 0.0)
+        } else {
+            navigationController?.setToolbarHidden(true, animated: true)
+            footerView.layer.opacity = 1
+            toggleElementsForEditingMode(opacity: 1.0)
+        }
+        
+    }
+    
+    private func toggleElementsForEditingMode(opacity: Float) {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) { [weak self] in
+            guard let self = self else { return }
+            guard let tabBar = self.tabBarController?.tabBar else { return }
+            self.footerView.layer.opacity = opacity
+            tabBar.layer.opacity = opacity
+        }
     }
     
     fileprivate func setupView() {
@@ -65,11 +91,10 @@ class BookshelvesViewController: UITableViewController {
         
         
         //toolbar setup
-        self.navigationController?.setToolbarHidden(false, animated: false)
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-        let deleteButton: UIBarButtonItem = UIBarButtonItem(title: "delete", style: .plain, target: self, action: #selector(didPressDelete))
+        let deleteButton: UIBarButtonItem = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(didPressDelete))
         self.toolbarItems = [flexible, deleteButton]
-        self.navigationController?.toolbar.barTintColor = UIColor.white
+//        self.navigationController?.toolbar.barTintColor = UIColor.white
     }
     
     @objc func didPressDelete() {
@@ -117,10 +142,10 @@ extension BookshelvesViewController {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-        let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: BookshelfFooter.reusableIdentifier) as! BookshelfFooter
-        footer.handleButtonTap = presentCreateBookshelfViewController
+        footerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: BookshelfFooter.reusableIdentifier) as! BookshelfFooter)
+        footerView.handleButtonTap = presentCreateBookshelfViewController
         
-        return footer
+        return footerView
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

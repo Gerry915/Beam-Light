@@ -39,6 +39,8 @@
 		B76F07EC27BD286C00258A05 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07EB27BD286C00258A05 /* NetworkingError.swift */; };
 		B76F07EE27BD2AF200258A05 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07ED27BD2AF200258A05 /* Endpoint.swift */; };
 		B76F07F127BD2B6E00258A05 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07F027BD2B6E00258A05 /* NetworkService.swift */; };
+		B772CD9227E2B9CD00D9B3C5 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */; };
+		B772CD9427E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */; };
 		B7C1FDE427DAC478004EB3D1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1FDE327DAC477004EB3D1 /* HomeViewModel.swift */; };
 		B7C1FDE627DAC829004EB3D1 /* BookshelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1FDE527DAC829004EB3D1 /* BookshelfCollectionViewCell.swift */; };
 		B7C1FDE827DB5A74004EB3D1 /* BookCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1FDE727DB5A74004EB3D1 /* BookCoverCell.swift */; };
@@ -96,6 +98,8 @@
 		B76F07EB27BD286C00258A05 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
 		B76F07ED27BD2AF200258A05 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		B76F07F027BD2B6E00258A05 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAnalyticsEngine.swift; sourceTree = "<group>"; };
 		B7C1FDE327DAC477004EB3D1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B7C1FDE527DAC829004EB3D1 /* BookshelfCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7C1FDE727DB5A74004EB3D1 /* BookCoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverCell.swift; sourceTree = "<group>"; };
@@ -313,6 +317,7 @@
 				B7CDDBBD27CF875100C47E63 /* SearchResultPresentable.swift */,
 				B705461327D0E68F003630C4 /* CacheService.swift */,
 				B7E345BE27D3882400A86547 /* StorageService.swift */,
+				B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -359,6 +364,7 @@
 				B76F07F027BD2B6E00258A05 /* NetworkService.swift */,
 				B7CDDBB927CF756E00C47E63 /* ImageService.swift */,
 				B7E345BC27D386E700A86547 /* DiskStorageService.swift */,
+				B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -480,6 +486,7 @@
 				B7C1FDE627DAC829004EB3D1 /* BookshelfCollectionViewCell.swift in Sources */,
 				B76F07CC27BCE34000258A05 /* MainTabViewController.swift in Sources */,
 				B7CDDBBE27CF875100C47E63 /* SearchResultPresentable.swift in Sources */,
+				B772CD9427E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift in Sources */,
 				B76F07D327BD024100258A05 /* SearchCell.swift in Sources */,
 				B76F07D527BD026300258A05 /* EmptyBookshelvesCell.swift in Sources */,
 				B7106C4027D8D86C009648A0 /* Environment.swift in Sources */,
@@ -525,6 +532,7 @@
 				B705461427D0E68F003630C4 /* CacheService.swift in Sources */,
 				B7E345B927D3711900A86547 /* CreateBookshelfViewController.swift in Sources */,
 				B76F07E427BD1B1500258A05 /* Const.swift in Sources */,
+				B772CD9227E2B9CD00D9B3C5 /* Analytics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -101,6 +101,7 @@ class BookTableViewCell: UITableViewCell {
     }
     
     private func commonInit() {
+        
         contentView.backgroundColor = .systemGray6
         let authorStackView = UIStackView(arrangedSubviews: [authorLabel, publishYearLabel])
         authorStackView.alignment = .leading
@@ -112,13 +113,13 @@ class BookTableViewCell: UITableViewCell {
             titleLabel,
             authorStackView,
             ratingStackView,
-            descriptionLabel,
-            UIView()
+            descriptionLabel
         ])
+        
         contentStackView.axis = .vertical
-        contentStackView.alignment = .leading
+        contentStackView.alignment = .top
         contentStackView.spacing = 4
-        contentStackView.setCustomSpacing(20, after: ratingStackView)
+        contentStackView.setCustomSpacing(16, after: ratingStackView)
         
         let HStack = UIStackView(arrangedSubviews: [
             thumbnailImageView,
@@ -130,13 +131,13 @@ class BookTableViewCell: UITableViewCell {
         
         HStack.translatesAutoresizingMaskIntoConstraints = false
         HStack.spacing = 8
-        addSubview(HStack)
+        contentView.addSubview(HStack)
         
         NSLayoutConstraint.activate([
-            HStack.topAnchor.constraint(equalTo: topAnchor),
-            HStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
-            HStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            HStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6)
+            HStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+            HStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 6),
+            HStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
+            HStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6)
         ])
     }
     

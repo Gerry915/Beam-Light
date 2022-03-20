@@ -18,16 +18,11 @@ struct Book: Codable {
     let artworkUrl60, artworkUrl100: String
     let releaseDate: String
     let trackName: String
-//    let artistIDS: [Int]
-//    let trackID: Int
-//    let genreIDS: [String]
     let currency: String
     let bookDescription: String
     let artistID: Int
     let artistName: String
-//    let genres: [String]
     let price: Double?
-//    let kind: String
     let averageUserRating: Double?
     let userRatingCount: Int?
 
@@ -36,9 +31,6 @@ struct Book: Codable {
         case artistViewURL = "artistViewUrl"
         case trackViewURL = "trackViewUrl"
         case artworkUrl60, artworkUrl100
-//        case trackID = "trackId"
-//        case artistIDS = "artistIds"
-//        case genreIDS = "genreIds"
         case releaseDate
         case trackName
         case currency
@@ -46,8 +38,6 @@ struct Book: Codable {
         case artistID = "artistId"
         case artistName
         case price
-//        case genres
-//        case kind
         case averageUserRating
         case userRatingCount
     }
