@@ -17,4 +17,13 @@ class BookshelfCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(title: String, bookCount: Int) {
+        var content = self.defaultContentConfiguration()
+        content.text = title
+        content.secondaryText = "\(bookCount) books"
+        
+        self.accessoryType = .disclosureIndicator
+        
+        self.contentConfiguration = content
+    }
 }

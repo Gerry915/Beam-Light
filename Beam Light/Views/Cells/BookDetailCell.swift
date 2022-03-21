@@ -67,8 +67,8 @@ class BookDetailCell: UICollectionViewCell {
     
     // MARK: - Public API
     func configure(presentable: SearchResultPresentable, imageService: ImageCacheable) {
-        titleLabel.text = presentable.trackName
-        authorLabel.text = presentable.artistName
-        descriptionLabel.text = presentable.bookDescription.htmlToString
+        titleLabel.text = presentable.title
+        authorLabel.text = presentable.author
+        descriptionLabel.text = presentable.content.htmlToString
     }
 }

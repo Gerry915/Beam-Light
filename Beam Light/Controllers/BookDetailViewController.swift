@@ -9,17 +9,17 @@ import UIKit
 
 class BookDetailViewController: UICollectionViewController {
     
-    var book: Book
+    var bookViewModel: BookViewModel
     var imageService: ImageCacheable
     var displayToolBar: Bool = true
     
-    convenience init(book: Book, imageService: ImageService, displayToolBar: Bool) {
-        self.init(book: book, imageService: imageService)
+    convenience init(bookViewModel: BookViewModel, imageService: ImageCacheable, displayToolBar: Bool) {
+        self.init(bookViewModel: bookViewModel, imageService: imageService)
         
         self.displayToolBar = displayToolBar
     }
 
-    init(book: Book,
+    init(bookViewModel: BookViewModel,
          imageService: ImageCacheable
         ) {
         let itemLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
@@ -39,7 +39,7 @@ class BookDetailViewController: UICollectionViewController {
         
         let layout = StretchyHeaderLayout(section: section, headerHeight: 300)
         
-        self.book = book
+        self.bookViewModel = bookViewModel
         self.imageService = imageService
         
         super.init(collectionViewLayout: layout)
@@ -86,19 +86,13 @@ class BookDetailViewController: UICollectionViewController {
     }
     
     fileprivate func handleAddToBookshelf() {
-        DiskStorageService.shared.fetchAll { [weak self] (result: Result<[Bookshelf], Error>) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let data):
-                let vm = BookshelfViewModel(model: data)
-                
-                let bookshelfListViewController = BookshelfListViewController(viewModel: vm, book: self.book)
-                
-                self.navigationController?.pushViewController(bookshelfListViewController, animated: true)
-            case .failure(let error):
-                print(error)
-            }
-        }
+        print("Handle Add to bookshelf")
+        
+        let bookshelvesViewModel = BookshelvesViewModel(loader: DiskStorageService.shared)
+        
+        let VC = BookshelfListViewController(bookshelvesViewModel: bookshelvesViewModel, bookViewModel: bookViewModel)
+        
+        self.navigationController?.pushViewController(VC, animated: true)
     }
     
     private func setupCollectionView() {
@@ -114,7 +108,7 @@ extension BookDetailViewController {
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: BookHeader.reusableIdentifier, for: indexPath) as! BookHeader
         
-        headerView.configure(coverImage: book.coverLarge, imageService: imageService)
+        headerView.configure(coverImage: bookViewModel.coverLarge, imageService: imageService)
 
         return headerView
         
@@ -128,7 +122,7 @@ extension BookDetailViewController {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookDetailCell.reusableIdentifier, for: indexPath) as! BookDetailCell
         
-        cell.configure(presentable: book, imageService: imageService)
+        cell.configure(presentable: bookViewModel, imageService: imageService)
         
         return cell
     }

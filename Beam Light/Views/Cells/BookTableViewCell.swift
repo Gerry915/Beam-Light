@@ -156,11 +156,11 @@ extension BookTableViewCell {
     
     func configure(presentable: SearchResultPresentable, imageService: ImageCacheable) {
         loadingView.startAnimating()
-        titleLabel.text = presentable.trackName
-        authorLabel.text = presentable.artistName
-        ratingView.rating = presentable.averageUserRating ?? 0
-        descriptionLabel.text = presentable.bookDescription.htmlToString
-        numberOfRatings.text = String(describing: "\(presentable.userRatingCount ?? 0) ratings")
+        titleLabel.text = presentable.title
+        authorLabel.text = presentable.author
+        ratingView.rating = presentable.averageRating ?? 0
+        descriptionLabel.text = presentable.content.htmlToString
+        numberOfRatings.text = String(describing: "\(presentable.ratingCount ?? 0) ratings")
         
         if let url = URL(string: presentable.coverSmall) {
             imageRequest = imageService.cache(for: url) { [weak self] image in

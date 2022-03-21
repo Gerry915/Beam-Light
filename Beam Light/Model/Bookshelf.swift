@@ -11,4 +11,6 @@ struct Bookshelf: Codable {
     let id: UUID
     var title: String
     var books: [Book]
+    var createAt: Date
+    var modifiedAt: Date
 }

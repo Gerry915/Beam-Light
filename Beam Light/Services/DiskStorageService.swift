@@ -70,24 +70,26 @@ class DiskStorageService: StorageService {
         
         var result = [T]()
         
-        do {
-            let directoryContents = try FileManager.default.contentsOfDirectory(at: saveDirectory, includingPropertiesForKeys: nil)
+        DispatchQueue.global(qos: .userInitiated).async { [self] in
+            do {
+                let directoryContents = try FileManager.default.contentsOfDirectory(at: saveDirectory, includingPropertiesForKeys: nil)
 
-            directoryContents.forEach { url in
-                guard let data = try? Data(contentsOf: url) else {
-                    completion(.failure(StorageError.fetchError(message: "cannot fetch data", error: nil)))
-                    return
+                directoryContents.forEach { url in
+                    guard let data = try? Data(contentsOf: url) else {
+                        completion(.failure(StorageError.fetchError(message: "cannot fetch data", error: nil)))
+                        return
+                    }
+                    do {
+                        let decodeData = try JSONDecoder().decode(T.self, from: data)
+                        result.append(decodeData)
+                    } catch let error {
+                        completion(.failure(StorageError.decodeError(message: "Cannot decode Object", error: error)))
+                    }
                 }
-                do {
-                    let decodeData = try JSONDecoder().decode(T.self, from: data)
-                    result.append(decodeData)
-                } catch let error {
-                    completion(.failure(StorageError.decodeError(message: "Cannot decode Object", error: error)))
-                }
+                completion(.success(result))
+            } catch let error {
+                completion(.failure(StorageError.fetchError(message: "Cannot fetch data", error: error)))
             }
-            completion(.success(result))
-        } catch let error {
-            completion(.failure(StorageError.fetchError(message: "Cannot fetch data", error: error)))
         }
     }
     

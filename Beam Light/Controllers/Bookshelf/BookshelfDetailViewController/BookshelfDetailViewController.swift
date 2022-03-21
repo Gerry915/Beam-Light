@@ -10,10 +10,10 @@ import UIKit
 
 class BookshelfDetailViewController: UITableViewController {
     
-    var imageService: ImageService
-    var viewModel: BookshelfDetailViewModel
+    var imageService: ImageCacheable
+    var viewModel: BookshelfViewModel
     
-    init(style: UITableView.Style, viewModel: BookshelfDetailViewModel, imageService: ImageService) {
+    init(style: UITableView.Style, viewModel: BookshelfViewModel, imageService: ImageCacheable) {
         self.imageService = imageService
         self.viewModel = viewModel
         
@@ -27,7 +27,7 @@ class BookshelfDetailViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = viewModel.bookshelf.title
+        title = viewModel.title
         view.backgroundColor = .systemGray6
         tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
     }
@@ -35,23 +35,24 @@ class BookshelfDetailViewController: UITableViewController {
 
 extension BookshelfDetailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfItems
+        viewModel.bookCount
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let book = viewModel.getBook(for: indexPath.row) else { return }
+        let book = viewModel.generate(for: indexPath.row)
+        let bookViewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
         
-        presentBookDetailViewController(with: book)
+        presentBookDetailViewController(with: bookViewModel)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.reusableIdentifier, for: indexPath) as! BookTableViewCell
         
-        if let presentable = viewModel.getBook(for: indexPath.row) {
-            cell.configure(presentable: presentable, imageService: imageService)
-        }
+        let book = viewModel.generate(for: indexPath.row)
+        let presentable = BookViewModel(book: book, loader: DiskStorageService.shared)
+        cell.configure(presentable: presentable, imageService: imageService)
         
         return cell
     }
@@ -67,10 +68,10 @@ extension BookshelfDetailViewController {
     }
     
     private func deleteBookFromBookshelf(at indexPath: IndexPath) {
-        viewModel.bookshelf.books.remove(at: indexPath.row)
+        viewModel.removeBook(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .fade)
         
-        DiskStorageService.shared.save(id: viewModel.bookshelf.id.uuidString, data: viewModel.bookshelf) { done in
+        DiskStorageService.shared.save(id: viewModel.id, data: viewModel.bookshelf) { done in
             if done {
                 NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
             }
@@ -79,9 +80,9 @@ extension BookshelfDetailViewController {
 }
 
 extension BookshelfDetailViewController {
-    private func presentBookDetailViewController(with book: Book) {
-        let VC = BookDetailViewController(book: book, imageService: imageService, displayToolBar: false)
-        
+    private func presentBookDetailViewController(with bookViewModel: BookViewModel) {
+        let VC = BookDetailViewController(bookViewModel: bookViewModel, imageService: imageService, displayToolBar: false)
+        VC.title = bookViewModel.title
         navigationController?.pushViewController(VC, animated: true)
     }
 }

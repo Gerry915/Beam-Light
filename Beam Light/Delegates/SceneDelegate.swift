@@ -36,11 +36,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return MainTabViewController(viewControllers: [homeViewController,bookshelvesViewController])
     }
     
-    func composeHomeViewController(imageService: ImageService) -> UINavigationController {
+    func composeHomeViewController(imageService: ImageCacheable) -> UINavigationController {
+        
+        let viewModel = BookshelvesViewModel(loader: DiskStorageService.shared)
         
         let homeTabItem = UITabBarItem(title: "Beam Light", image: UIImage(systemName: "light.min"), tag: 0)
         
-        let homeViewController = HomeViewController(imageService: imageService)
+        let homeViewController = HomeViewController(imageService: imageService, viewModel: viewModel)
         
         let homeNav = UINavigationController(rootViewController: homeViewController)
         homeNav.tabBarItem = homeTabItem
@@ -49,7 +51,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func composeBookshelfViewController(imageService: ImageService) -> UINavigationController {
-        let bookshelvesViewController = BookshelvesViewController(imageService: imageService)
+        
+        let viewModel = BookshelvesViewModel(loader: DiskStorageService.shared)
+        
+        let bookshelvesViewController = BookshelvesViewController(imageService: imageService, viewModel: viewModel)
         bookshelvesViewController.storageService = DiskStorageService.shared
         let bookshelvesNavController = UINavigationController(rootViewController: bookshelvesViewController)
         let bookshelvesTabItem = UITabBarItem(title: "Bookshelves", image: UIImage(systemName: "books.vertical.circle"), tag: 1)

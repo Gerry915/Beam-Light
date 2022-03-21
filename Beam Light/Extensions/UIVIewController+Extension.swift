@@ -17,4 +17,12 @@ extension UIViewController {
     @objc func signalResignFirstResponder() {
         UIApplication.shared.sendAction(#selector(UIApplication.resignFirstResponder), to: nil, from: nil, for: nil)
     }
+    
+    func showAlertView(title: String, message: String) {
+        let alertViewController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertViewController.addAction(cancelAction)
+        
+        self.present(alertViewController, animated: true)
+    }
 }

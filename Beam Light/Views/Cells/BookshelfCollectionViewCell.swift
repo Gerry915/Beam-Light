@@ -10,17 +10,17 @@ import UIKit
 
 class BookshelfCollectionViewCell: UICollectionViewCell {
     
-    var imageService: ImageService?
+    var imageService: ImageCacheable?
     
     var showBookDetailViewHandler: ((Book) -> Void)?
     var showBookshelfDetailHandler: ((Bookshelf) -> Void)?
     
-    var viewModel: BookshelfDetailViewModel? {
+    var viewModel: BookshelfViewModel? {
         didSet {
-            collectionView.reloadData()
-            if !(viewModel!.bookshelf.books.isEmpty) {
+            if viewModel?.bookCount != 0 {
                 emptyBookMessage.isHidden = true
             }
+            collectionView.reloadData()
         }
     }
     
@@ -151,7 +151,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
 extension BookshelfCollectionViewCell: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.numberOfItems ?? 0
+        viewModel?.bookCount ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -159,12 +159,13 @@ extension BookshelfCollectionViewCell: UICollectionViewDataSource, UICollectionV
         
         cell.didTapBook = { [weak self] in
             guard let self = self else { return }
-            guard let viewModel = self.viewModel else { return }
-            guard let book = viewModel.getBook(for: indexPath.row) else { return }
+           
+            guard let book = self.viewModel?.generate(for: indexPath.row) else { return }
+            
             self.didTapCover(book: book)
         }
         
-        if let presentable = viewModel?.getBook(for: indexPath.row), let imageService = imageService {
+        if let presentable = viewModel?.generate(for: indexPath.row) {
             cell.imageService = imageService
             cell.configuration(presentable: presentable)
         }
@@ -177,9 +178,7 @@ extension BookshelfCollectionViewCell: UICollectionViewDataSource, UICollectionV
     }
     
     @objc private func handleSeeAllButtonPressed() {
-        if let bookshelf = viewModel?.bookshelf {
-            showBookshelfDetailHandler?(bookshelf)
-        }
-        
+        guard let bookshelf = viewModel?.bookshelf else { return }
+        showBookshelfDetailHandler?(bookshelf)
     }
 }

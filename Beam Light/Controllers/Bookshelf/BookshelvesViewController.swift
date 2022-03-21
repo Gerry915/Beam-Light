@@ -13,18 +13,16 @@ class BookshelvesViewController: UITableViewController {
     
     var storageService: StorageService?
     var footerView: BookshelfFooter!
-    
-    var viewModel: BookshelfViewModel? {
-        didSet {
-            tableView.reloadData()
-        }
-    }
+    var viewModel: BookshelvesViewModel
     var imageService: ImageService
+    
+    lazy var loadingView: UIActivityIndicatorView = LoadingView(style: .medium)
     
     // MARK: - Init
     
-    init(imageService: ImageService) {
+    init(imageService: ImageService, viewModel: BookshelvesViewModel) {
         self.imageService = imageService
+        self.viewModel = viewModel
         
         super.init(style: .insetGrouped)
     }
@@ -33,24 +31,36 @@ class BookshelvesViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(loadingView)
+        
         setupView()
         updateView()
+        setupObserver()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        updateView()
+    // MARK: - Methods
+    
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateView), name: .updatedBookshelves, object: nil)
     }
     
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        
-        super.setEditing(editing, animated: animated)
-        tableView.setEditing(editing, animated: true)
-        
-        isEditingMode(tableView.isEditing)
+    private func postNotificationForBookshelfUpdate() {
+        NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
+    }
+    
+    private func updateTableViewData(for indexPath: IndexPath) {
+        tableView.performBatchUpdates {
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
     
     private func isEditingMode(_ mode: Bool) {
@@ -75,7 +85,7 @@ class BookshelvesViewController: UITableViewController {
         }
     }
     
-    fileprivate func setupView() {
+    private func setupView() {
 
         view.backgroundColor = .systemGray6
         
@@ -89,12 +99,10 @@ class BookshelvesViewController: UITableViewController {
         tableView.register(BookshelfCell.self, forCellReuseIdentifier: BookshelfCell.reusableIdentifier)
         tableView.register(BookshelfFooter.self, forHeaderFooterViewReuseIdentifier: BookshelfFooter.reusableIdentifier)
         
-        
         //toolbar setup
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
         let deleteButton: UIBarButtonItem = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(didPressDelete))
         self.toolbarItems = [flexible, deleteButton]
-//        self.navigationController?.toolbar.barTintColor = UIColor.white
     }
     
     @objc func didPressDelete() {
@@ -115,25 +123,35 @@ class BookshelvesViewController: UITableViewController {
         }
     }
     
-    fileprivate func updateView() {
-        // Load bookshelf data form storage service
-        DiskStorageService.shared.fetchAll { [weak self] (result: Result<[Bookshelf], Error>) in
-            switch result {
-            case .success(let result):
+    @objc private func updateView() {
+        loadingView.startAnimating()
+        viewModel.loadData { success in
+            DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.viewModel = BookshelfViewModel(model: result)
-                NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
-            case .failure(let failure):
-                print(failure)
+                if success {
+                    self.tableView.reloadData()
+                    self.footerView.isHidden = false
+                    self.loadingView.stopAnimating()
+                } else {
+                    self.showAlertView(title: "Error", message: "Cannot Load Data")
+                }
             }
         }
-        tableView.reloadData()
     }
 }
 
 extension BookshelvesViewController {
     
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool { true }
+    // MARK: - TableView
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: true)
+        isEditingMode(tableView.isEditing)
+    }
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool { false }
     
     // TODO: - Change storage data order
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -143,30 +161,25 @@ extension BookshelvesViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         footerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: BookshelfFooter.reusableIdentifier) as! BookshelfFooter)
+        
+        if viewModel.isLoading { footerView.isHidden = true }
+        
         footerView.handleButtonTap = presentCreateBookshelfViewController
         
         return footerView
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel?.bookshelfCount ?? 0
+        viewModel.numberOfItems
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: BookshelfCell.reusableIdentifier, for: indexPath) as! BookshelfCell
         
-        // TODO: - Need to change to the new API for iOS 14 and above:
-        // https://medium.com/swlh/ios-14-modern-cell-configuration-for-beginners-programmatically-2a1be3f12a90
+        let model = viewModel.getBookshelf(for: indexPath.row)
         
-        cell.accessoryType = .disclosureIndicator
-        
-        if let viewModel = viewModel {
-            let model = viewModel.getBookshelf(for: indexPath.row)
-
-            cell.textLabel?.text = model.title
-            cell.detailTextLabel?.text = "\(model.books.count) books"
-        }
+        cell.configure(title: model.title, bookCount: model.books.count)
         
         return cell
     }
@@ -180,53 +193,54 @@ extension BookshelvesViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            if let bookshelfID = viewModel?.getBookshelf(for: indexPath.row).id.uuidString {
-                DiskStorageService.shared.delete(id: bookshelfID) { [weak self] done in
-                    guard let self = self else { return }
-                    if done {
-                        DispatchQueue.main.async {
-                            self.updateView()
-                        }
+            viewModel.delete(for: indexPath.row) { [weak self] success in
+                guard let self = self else { return }
+                if success {
+                    DispatchQueue.main.async {
+                        self.updateTableViewData(for: indexPath)
                     }
+                    self.postNotificationForBookshelfUpdate()
                 }
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 64
+        64
     }
     
     private func presentBookshelfDetailViewController(for indexPath: IndexPath) {
-        if let bookshelf = viewModel?.getBookshelf(for: indexPath.row) {
-            let viewModel = BookshelfDetailViewModel(bookshelf: bookshelf)
+        let bookshelf = viewModel.getBookshelf(for: indexPath.row)
+            let viewModel = BookshelfViewModel(bookshelf: bookshelf)
             
-            let vc = BookshelfDetailViewController(style: .insetGrouped, viewModel: viewModel, imageService: imageService)
-            vc.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(vc, animated: true)
-        }
+            let VC = BookshelfDetailViewController(style: .insetGrouped, viewModel: viewModel, imageService: imageService)
+        
+            VC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(VC, animated: true)
     }
     
     private func presentCreateBookshelfViewController() {
         
         let vc = CreateBookshelfViewController()
-        vc.hidesBottomBarWhenPushed = true
-        vc.didCreateBookself = { [unowned self] bookshelf in
-            self.updateBookshelf(bookshelf: bookshelf)
-        }
         
-        navigationController?.pushViewController(vc, animated: true)
+        vc.hidesBottomBarWhenPushed = true
+        
+        vc.didCreateBookself = { [unowned self] title in
+            self.createBookshelf(with: title)
+        }
+        navigationController?.present(vc, animated: true)
     }
     
-    private func updateBookshelf(bookshelf: Bookshelf) {
-        
-        viewModel?.model.append(bookshelf)
-        
-        tableView.reloadData()
-        
-        guard let service = storageService else { return }
-        service.save(id: bookshelf.id.uuidString, data: bookshelf) { done in
-            NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
+    private func createBookshelf(with title: String) {
+        viewModel.save(title: title) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                let indexPath = IndexPath(row: 0, section: 0)
+                self.tableView.performBatchUpdates {
+                    self.tableView.insertRows(at: [indexPath], with: .none)
+                }
+                self.postNotificationForBookshelfUpdate()
+            }
         }
     }
 }

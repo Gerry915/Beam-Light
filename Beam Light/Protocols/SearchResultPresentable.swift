@@ -8,14 +8,11 @@
 import Foundation
 
 protocol SearchResultPresentable {
-    var trackName: String { get }
-    var artistName: String { get }
-    var bookDescription: String { get }
-    var releaseDate: String { get }
+    var title: String { get }
+    var author: String { get }
+    var content: String { get }
     var coverSmall: String { get }
     var coverLarge: String { get }
-    var userRatingCount: Int? { get }
-    var averageUserRating: Double? { get }
+    var ratingCount: Int? { get }
+    var averageRating: Double? { get }
 }
-
-extension Book: SearchResultPresentable {}

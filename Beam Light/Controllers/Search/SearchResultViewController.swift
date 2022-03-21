@@ -9,17 +9,20 @@ import UIKit
 
 class SearchResultViewController: UIViewController {
     
+    lazy var loadingView: UIActivityIndicatorView = LoadingView(style: .medium)
+    
     var imageService: ImageCacheable
-
-    var viewModel: SearchResultViewModel? {
+    var viewModel: BooksViewModel? {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
+            viewModel?.fetchData(with: searchQuery, completion: { [weak self] success in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.loadingView.stopAnimating()
+                }
+            })
         }
     }
-    
-    var services: iTunesServiceable?
     
     var searchController: UISearchController!
     var tableView: UITableView!
@@ -47,24 +50,12 @@ class SearchResultViewController: UIViewController {
 
         setupTableView()
         setupView()
-
-        fetchSearchResult()
+        viewModel = BooksViewModel(service: iTunesService())
         
+        tableView.addSubview(loadingView)
+        loadingView.startAnimating()
+
         title = "Results"
-    }
-    
-    private func fetchSearchResult() {
-        services = iTunesService()
-    
-        services?.getSearchResult(terms: searchQuery, completion: { [weak self] (result: Result<Books, NetworkError>) in
-            switch result {
-            case .success(let result):
-                self?.viewModel = SearchResultViewModel(model: result)
-            case .failure(let failure):
-                // Show alert
-                print(failure)
-            }
-        })
     }
     
     private func setupView() {
@@ -100,9 +91,10 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.reusableIdentifier, for: indexPath) as! BookTableViewCell
         
-        if let presentable = viewModel?.getBookForIndex(index: indexPath.row) {
-            
-            cell.configure(presentable: presentable, imageService: imageService)
+        // TODO: ?? Should the viewController knows the book type????
+        if let book = viewModel?.getBookForIndex(index: indexPath.row) {
+            let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+            cell.configure(presentable: viewModel, imageService: imageService)
         }
         
         return cell
@@ -113,13 +105,11 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let presentable = viewModel?.getBookForIndex(index: indexPath.row) {
+        if let book = viewModel?.getBookForIndex(index: indexPath.row) {
+            let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+            let VC = BookDetailViewController(bookViewModel: viewModel, imageService: imageService)
 
-            let bookDetailViewController = BookDetailViewController(book: presentable,
-                                              imageService: imageService
-                                            )
-
-            navigationController?.pushViewController(bookDetailViewController, animated: true)
+            navigationController?.pushViewController(VC, animated: true)
         }
     }
 }

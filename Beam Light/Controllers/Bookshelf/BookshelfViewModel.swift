@@ -7,19 +7,31 @@
 
 import Foundation
 
-struct BookshelfViewModel {
+class BookshelfViewModel {
     
-    var model: [Bookshelf]
+    private(set) var bookshelf: Bookshelf
     
-    var bookshelfCount: Int {
-        return model.count
+    init(bookshelf: Bookshelf) {
+        self.bookshelf = bookshelf
     }
     
-    func getBookshelf(for idx: Int) -> Bookshelf {
-        return model[idx]
+    var bookCount: Int {
+        bookshelf.books.count
     }
     
-    mutating func removeShelf(for idx: Int) {
-        model.remove(at: idx)
+    var title: String {
+        bookshelf.title
+    }
+    
+    var id: String {
+        bookshelf.id.uuidString
+    }
+    
+    func generate(for idx: Int) -> Book {
+        return bookshelf.books[idx]
+    }
+    
+    func removeBook(at idx: Int) {
+        bookshelf.books.remove(at: idx)
     }
 }

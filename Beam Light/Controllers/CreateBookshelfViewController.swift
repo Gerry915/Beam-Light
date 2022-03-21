@@ -9,7 +9,7 @@ import UIKit
 
 class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
     
-    var didCreateBookself: ((Bookshelf) -> Void)?
+    var didCreateBookself: ((String) -> Void)?
     
     let headingLabel: UILabel = {
         let label = UILabel()
@@ -88,9 +88,9 @@ class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func createBookshelf() {
         if let bookshelfName = bookshelfName {
-            let bookshelf = Bookshelf(id: UUID(), title: bookshelfName, books: [])
-            navigationController?.popViewController(animated: true)
-            didCreateBookself?(bookshelf)
+            dismiss(animated: true) {
+                self.didCreateBookself?(bookshelfName)
+            }
         }
     }
 }

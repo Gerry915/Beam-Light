@@ -10,21 +10,18 @@ import UIKit
 class HomeViewController: BaseCollectionViewController {
     
     // MARK: - Properties
+    lazy var loadingView: LoadingView = LoadingView(style: .medium)
     
     var searchCell: SearchCell?
     var searchQuery: String = ""
-    var imageService: ImageService
+    var imageService: ImageCacheable
+    var viewModel: BookshelvesViewModel
     
     var analyticsService: AnalyticsEngine = FakeAnalyticsEngine()
     
-    var viewModel: HomeViewModel? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    
     // MARK: - Init
-    init(imageService: ImageService) {
+    init(imageService: ImageCacheable, viewModel: BookshelvesViewModel) {
+        self.viewModel = viewModel
         self.imageService = imageService
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,34 +53,36 @@ class HomeViewController: BaseCollectionViewController {
     }
     
     // MARK: - Methods
+    @objc private func updateData() {
+        viewModel.loadData { success in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                if success {
+                    self.collectionView.reloadData()
+                    self.loadingView.stopAnimating()
+                } else {
+                    print("TODO: Add Reload Option for Alert.")
+                    self.showAlertView(title: "Error", message: "Cannot Load Data")
+                }
+            }
+        }
+    }
     
     private func setupObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: .updatedBookshelves, object: nil)
-    }
-    
-    @objc func updateData() {
-        DiskStorageService.shared.fetchAll { [weak self] (result: Result<[Bookshelf], Error>) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let data):
-                let viewModel = HomeViewModel(bookshelves: data)
-                self.viewModel = viewModel
-            case .failure(let failure):
-                print(failure)
-            }
-        }
     }
     
     private func collectionViewConfiguration() {
         collectionView.backgroundColor = .systemGray6
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.addSubview(loadingView)
     }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.numberOfItems() ?? 0
+        viewModel.numberOfItems == 0 ? 1 : viewModel.numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -102,9 +101,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     private func generateCell(for indexPath: IndexPath) -> UICollectionViewCell {
-        guard let viewModel = viewModel else {
-            fatalError("Cannot Dequeue Cell for view")
-        }
         
         return viewModel.isEmpty ? renderEmptyBookshelvesCell(for: indexPath) : renderBookshelfCell(for: indexPath)
     }
@@ -133,51 +129,60 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             self.handlePresentBookshelfDetailViewController(bookshelf: bookshelf)
         }
         
-        if let bookshelf = viewModel?.getBookshelf(for: indexPath.row) {
-            cell.titleLabel.text = bookshelf.title
-            cell.viewModel = BookshelfDetailViewModel(bookshelf: bookshelf)
-            cell.imageService = imageService
-        }
+        let bookshelf = viewModel.getBookshelf(for: indexPath.row)
+        
+        cell.titleLabel.text = bookshelf.title
+        cell.viewModel = BookshelfViewModel(bookshelf: bookshelf)
+        cell.imageService = imageService
         
         return cell
     }
     
     private func handlePresentBookshelfDetailViewController(bookshelf: Bookshelf) {
+
+        let bookshelfViewModel = BookshelfViewModel(bookshelf: bookshelf)
         
-        let bookshelfVM = BookshelfDetailViewModel(bookshelf: bookshelf)
+        let VC = BookshelfDetailViewController(style: .insetGrouped,
+                                               viewModel: bookshelfViewModel,
+                                               imageService: imageService)
         
-        let vc = BookshelfDetailViewController(style: .insetGrouped, viewModel: bookshelfVM, imageService: imageService)
-        
-        vc.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(vc, animated: true)
+        VC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(VC, animated: true)
         
     }
     
     private func handlePresentBookDetailView(book: Book) {
-        let bookDetailViewController = BookDetailViewController(book: book, imageService: imageService, displayToolBar: false)
-        bookDetailViewController.title = "Book Detail"
-        let navVC = UINavigationController(rootViewController: bookDetailViewController)
+        print("TODO")
+        let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+        let VC = BookDetailViewController(bookViewModel: viewModel, imageService: imageService, displayToolBar: false)
+        VC.title = viewModel.title
+
+        let navVC = UINavigationController(rootViewController: VC)
         navVC.modalPresentationStyle = .pageSheet
 
         navigationController?.present(navVC, animated: true)
     }
     
     private func handleCreateBookshelf() {
-        let vc = CreateBookshelfViewController()
-        vc.didCreateBookself = { [unowned self] bookshelf in
-            DiskStorageService.shared.save(id: bookshelf.id.uuidString, data: bookshelf) { done in
-                if done {
-                    self.updateData()
-                    vc.dismiss(animated: true, completion: nil)
-                }
+        let VC = CreateBookshelfViewController()
+        
+        VC.didCreateBookself = { [unowned self] title in
+            createBookshelf(with: title)
+            NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
+        }
+        navigationController?.present(VC, animated: true)
+    }
+    
+    private func createBookshelf(with title: String) {
+        viewModel.save(title: title) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.updateData()
             }
         }
-        
-        present(vc, animated: true, completion: nil)
     }
     
     @objc func resetSearchBarIfNeeded() {
-        
         guard let cell = searchCell else { return }
         if cell.searchBar.isFirstResponder {
             cell.searchBar.resignFirstResponder()
