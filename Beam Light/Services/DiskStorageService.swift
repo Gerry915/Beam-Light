@@ -16,7 +16,8 @@ class DiskStorageService: StorageService {
     
     static let shared = DiskStorageService()
     
-    private let saveOnDiskQueue = DispatchQueue(label: "au.com.genggao.saveOnDiskQueue", qos: .background)
+    private let saveOnDiskBackgroundQueue = DispatchQueue(label: "au.com.genggao.saveOnDiskQueue", qos: .background)
+    private let fetchDataQueue = DispatchQueue(label: "au.com.genggao.fetchDataQueue", qos: .userInitiated)
     
     private var saveDirectory: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("BeamLight").appendingPathComponent("bookshelf")
@@ -26,36 +27,29 @@ class DiskStorageService: StorageService {
         createDirectory()
     }
     
-    func update(id: String, completion: ((Bool) -> Void)?) {
-        let path = locationOnDisk(for: id)
-        print(path)
-    }
-    
     func save<T>(id: String, data: T, completion: ((Bool) -> Void)?) where T : Decodable, T : Encodable {
         do {
-            // 1. encode data
             let saveData = try JSONEncoder().encode(data)
-            
-            // 2. get location on disk
-            let locationOnDisk = saveDirectory.appendingPathComponent(id)
-            
-            // 3. save
-            do {
-                try saveData.write(to: locationOnDisk)
-                completion?(true)
-            } catch let error {
-                print(error)
-                completion?(false)
+            let location = saveDirectory.appendingPathComponent(id)
+
+            saveOnDiskBackgroundQueue.async {
+                do {
+                    try saveData.write(to: location)
+                    completion?(true)
+                } catch let error {
+                    completion?(false)
+                    print(error)
+                }
             }
         } catch let error {
-            print(error)
             completion?(false)
+            print(error)
         }
     }
     
     func delete(id: String, completion: ((Bool) -> Void)?) {
         let path = locationOnDisk(for: id)
-        DispatchQueue.global(qos: .background).async {
+        saveOnDiskBackgroundQueue.async {
             do {
                 try FileManager.default.removeItem(at: path)
                 completion?(true)
@@ -66,11 +60,26 @@ class DiskStorageService: StorageService {
         }
     }
     
+    func deleteMultiItem(ids: [String], completion: ((Bool) -> Void)?) {
+        ids.forEach { id in
+            let path = locationOnDisk(for: id)
+            saveOnDiskBackgroundQueue.async {
+                do {
+                    try FileManager.default.removeItem(at: path)
+                } catch let error {
+                    print(error)
+                    completion?(false)
+                }
+            }
+        }
+        completion?(true)
+    }
+    
     func fetchAll<T: Codable>(completion: @escaping (Result<[T], Error>) -> Void) {
         
         var result = [T]()
         
-        DispatchQueue.global(qos: .userInitiated).async { [self] in
+        fetchDataQueue.async { [self] in
             do {
                 let directoryContents = try FileManager.default.contentsOfDirectory(at: saveDirectory, includingPropertiesForKeys: nil)
 
@@ -94,7 +103,7 @@ class DiskStorageService: StorageService {
     }
     
     func fetch<T>(id: String, completion: @escaping (Result<T, Error>) -> Void) where T : Decodable, T : Encodable {
-        DispatchQueue.global(qos: .userInitiated).async {
+        fetchDataQueue.async {
             guard let data = try? Data(contentsOf: self.locationOnDisk(for: id)) else {
                 completion(.failure(StorageError.fetchError(message: "Cannot fetch data from URL", error: nil)))
                 return
@@ -107,10 +116,6 @@ class DiskStorageService: StorageService {
                 completion(.failure(StorageError.decodeError(message: "Cannot decode Object", error: error)))
             }
         }
-    }
-    
-    private func writeDataToDisk(_ data: Data, for url: URL) {
-        
     }
     
     private func createDirectory() {

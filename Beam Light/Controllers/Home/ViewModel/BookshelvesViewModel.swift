@@ -93,6 +93,22 @@ class BookshelvesViewModel {
         }
     }
     
+    func deleteMultiItem(for idxs: [IndexPath], completion: @escaping (Bool) -> Void) {
+        
+        var idArray: [String] = []
+        
+        idxs.forEach { id in
+            let bookshelfID = getBookshelfID(for: id.row)
+            bookshelves.remove(at: id.row)
+            idArray.append(bookshelfID)
+        }
+        
+        loader.deleteMultiItem(ids: idArray) { success in
+            completion(true)
+        }
+        
+    }
+    
     private func getBookshelfID(for idx: Int) -> String {
         return bookshelves[idx].id.uuidString
     }

@@ -160,7 +160,7 @@
 		B705460527D080E1003630C4 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				B705460827D08120003630C4 /* VM */,
+				B705460827D08120003630C4 /* View Model */,
 				B76F07E127BD108F00258A05 /* SearchResultViewController.swift */,
 			);
 			path = Search;
@@ -174,12 +174,12 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		B705460827D08120003630C4 /* VM */ = {
+		B705460827D08120003630C4 /* View Model */ = {
 			isa = PBXGroup;
 			children = (
 				B7CDDBB727CE520200C47E63 /* BooksViewModel.swift */,
 			);
-			path = VM;
+			path = "View Model";
 			sourceTree = "<group>";
 		};
 		B705460B27D08612003630C4 /* HeaderFooter */ = {
@@ -227,6 +227,7 @@
 		B706000527DF54E900A50EDE /* BookshelfListViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B753519227E9526C00F4FE7D /* View Model */,
 				B706000627DF550F00A50EDE /* BookshelfListViewController.swift */,
 			);
 			path = BookshelfListViewController;
@@ -235,8 +236,8 @@
 		B706000827DF5CD200A50EDE /* BookshelfDetailViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B753519027E9522500F4FE7D /* View Model */,
 				B7C1FDE927DC4E36004EB3D1 /* BookshelfDetailViewController.swift */,
-				B706000927DF5CE500A50EDE /* BookshelfDetailViewModel.swift */,
 			);
 			path = BookshelfDetailViewController;
 			sourceTree = "<group>";
@@ -260,10 +261,10 @@
 		B7106C4527D9B687009648A0 /* Bookshelf */ = {
 			isa = PBXGroup;
 			children = (
+				B753519427E9529800F4FE7D /* CreateBookshelfViewController */,
+				B753519127E9523500F4FE7D /* BookshelvesViewController */,
 				B706000827DF5CD200A50EDE /* BookshelfDetailViewController */,
 				B706000527DF54E900A50EDE /* BookshelfListViewController */,
-				B7E345B127D33CDE00A86547 /* BookshelfViewModel.swift */,
-				B76F07CF27BCE4F000258A05 /* BookshelvesViewController.swift */,
 			);
 			path = Bookshelf;
 			sourceTree = "<group>";
@@ -315,16 +316,55 @@
 			path = "Beam LightTests";
 			sourceTree = "<group>";
 		};
+		B753519027E9522500F4FE7D /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				B706000927DF5CE500A50EDE /* BookshelfDetailViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		B753519127E9523500F4FE7D /* BookshelvesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B76F07CF27BCE4F000258A05 /* BookshelvesViewController.swift */,
+			);
+			path = BookshelvesViewController;
+			sourceTree = "<group>";
+		};
+		B753519227E9526C00F4FE7D /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				B7E345B127D33CDE00A86547 /* BookshelfViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		B753519327E9528700F4FE7D /* Book */ = {
+			isa = PBXGroup;
+			children = (
+				B705460927D0812E003630C4 /* BookDetailViewController.swift */,
+			);
+			path = Book;
+			sourceTree = "<group>";
+		};
+		B753519427E9529800F4FE7D /* CreateBookshelfViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B7E345B827D3711900A86547 /* CreateBookshelfViewController.swift */,
+			);
+			path = CreateBookshelfViewController;
+			sourceTree = "<group>";
+		};
 		B76F07CA27BCE30300258A05 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B753519327E9528700F4FE7D /* Book */,
 				B705460627D080F8003630C4 /* Main */,
 				B7D6DAF327E045DF00B66818 /* Home */,
 				B7106C4527D9B687009648A0 /* Bookshelf */,
 				B705460527D080E1003630C4 /* Search */,
 				B76F07D927BD045D00258A05 /* BaseController */,
-				B705460927D0812E003630C4 /* BookDetailViewController.swift */,
-				B7E345B827D3711900A86547 /* CreateBookshelfViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

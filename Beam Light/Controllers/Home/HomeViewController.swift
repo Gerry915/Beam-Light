@@ -166,7 +166,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     private func handleCreateBookshelf() {
         let VC = CreateBookshelfViewController()
         
-        VC.didCreateBookself = { [unowned self] title in
+        VC.didCreateBookshelf = { [unowned self] title in
             createBookshelf(with: title)
             NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
         }

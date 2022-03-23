@@ -74,8 +74,10 @@ extension BookshelfListViewController {
         bookshelvesViewModel.saveBookToBookshelf(at: indexPath.row, with: bookViewModel.book) { [weak self] success in
             guard let self = self else { return }
             if success {
-                self.dismiss(animated: true, completion: nil)
-                NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                    NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
+                }
             } else {
                 print("TODO: Show Alert")
             }
