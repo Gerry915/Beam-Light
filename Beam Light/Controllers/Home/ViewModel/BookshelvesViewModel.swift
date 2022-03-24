@@ -67,6 +67,21 @@ class BookshelvesViewModel {
         }
     }
     
+    func saveAll() {
+        bookshelves.forEach { bookshelf in
+            loader.save(id: bookshelf.id.uuidString, data: bookshelf) { success in
+                if !success {
+                    print("fail to save item!")
+                }
+            }
+        }
+    }
+    
+    func saveBookshelfOrder(sourceIndex: Int, destinationIndex: Int) {
+        bookshelves.swapAt(sourceIndex, destinationIndex)
+        bookshelves.forEach({print($0.title)})
+    }
+    
     func save(title: String, completion: ((Bool) -> Void)?) {
         // 1. Create UUID for bookshelf
         let uuid = UUID()

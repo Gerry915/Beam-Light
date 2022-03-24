@@ -152,7 +152,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     private func handlePresentBookDetailView(book: Book) {
-        print("TODO")
         let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
         let VC = BookDetailViewController(bookViewModel: viewModel, imageService: imageService, displayToolBar: false)
         VC.title = viewModel.title

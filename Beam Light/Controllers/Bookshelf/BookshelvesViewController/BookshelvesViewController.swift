@@ -149,6 +149,8 @@ extension BookshelvesViewController {
             deleteButtonItem.isEnabled = false
         } else {
             navigationItem.rightBarButtonItems = [editButtonItem]
+            // Save here
+            viewModel.saveAll()
         }
     }
     
@@ -156,6 +158,7 @@ extension BookshelvesViewController {
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         // TODO: - Change storage data order
+        viewModel.saveBookshelfOrder(sourceIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

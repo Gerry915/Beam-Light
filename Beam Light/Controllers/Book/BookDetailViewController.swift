@@ -13,6 +13,8 @@ class BookDetailViewController: UICollectionViewController {
     var imageService: ImageCacheable
     var displayToolBar: Bool = true
     
+    private let footerID = "footerID"
+    
     convenience init(bookViewModel: BookViewModel, imageService: ImageCacheable, displayToolBar: Bool) {
         self.init(bookViewModel: bookViewModel, imageService: imageService)
         
@@ -30,10 +32,13 @@ class BookDetailViewController: UICollectionViewController {
         let section = NSCollectionLayoutSection(group: group)
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(300))
+        let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem.init(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading, absoluteOffset: .zero)
         
-        section.boundarySupplementaryItems = [header]
+        let footer = NSCollectionLayoutBoundarySupplementaryItem.init(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom, absoluteOffset: .init(x: 0, y: 30))
+        
+        section.boundarySupplementaryItems = [header, footer]
         
         section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
@@ -85,7 +90,11 @@ class BookDetailViewController: UICollectionViewController {
         present(sheetView, animated: true, completion: nil)
     }
     
-    fileprivate func handleAddToBookshelf() {
+    @objc private func openBook() {
+        print("TODO: Open book in books app")
+    }
+    
+    private func handleAddToBookshelf() {
         print("Handle Add to bookshelf")
         
         let bookshelvesViewModel = BookshelvesViewModel(loader: DiskStorageService.shared)
@@ -98,6 +107,7 @@ class BookDetailViewController: UICollectionViewController {
     private func setupCollectionView() {
         collectionView.register(BookDetailCell.self, forCellWithReuseIdentifier: BookDetailCell.reusableIdentifier)
         collectionView.register(BookHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: BookHeader.reusableIdentifier)
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerID)
         collectionView.contentInset = .init(top: 20, left: 0, bottom: 20, right: 0)
     }
     
@@ -106,12 +116,32 @@ class BookDetailViewController: UICollectionViewController {
 extension BookDetailViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: BookHeader.reusableIdentifier, for: indexPath) as! BookHeader
-        
-        headerView.configure(coverImage: bookViewModel.coverLarge, imageService: imageService)
+        if kind == UICollectionView.elementKindSectionFooter {
+            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerID, for: indexPath)
+            
+            var config = UIButton.Configuration.filled()
+            config.title = "Open in Book"
+            config.cornerStyle = .capsule
+            
+            let button = UIButton(configuration: config)
+            button.addTarget(self, action: #selector(openBook), for: .touchUpInside)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            
+            footerView.addSubview(button)
+            
+            NSLayoutConstraint.activate([
+                button.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+                button.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+            ])
+            
+            return footerView
+        } else {
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: BookHeader.reusableIdentifier, for: indexPath) as! BookHeader
+            
+            headerView.configure(coverImage: bookViewModel.coverLarge, imageService: imageService)
 
-        return headerView
-        
+            return headerView
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

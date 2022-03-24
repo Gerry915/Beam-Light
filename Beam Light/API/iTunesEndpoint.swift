@@ -50,19 +50,19 @@ extension iTunesEndpoint {
         return nil
     }
         
-    func buildRequest(headers: [String: String]?, body: Data?) -> URLRequest {
-        let url = buildURL()
-        
-        var request = URLRequest(url: url)
-        
-        headers?.forEach({ (key, value) in
-            request.addValue(value, forHTTPHeaderField: key)
-        })
-        
-        request.httpBody = body
-        
-        return request
-    }
+//    func buildRequest(headers: [String: String]?, body: Data?) -> URLRequest {
+//        let url = buildURL()
+//        
+//        var request = URLRequest(url: url)
+//        
+//        headers?.forEach({ (key, value) in
+//            request.addValue(value, forHTTPHeaderField: key)
+//        })
+//        
+//        request.httpBody = body
+//        
+//        return request
+//    }
     
     func buildURL() -> URL {
         
