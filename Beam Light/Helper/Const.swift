@@ -18,4 +18,8 @@ enum CONSTANT {
         }
     }
     
+    enum test {
+        
+    }
+    
 }
