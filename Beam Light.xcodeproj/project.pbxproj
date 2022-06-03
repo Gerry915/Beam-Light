@@ -44,6 +44,18 @@
 		B76F07F127BD2B6E00258A05 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07F027BD2B6E00258A05 /* NetworkService.swift */; };
 		B772CD9227E2B9CD00D9B3C5 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */; };
 		B772CD9427E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */; };
+		B7A4C40F2848E9AE000A9DB3 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B7A4C40E2848E9AE000A9DB3 /* SDWebImage */; };
+		B7A4C41D2848F52A000A9DB3 /* StorageErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C41C2848F52A000A9DB3 /* StorageErrors.swift */; };
+		B7A4C4212848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C4202848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift */; };
+		B7A4C4242848F6DC000A9DB3 /* BookshelfRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C4232848F6DC000A9DB3 /* BookshelfRepository.swift */; };
+		B7A4C4272848F78E000A9DB3 /* DiskStorageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C4262848F78E000A9DB3 /* DiskStorageError.swift */; };
+		B7A4C42E2848F809000A9DB3 /* BookshelfDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C42D2848F809000A9DB3 /* BookshelfDataSourceProtocol.swift */; };
+		B7A4C4312848F878000A9DB3 /* DiskStorageBookshelfDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C4302848F878000A9DB3 /* DiskStorageBookshelfDataSource.swift */; };
+		B7A4C4342848F93E000A9DB3 /* DiskStorageWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C4332848F93E000A9DB3 /* DiskStorageWrapper.swift */; };
+		B7A4C4372848F97E000A9DB3 /* DiskStorageWrapperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C4362848F97E000A9DB3 /* DiskStorageWrapperProtocol.swift */; };
+		B7AA85CA2849C07100F47B21 /* DiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA85C92849C07100F47B21 /* DiskStorage.swift */; };
+		B7AA85CE2849CFC800F47B21 /* GetAllBookshelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA85CD2849CFC800F47B21 /* GetAllBookshelf.swift */; };
+		B7AA85D22849CFFF00F47B21 /* GetAllBookshelfUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AA85D12849CFFF00F47B21 /* GetAllBookshelfUseCaseProtocol.swift */; };
 		B7C1FDE427DAC478004EB3D1 /* BookshelvesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1FDE327DAC477004EB3D1 /* BookshelvesViewModel.swift */; };
 		B7C1FDE627DAC829004EB3D1 /* BookshelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1FDE527DAC829004EB3D1 /* BookshelfCollectionViewCell.swift */; };
 		B7C1FDE827DB5A74004EB3D1 /* BookCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1FDE727DB5A74004EB3D1 /* BookCoverCell.swift */; };
@@ -117,6 +129,17 @@
 		B76F07F027BD2B6E00258A05 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAnalyticsEngine.swift; sourceTree = "<group>"; };
+		B7A4C41C2848F52A000A9DB3 /* StorageErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageErrors.swift; sourceTree = "<group>"; };
+		B7A4C4202848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfRepositoryProtocol.swift; sourceTree = "<group>"; };
+		B7A4C4232848F6DC000A9DB3 /* BookshelfRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfRepository.swift; sourceTree = "<group>"; };
+		B7A4C4262848F78E000A9DB3 /* DiskStorageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorageError.swift; sourceTree = "<group>"; };
+		B7A4C42D2848F809000A9DB3 /* BookshelfDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfDataSourceProtocol.swift; sourceTree = "<group>"; };
+		B7A4C4302848F878000A9DB3 /* DiskStorageBookshelfDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorageBookshelfDataSource.swift; sourceTree = "<group>"; };
+		B7A4C4332848F93E000A9DB3 /* DiskStorageWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorageWrapper.swift; sourceTree = "<group>"; };
+		B7A4C4362848F97E000A9DB3 /* DiskStorageWrapperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorageWrapperProtocol.swift; sourceTree = "<group>"; };
+		B7AA85C92849C07100F47B21 /* DiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorage.swift; sourceTree = "<group>"; };
+		B7AA85CD2849CFC800F47B21 /* GetAllBookshelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAllBookshelf.swift; sourceTree = "<group>"; };
+		B7AA85D12849CFFF00F47B21 /* GetAllBookshelfUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAllBookshelfUseCaseProtocol.swift; sourceTree = "<group>"; };
 		B7C1FDE327DAC477004EB3D1 /* BookshelvesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelvesViewModel.swift; sourceTree = "<group>"; };
 		B7C1FDE527DAC829004EB3D1 /* BookshelfCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7C1FDE727DB5A74004EB3D1 /* BookCoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCoverCell.swift; sourceTree = "<group>"; };
@@ -144,6 +167,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7A4C40F2848E9AE000A9DB3 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,14 +188,6 @@
 				B76F07E127BD108F00258A05 /* SearchResultViewController.swift */,
 			);
 			path = Search;
-			sourceTree = "<group>";
-		};
-		B705460627D080F8003630C4 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				B76F07CB27BCE33F00258A05 /* MainTabViewController.swift */,
-			);
-			path = Main;
 			sourceTree = "<group>";
 		};
 		B705460827D08120003630C4 /* View Model */ = {
@@ -199,29 +215,13 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
-		B705461527D0EA29003630C4 /* Delegates */ = {
+		B705461527D0EA29003630C4 /* App Delegates */ = {
 			isa = PBXGroup;
 			children = (
 				B713B70B27B7DEF500591981 /* AppDelegate.swift */,
 				B713B70D27B7DEF500591981 /* SceneDelegate.swift */,
 			);
-			path = Delegates;
-			sourceTree = "<group>";
-		};
-		B705461627D0EA3B003630C4 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B713B71727B7DEF500591981 /* Assets.xcassets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		B705461727D0EA4E003630C4 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-				B76F07E327BD1B1400258A05 /* Const.swift */,
-			);
-			path = Helper;
+			path = "App Delegates";
 			sourceTree = "<group>";
 		};
 		B706000527DF54E900A50EDE /* BookshelfListViewController */ = {
@@ -245,6 +245,8 @@
 		B7106C4127D8DFB4009648A0 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				B76F07E527BD1EC500258A05 /* Endpoints */,
+				B76F07E827BD275800258A05 /* Types */,
 				B7106C4227D8DFB9009648A0 /* Services */,
 			);
 			path = Networking;
@@ -290,20 +292,15 @@
 		B713B70A27B7DEF500591981 /* Beam Light */ = {
 			isa = PBXGroup;
 			children = (
+				B7A4C40B2848E6AA000A9DB3 /* Support Files */,
+				B705461527D0EA29003630C4 /* App Delegates */,
+				B7A4C4102848E9C2000A9DB3 /* UI */,
+				B7A4C4122848EBF9000A9DB3 /* Domain */,
 				B7106C4127D8DFB4009648A0 /* Networking */,
-				B705461727D0EA4E003630C4 /* Helper */,
-				B705461627D0EA3B003630C4 /* Resources */,
-				B705461527D0EA29003630C4 /* Delegates */,
-				B705460E27D0C3C8003630C4 /* Layout */,
-				B76F07F227BD2DF300258A05 /* Model */,
 				B76F07EF27BD2B6500258A05 /* Services */,
-				B76F07E827BD275800258A05 /* Types */,
-				B76F07E527BD1EC500258A05 /* API */,
 				B76F07DC27BD050900258A05 /* Extensions */,
+				B7A4C40C2848E8D1000A9DB3 /* Utlis */,
 				B76F07D627BD027500258A05 /* Protocols */,
-				B76F07D127BD022800258A05 /* Views */,
-				B76F07CA27BCE30300258A05 /* Controllers */,
-				B713B71C27B7DEF500591981 /* Info.plist */,
 			);
 			path = "Beam Light";
 			sourceTree = "<group>";
@@ -356,23 +353,9 @@
 			path = CreateBookshelfViewController;
 			sourceTree = "<group>";
 		};
-		B76F07CA27BCE30300258A05 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				B753519327E9528700F4FE7D /* Book */,
-				B705460627D080F8003630C4 /* Main */,
-				B7D6DAF327E045DF00B66818 /* Home */,
-				B7106C4527D9B687009648A0 /* Bookshelf */,
-				B705460527D080E1003630C4 /* Search */,
-				B76F07D927BD045D00258A05 /* BaseController */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		B76F07D127BD022800258A05 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B713B71927B7DEF500591981 /* LaunchScreen.storyboard */,
 				B705460B27D08612003630C4 /* HeaderFooter */,
 				B7CDDBB027CE28E500C47E63 /* Cells */,
 				B7CDDBB527CE2CAE00C47E63 /* RatingView.swift */,
@@ -386,12 +369,9 @@
 		B76F07D627BD027500258A05 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				B76F07D727BD027F00258A05 /* ReuseableView.swift */,
 				B76F07ED27BD2AF200258A05 /* Endpoint.swift */,
 				B7CDDBBB27CF79B700C47E63 /* Cancellable.swift */,
-				B7CDDBBD27CF875100C47E63 /* SearchResultPresentable.swift */,
 				B705461327D0E68F003630C4 /* CacheService.swift */,
-				B7E345BE27D3882400A86547 /* StorageService.swift */,
 				B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */,
 			);
 			path = Protocols;
@@ -400,7 +380,6 @@
 		B76F07D927BD045D00258A05 /* BaseController */ = {
 			isa = PBXGroup;
 			children = (
-				B76F07DA27BD048500258A05 /* BaseCollectionViewController.swift */,
 			);
 			path = BaseController;
 			sourceTree = "<group>";
@@ -415,12 +394,12 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		B76F07E527BD1EC500258A05 /* API */ = {
+		B76F07E527BD1EC500258A05 /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
 				B713E38327CCE14800315020 /* iTunesEndpoint.swift */,
 			);
-			path = API;
+			path = Endpoints;
 			sourceTree = "<group>";
 		};
 		B76F07E827BD275800258A05 /* Types */ = {
@@ -438,7 +417,6 @@
 			children = (
 				B76F07F027BD2B6E00258A05 /* NetworkService.swift */,
 				B7CDDBB927CF756E00C47E63 /* ImageService.swift */,
-				B7E345BC27D386E700A86547 /* DiskStorageService.swift */,
 				B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */,
 			);
 			path = Services;
@@ -453,6 +431,216 @@
 				B7E345AF27D328D300A86547 /* Bookshelf.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B7A4C40B2848E6AA000A9DB3 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				B713B71727B7DEF500591981 /* Assets.xcassets */,
+				B713B71927B7DEF500591981 /* LaunchScreen.storyboard */,
+				B713B71C27B7DEF500591981 /* Info.plist */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		B7A4C40C2848E8D1000A9DB3 /* Utlis */ = {
+			isa = PBXGroup;
+			children = (
+				B76F07E327BD1B1400258A05 /* Const.swift */,
+			);
+			path = Utlis;
+			sourceTree = "<group>";
+		};
+		B7A4C4102848E9C2000A9DB3 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4132848EC1F000A9DB3 /* Protocols */,
+				B76F07D127BD022800258A05 /* Views */,
+				B76F07CB27BCE33F00258A05 /* MainTabViewController.swift */,
+				B76F07DA27BD048500258A05 /* BaseCollectionViewController.swift */,
+				B753519327E9528700F4FE7D /* Book */,
+				B76F07D927BD045D00258A05 /* BaseController */,
+				B705460527D080E1003630C4 /* Search */,
+				B7A4C4112848EB42000A9DB3 /* HomeView */,
+				B7106C4527D9B687009648A0 /* Bookshelf */,
+				B705460E27D0C3C8003630C4 /* Layout */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		B7A4C4112848EB42000A9DB3 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				B7C1FDE227DAC46F004EB3D1 /* ViewModel */,
+				B76F07CD27BCE4BF00258A05 /* HomeViewController.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		B7A4C4122848EBF9000A9DB3 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA85CB2849CFA400F47B21 /* UseCases */,
+				B7A4C4222848F6C2000A9DB3 /* Repositories */,
+				B7A4C41E2848F5FD000A9DB3 /* Protocols */,
+				B7A4C41B2848F51B000A9DB3 /* Errors */,
+				B7A4C4182848F4BB000A9DB3 /* Data */,
+				B76F07F227BD2DF300258A05 /* Model */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		B7A4C4132848EC1F000A9DB3 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B7CDDBBD27CF875100C47E63 /* SearchResultPresentable.swift */,
+				B76F07D727BD027F00258A05 /* ReuseableView.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B7A4C4182848F4BB000A9DB3 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4282848F7AE000A9DB3 /* DataSources */,
+				B7A4C4252848F77D000A9DB3 /* Errors */,
+				B7A4C4192848F4D0000A9DB3 /* Protocols */,
+				B7A4C41A2848F4DA000A9DB3 /* DiskStorage */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		B7A4C4192848F4D0000A9DB3 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4352848F964000A9DB3 /* Wrappers */,
+				B7E345BE27D3882400A86547 /* StorageService.swift */,
+				B7A4C42D2848F809000A9DB3 /* BookshelfDataSourceProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B7A4C41A2848F4DA000A9DB3 /* DiskStorage */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4322848F92C000A9DB3 /* Wrappers */,
+				B7E345BC27D386E700A86547 /* DiskStorageService.swift */,
+				B7AA85C92849C07100F47B21 /* DiskStorage.swift */,
+				B7A4C4302848F878000A9DB3 /* DiskStorageBookshelfDataSource.swift */,
+			);
+			path = DiskStorage;
+			sourceTree = "<group>";
+		};
+		B7A4C41B2848F51B000A9DB3 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C41C2848F52A000A9DB3 /* StorageErrors.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		B7A4C41E2848F5FD000A9DB3 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA85CF2849CFE700F47B21 /* UseCases */,
+				B7A4C41F2848F602000A9DB3 /* Repositories */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B7A4C41F2848F602000A9DB3 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4202848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		B7A4C4222848F6C2000A9DB3 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4232848F6DC000A9DB3 /* BookshelfRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		B7A4C4252848F77D000A9DB3 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4262848F78E000A9DB3 /* DiskStorageError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		B7A4C4282848F7AE000A9DB3 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C42A2848F7C5000A9DB3 /* DiskStorage */,
+				B7A4C4292848F7C1000A9DB3 /* CoreData */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		B7A4C4292848F7C1000A9DB3 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		B7A4C42A2848F7C5000A9DB3 /* DiskStorage */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DiskStorage;
+			sourceTree = "<group>";
+		};
+		B7A4C4322848F92C000A9DB3 /* Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4332848F93E000A9DB3 /* DiskStorageWrapper.swift */,
+			);
+			path = Wrappers;
+			sourceTree = "<group>";
+		};
+		B7A4C4352848F964000A9DB3 /* Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				B7A4C4362848F97E000A9DB3 /* DiskStorageWrapperProtocol.swift */,
+			);
+			path = Wrappers;
+			sourceTree = "<group>";
+		};
+		B7AA85CB2849CFA400F47B21 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA85CC2849CFBB00F47B21 /* Bookshelf */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		B7AA85CC2849CFBB00F47B21 /* Bookshelf */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA85CD2849CFC800F47B21 /* GetAllBookshelf.swift */,
+			);
+			path = Bookshelf;
+			sourceTree = "<group>";
+		};
+		B7AA85CF2849CFE700F47B21 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA85D02849CFEF00F47B21 /* Bookshelf */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		B7AA85D02849CFEF00F47B21 /* Bookshelf */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA85D12849CFFF00F47B21 /* GetAllBookshelfUseCaseProtocol.swift */,
+			);
+			path = Bookshelf;
 			sourceTree = "<group>";
 		};
 		B7C1FDE227DAC46F004EB3D1 /* ViewModel */ = {
@@ -478,15 +666,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		B7D6DAF327E045DF00B66818 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				B7C1FDE227DAC46F004EB3D1 /* ViewModel */,
-				B76F07CD27BCE4BF00258A05 /* HomeViewController.swift */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -503,6 +682,9 @@
 			dependencies = (
 			);
 			name = "Beam Light";
+			packageProductDependencies = (
+				B7A4C40E2848E9AE000A9DB3 /* SDWebImage */,
+			);
 			productName = "Beam Light";
 			productReference = B713B70827B7DEF500591981 /* Beam Light.app */;
 			productType = "com.apple.product-type.application";
@@ -553,6 +735,9 @@
 				Base,
 			);
 			mainGroup = B713B6FF27B7DEF400591981;
+			packageReferences = (
+				B7A4C40D2848E9AE000A9DB3 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = B713B70927B7DEF500591981 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -591,7 +776,9 @@
 				B7106C4427D8DFCB009648A0 /* iTunesService.swift in Sources */,
 				B7C1FDE627DAC829004EB3D1 /* BookshelfCollectionViewCell.swift in Sources */,
 				B76F07CC27BCE34000258A05 /* MainTabViewController.swift in Sources */,
+				B7A4C4342848F93E000A9DB3 /* DiskStorageWrapper.swift in Sources */,
 				B7CDDBBE27CF875100C47E63 /* SearchResultPresentable.swift in Sources */,
+				B7AA85CE2849CFC800F47B21 /* GetAllBookshelf.swift in Sources */,
 				B772CD9427E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift in Sources */,
 				B76F07D327BD024100258A05 /* SearchCell.swift in Sources */,
 				B76F07D527BD026300258A05 /* EmptyBookshelvesCell.swift in Sources */,
@@ -604,7 +791,9 @@
 				B76F07DE27BD051400258A05 /* UIColor+Extension.swift in Sources */,
 				B753518027E812F800F4FE7D /* BookViewModel.swift in Sources */,
 				B7CDDBB627CE2CAE00C47E63 /* RatingView.swift in Sources */,
+				B7A4C4212848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift in Sources */,
 				B7E345BF27D3882400A86547 /* StorageService.swift in Sources */,
+				B7A4C4312848F878000A9DB3 /* DiskStorageBookshelfDataSource.swift in Sources */,
 				B713E38627CCE33100315020 /* Book.swift in Sources */,
 				B713B70C27B7DEF500591981 /* AppDelegate.swift in Sources */,
 				B705461227D0C74E003630C4 /* BookDetailCell.swift in Sources */,
@@ -612,24 +801,30 @@
 				B7CDDBBA27CF756E00C47E63 /* ImageService.swift in Sources */,
 				B7C1FDEA27DC4E36004EB3D1 /* BookshelfDetailViewController.swift in Sources */,
 				B705460D27D0861D003630C4 /* BookHeader.swift in Sources */,
+				B7A4C41D2848F52A000A9DB3 /* StorageErrors.swift in Sources */,
 				B76F07F127BD2B6E00258A05 /* NetworkService.swift in Sources */,
 				B7E345B427D33DFB00A86547 /* BookshelfCell.swift in Sources */,
+				B7A4C4272848F78E000A9DB3 /* DiskStorageError.swift in Sources */,
 				B713E38827CCE41200315020 /* Books.swift in Sources */,
 				B7E345B227D33CDE00A86547 /* BookshelfViewModel.swift in Sources */,
 				B706000A27DF5CE500A50EDE /* BookshelfDetailViewModel.swift in Sources */,
 				B76F07E227BD108F00258A05 /* SearchResultViewController.swift in Sources */,
+				B7AA85D22849CFFF00F47B21 /* GetAllBookshelfUseCaseProtocol.swift in Sources */,
 				B7D6DAF527E0512500B66818 /* SearchCollectionViewHeader.swift in Sources */,
 				B713B70E27B7DEF500591981 /* SceneDelegate.swift in Sources */,
 				B76F07EE27BD2AF200258A05 /* Endpoint.swift in Sources */,
 				B7C1FDE427DAC478004EB3D1 /* BookshelvesViewModel.swift in Sources */,
+				B7A4C42E2848F809000A9DB3 /* BookshelfDataSourceProtocol.swift in Sources */,
 				B753518227E8285D00F4FE7D /* LoadingView.swift in Sources */,
 				B705460A27D0812E003630C4 /* BookDetailViewController.swift in Sources */,
 				B705461027D0C47F003630C4 /* StretchyHeaderLayout.swift in Sources */,
+				B7A4C4242848F6DC000A9DB3 /* BookshelfRepository.swift in Sources */,
 				B7E345BD27D386E700A86547 /* DiskStorageService.swift in Sources */,
 				B713E38427CCE14800315020 /* iTunesEndpoint.swift in Sources */,
 				B76F07D827BD027F00258A05 /* ReuseableView.swift in Sources */,
 				B76F07EA27BD276300258A05 /* HTTPMethod.swift in Sources */,
 				B7C1FDE827DB5A74004EB3D1 /* BookCoverCell.swift in Sources */,
+				B7AA85CA2849C07100F47B21 /* DiskStorage.swift in Sources */,
 				B7E345B727D36B3D00A86547 /* BookshelfFooter.swift in Sources */,
 				B7E345B027D328D300A86547 /* Bookshelf.swift in Sources */,
 				B76F07DB27BD048500258A05 /* BaseCollectionViewController.swift in Sources */,
@@ -640,6 +835,7 @@
 				B705461427D0E68F003630C4 /* CacheService.swift in Sources */,
 				B7E345B927D3711900A86547 /* CreateBookshelfViewController.swift in Sources */,
 				B76F07E427BD1B1500258A05 /* Const.swift in Sources */,
+				B7A4C4372848F97E000A9DB3 /* DiskStorageWrapperProtocol.swift in Sources */,
 				B772CD9227E2B9CD00D9B3C5 /* Analytics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -799,7 +995,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 64TX422529;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Beam Light/Info.plist";
+				INFOPLIST_FILE = "Beam Light/Support Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -827,7 +1023,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 64TX422529;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Beam Light/Info.plist";
+				INFOPLIST_FILE = "Beam Light/Support Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -915,6 +1111,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B7A4C40D2848E9AE000A9DB3 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B7A4C40E2848E9AE000A9DB3 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7A4C40D2848E9AE000A9DB3 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		B713B71427B7DEF500591981 /* Beam_Light.xcdatamodeld */ = {
