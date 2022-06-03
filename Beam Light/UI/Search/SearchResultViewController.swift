@@ -12,6 +12,7 @@ class SearchResultViewController: UIViewController {
     lazy var loadingView: UIActivityIndicatorView = LoadingView(style: .medium)
     
     var imageService: ImageCacheable
+	
     var viewModel: BooksViewModel? {
         didSet {
             viewModel?.fetchData(with: searchQuery, completion: { [weak self] success in

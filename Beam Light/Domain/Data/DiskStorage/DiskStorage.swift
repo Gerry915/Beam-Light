@@ -20,7 +20,7 @@ class DiskStorage {
 		createDirectory()
 	}
 	
-	func save(id: String, data: Data) throws {
+	func create(id: String, data: Data) throws {
 		
 		let location = saveDirectory.appendingPathComponent(id)
 

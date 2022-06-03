@@ -28,7 +28,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
         let lb = UILabel()
         lb.text = "You have no books in this shelf"
         lb.textAlignment = .center
-        lb.font = .systemFont(ofSize: 18, weight: .semibold)
+		lb.font = .systemFont(ofSize: 20, weight: .light)
         lb.textColor = .systemGray3
         
         return lb
@@ -36,7 +36,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let lb = UILabel()
-        lb.font = .systemFont(ofSize: 20, weight: .light)
+        lb.font = .systemFont(ofSize: 18, weight: .regular)
         
         return lb
     }()
@@ -46,7 +46,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
         
         var config = UIButton.Configuration.plain()
         var attText = AttributedString.init("SEE ALL")
-        attText.font = .systemFont(ofSize: 14, weight: .medium)
+		attText.font = .systemFont(ofSize: 12, weight: .bold)
         config.attributedTitle = attText
         
         button.configuration = config
@@ -124,10 +124,10 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(vStack)
         
         NSLayoutConstraint.activate([
-            vStack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            vStack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-            vStack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
-            vStack.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor)
+            vStack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
+            vStack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            vStack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            vStack.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8)
         ])
         
         addSubview(emptyBookMessage)

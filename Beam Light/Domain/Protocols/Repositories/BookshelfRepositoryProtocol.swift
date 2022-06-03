@@ -9,4 +9,6 @@ import Foundation
 
 protocol BookshelfRepositoryProtocol {
 	func getAllBookshelf() async -> Result<[Bookshelf], CustomStorageError>
+	
+	func createBookshelf(id: String, data: Bookshelf) async -> Result<Bool, CustomStorageError>
 }

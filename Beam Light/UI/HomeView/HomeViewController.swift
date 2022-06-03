@@ -18,10 +18,52 @@ class HomeViewController: BaseCollectionViewController {
 	typealias Snapshot = NSDiffableDataSourceSnapshot<Sections, Bookshelf>
 	
 	lazy var dataSource = createDataSource()
+	
+	lazy var emptyView: UIView = {
+		
+		let view = UIView()
+		view.isHidden = true
+		
+		let label = UILabel()
+		
+		label.text = "You have no bookshelves"
+		label.textColor = .systemGray2
+		
+		let button = UIButton()
+		
+		var config = UIButton.Configuration.filled()
+		config.cornerStyle = .capsule
+		config.contentInsets = .init(top: 8, leading: 24, bottom: 8, trailing: 24)
+		
+		config.title = "Create"
+		
+		button.configuration = config
+		
+		let stackView = UIStackView(arrangedSubviews: [label, button])
+		
+		stackView.axis = .vertical
+		stackView.alignment = .center
+		stackView.distribution = .equalCentering
+		stackView.spacing = 20
+		
+		stackView.translatesAutoresizingMaskIntoConstraints = false
+		
+		view.addSubview(stackView)
+		NSLayoutConstraint.activate([
+			stackView.topAnchor.constraint(equalTo: view.topAnchor),
+			stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+		])
+		
+		button.addTarget(self, action: #selector(handleCreateBookshelf), for: .touchUpInside)
+		
+		
+		return view
+	}()
     
     // MARK: - Properties
-    
-    var searchCell: SearchCell?
+
     var searchQuery: String = ""
     var imageService: ImageCacheable
     var viewModel: BookshelvesViewModel
@@ -49,6 +91,15 @@ class HomeViewController: BaseCollectionViewController {
 		super.setupCollectionView()
 		
 		analyticsService.log(event: HomeViewEvent.screenView)
+		
+		collectionView.addSubview(emptyView)
+		emptyView.translatesAutoresizingMaskIntoConstraints = false
+		
+		
+		NSLayoutConstraint.activate([
+			emptyView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+			emptyView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+		])
         
         setup()
 		collectionViewConfiguration()
@@ -56,15 +107,22 @@ class HomeViewController: BaseCollectionViewController {
         
 		Task {
 			await viewModel.getAllBookshelf()
+			binding()
 		}
 
-		binding()
-
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		Task {
+			await viewModel.getAllBookshelf()
+		}
+	}
     
     // MARK: - Methods
 	private func setup() {
 		title = "Beam Light"
+		navigationController?.navigationBar.prefersLargeTitles = true
 	}
 	
     private func collectionViewConfiguration() {
@@ -75,26 +133,15 @@ class HomeViewController: BaseCollectionViewController {
 
 		let dataSource = DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, bookshelf in
 			
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookshelfCollectionViewCell.reusableIdentifier, for: indexPath) as! BookshelfCollectionViewCell
+			generateCell(for: indexPath)
 			
-			cell.showBookDetailViewHandler = { book in
-				self.handlePresentBookDetailView(book: book)
-			}
-			
-			cell.showBookshelfDetailHandler = { bookshelf in
-				self.handlePresentBookshelfDetailViewController(bookshelf: bookshelf)
-			}
-			
-			cell.titleLabel.text = bookshelf.title
-			cell.viewModel = BookshelfViewModel(bookshelf: bookshelf)
-			cell.imageService = imageService
-
-			return cell
 		}
 		
 		dataSource.supplementaryViewProvider = {
 			collectionView, kind, indexPath in
 			guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SearchCollectionViewHeader.reusableIdentifier, for: indexPath) as? SearchCollectionViewHeader else { return nil }
+			
+			header.searchBar.delegate = self
 			
 			return header
 		}
@@ -115,6 +162,13 @@ class HomeViewController: BaseCollectionViewController {
 	private func binding() {
 		viewModel.$bookshelves.receive(on: DispatchQueue.main).sink { [unowned self] items in
 			self.applySnapshot()
+			emptyView.isHidden = true
+			if items.count == 0 {
+				emptyView.isHidden = false
+			} else {
+				emptyView.isHidden = true
+			}
+			
 		}.store(in: &subscription)
 	}
 }
@@ -122,19 +176,9 @@ class HomeViewController: BaseCollectionViewController {
 extension HomeViewController: UICollectionViewDelegate {
     
     private func generateCell(for indexPath: IndexPath) -> UICollectionViewCell {
-        
-        return viewModel.isEmpty ? renderEmptyBookshelvesCell(for: indexPath) : renderBookshelfCell(for: indexPath)
+		renderBookshelfCell(for: indexPath)
     }
-    
-    private func renderEmptyBookshelvesCell(for indexPath: IndexPath) -> EmptyBookshelvesCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyBookshelvesCell.reusableIdentifier, for: indexPath) as! EmptyBookshelvesCell
-        
-        cell.handleCreateButtonTap = handleCreateBookshelf
-        
-        return cell
-    }
-    
+
     private func renderBookshelfCell(for indexPath: IndexPath) -> BookshelfCollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookshelfCollectionViewCell.reusableIdentifier, for: indexPath) as! BookshelfCollectionViewCell
@@ -183,33 +227,22 @@ extension HomeViewController: UICollectionViewDelegate {
         navigationController?.present(navVC, animated: true)
     }
     
+	@objc
     private func handleCreateBookshelf() {
         let VC = CreateBookshelfViewController()
-        
-        VC.didCreateBookshelf = { [unowned self] title in
-            createBookshelf(with: title)
-            NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
-        }
-        navigationController?.present(VC, animated: true)
-    }
-    
-    private func createBookshelf(with title: String) {
-        viewModel.save(title: title) { [weak self] success in
-            guard let self = self else { return }
-            if success {
+		
+		if let sheet = VC.sheetPresentationController {
+			sheet.detents = [.medium()]
+			sheet.prefersGrabberVisible = false
+		}
+		
+		present(VC, animated: true) {
+			VC.didCreateBookshelf = { [unowned self] title in
 				Task {
-					await self.viewModel.getAllBookshelf()
+					await viewModel.create(with: title)
 				}
-            }
-        }
-    }
-    
-    @objc func resetSearchBarIfNeeded() {
-        guard let cell = searchCell else { return }
-        if cell.searchBar.isFirstResponder {
-            cell.searchBar.resignFirstResponder()
-            cell.searchBar.text = ""
-        }
+			}
+		}
     }
 }
 

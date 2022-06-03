@@ -8,14 +8,6 @@
 import UIKit
 
 class SearchCollectionViewHeader: UICollectionReusableView {
-    let welcomeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "What are \nyou reading today?"
-        label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 32, weight: .thin)
-        
-        return label
-    }()
     
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -27,7 +19,6 @@ class SearchCollectionViewHeader: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         commonInit()
     }
     
@@ -37,19 +28,15 @@ class SearchCollectionViewHeader: UICollectionReusableView {
     }
     
     private func commonInit() {
-        let stackView = UIStackView(arrangedSubviews: [welcomeLabel, searchBar])
         
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        
-        addSubview(stackView)
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(searchBar)
+		searchBar.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+			searchBar.topAnchor.constraint(equalTo: topAnchor),
+			searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+			searchBar.bottomAnchor.constraint(equalTo: bottomAnchor),
+			searchBar.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 }

@@ -31,4 +31,8 @@ class DiskStorageBookshelfDataSource: DiskStorageBookshelfDataSourceProtocol {
 			return .failure(.Get(message: "Can not Get data from Disk Storage"))
 		}
 	}
+	
+	func create(id: String, data: Data) async throws {
+		try dbWrapper.create(id: id, data: data)
+	}
 }

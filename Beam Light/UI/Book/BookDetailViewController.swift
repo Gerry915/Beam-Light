@@ -104,6 +104,13 @@ class BookDetailViewController: UICollectionViewController {
 														dbWrapper: DiskStorageWrapper()
 													)
 												)
+											 ),
+											 createBookshelfUseCase: CreateBookshelf(
+												repo: BookshelfRepository(
+													dataSource: DiskStorageBookshelfDataSource(
+														dbWrapper: DiskStorageWrapper()
+													)
+												)
 											 )
 		)
         

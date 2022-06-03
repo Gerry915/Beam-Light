@@ -38,15 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func composeHomeViewController(imageService: ImageCacheable) -> UINavigationController {
 		
-		let viewModel = BookshelvesViewModel(loader: DiskStorageService.shared,
-											 getAllUseCase: GetAllBookshelf(
-												repo: BookshelfRepository(
-													dataSource: DiskStorageBookshelfDataSource(
-														dbWrapper: DiskStorageWrapper()
-													)
-												)
-											 )
-		)
+		let viewModel = BookshelvesViewModel(loader: DiskStorageService.shared, getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self), createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self))
         
         let homeTabItem = UITabBarItem(title: "Beam Light", image: UIImage(systemName: "light.min"), tag: 0)
         
@@ -60,14 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func composeBookshelfViewController(imageService: ImageService) -> UINavigationController {
         
-		let viewModel = BookshelvesViewModel(loader: DiskStorageService.shared,
-											 getAllUseCase: GetAllBookshelf(
-												repo: BookshelfRepository(
-													dataSource: DiskStorageBookshelfDataSource(
-														dbWrapper: DiskStorageWrapper()
-													)
-												)
-											 )
+		let viewModel = BookshelvesViewModel(loader: DiskStorageService.shared, getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self), createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self)
 		)
         
         let bookshelvesViewController = BookshelvesViewController(imageService: imageService, viewModel: viewModel)

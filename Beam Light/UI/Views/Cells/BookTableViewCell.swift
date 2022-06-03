@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class BookTableViewCell: UITableViewCell {
     
@@ -162,11 +163,19 @@ extension BookTableViewCell {
         descriptionLabel.text = presentable.content.htmlToString
         numberOfRatings.text = String(describing: "\(presentable.ratingCount ?? 0) ratings")
         
-        if let url = URL(string: presentable.coverSmall) {
-            imageRequest = imageService.cache(for: url) { [weak self] image in
-                self?.thumbnailImageView.image = image
-                self?.loadingView.stopAnimating()
-            }
-        }
+		
+		if let url = URL(string: presentable.coverSmall) {
+			thumbnailImageView.sd_setImage(with: url) { [weak self] _, _, _, _ in
+				guard let self = self else { return }
+				self.loadingView.stopAnimating()
+			}
+		}
+		
+//        if let url = URL(string: presentable.coverSmall) {
+//            imageRequest = imageService.cache(for: url) { [weak self] image in
+//                self?.thumbnailImageView.image = image
+//                self?.loadingView.stopAnimating()
+//            }
+//        }
     }
 }

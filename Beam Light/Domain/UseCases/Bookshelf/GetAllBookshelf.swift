@@ -9,9 +9,9 @@ import Foundation
 
 class GetAllBookshelf: GetAllBookshelfUseCaseProtocol {
 	
-	private let bookshelfRepo: BookshelfRepository
+	private let bookshelfRepo: BookshelfRepositoryProtocol
 	
-	init(repo: BookshelfRepository) {
+	init(repo: BookshelfRepositoryProtocol) {
 		self.bookshelfRepo = repo
 	}
 	

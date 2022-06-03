@@ -19,4 +19,14 @@ class BookshelfRepository: BookshelfRepositoryProtocol {
 		return await dataSource.getAll()
 	}
 	
+	func createBookshelf(id: String, data: Bookshelf) async -> Result<Bool, CustomStorageError> {
+		do {
+			let dataToSave = try JSONEncoder().encode(data)
+			try await dataSource.create(id: id, data: dataToSave)
+			return .success(true)
+		} catch {
+			return .failure(.Create(message: "Can not Create your Bookshelf"))
+		}
+	}
+	
 }

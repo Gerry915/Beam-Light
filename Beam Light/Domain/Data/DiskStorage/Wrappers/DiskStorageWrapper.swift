@@ -18,5 +18,9 @@ class DiskStorageWrapper: DiskStorageWrapperProtocol {
 	func getData() throws -> [Data] {
 		try diskStorage.fetchAll()
 	}
+	
+	func create(id: String, data: Data) throws {
+		try diskStorage.create(id: id, data: data)
+	}
 
 }

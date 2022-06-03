@@ -12,6 +12,7 @@ class BookshelvesViewModel {
     // MARK: - Properties
 	
 	private let getAllUseCase: GetAllBookshelfUseCaseProtocol
+	private let createBookshelfUseCase: CreateBookshelfUseCaseProtocol
     
     @Published private(set) var bookshelves: [Bookshelf] = []
     
@@ -25,9 +26,10 @@ class BookshelvesViewModel {
     
     // MARK: - Init
     
-	init(loader: StorageService, getAllUseCase: GetAllBookshelfUseCaseProtocol) {
+	init(loader: StorageService, getAllUseCase: GetAllBookshelfUseCaseProtocol, createBookshelfUseCase: CreateBookshelfUseCaseProtocol) {
         self.loader = loader
 		self.getAllUseCase = getAllUseCase
+		self.createBookshelfUseCase = createBookshelfUseCase
     }
     
     // MARK: - Methods
@@ -76,6 +78,8 @@ class BookshelvesViewModel {
             }
         }
     }
+	
+	
     
     func saveAll() {
         bookshelves.forEach { bookshelf in
@@ -91,6 +95,21 @@ class BookshelvesViewModel {
         bookshelves.swapAt(sourceIndex, destinationIndex)
         bookshelves.forEach({print($0.title)})
     }
+	
+	func create(with title: String) async {
+		// 1. Create UUID for bookshelf
+		let uuid = UUID()
+		
+		// 2. Create bookshelf with id, title, and empty books array
+		let bookshelf = Bookshelf(id: uuid, title: title, books: [], createAt: Date(), modifiedAt: Date())
+		
+		let result = await createBookshelfUseCase.execute(id: uuid.uuidString, data: bookshelf)
+		
+		if case .success(_) = result {
+			await getAllBookshelf()
+		}
+		
+	}
     
     func save(title: String, completion: ((Bool) -> Void)?) {
         // 1. Create UUID for bookshelf
@@ -102,6 +121,7 @@ class BookshelvesViewModel {
         bookshelves.insert(bookshelf, at: 0)
 
         // 3. Save bookshelf
+		
         loader.save(id: uuid.uuidString, data: bookshelf) { success in
             if success { completion?(true) }
         }

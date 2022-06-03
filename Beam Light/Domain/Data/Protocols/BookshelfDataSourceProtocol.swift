@@ -9,4 +9,6 @@ import Foundation
 
 protocol DiskStorageBookshelfDataSourceProtocol {
 	func getAll() async -> Result<[Bookshelf], CustomStorageError>
+	
+	func create(id: String, data: Data) async throws
 }

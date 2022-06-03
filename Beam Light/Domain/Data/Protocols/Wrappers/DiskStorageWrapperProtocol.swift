@@ -10,4 +10,5 @@ import Foundation
 protocol DiskStorageWrapperProtocol {
 	
 	func getData() throws -> [Data]
+	func create(id: String, data: Data) throws
 }

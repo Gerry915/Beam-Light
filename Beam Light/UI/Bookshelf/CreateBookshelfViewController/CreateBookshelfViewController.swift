@@ -15,6 +15,7 @@ class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         
         label.text = "What would you like to name it?"
+		label.font = .systemFont(ofSize: UIFont.labelFontSize, weight: .regular)
         
         return label
     }()
@@ -45,16 +46,16 @@ class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemGray6
+		view.backgroundColor = .systemBackground
         
         inputTextView = PaddingTextField()
         inputTextView.delegate = self
         inputTextView.clearButtonMode = .always
         inputTextView.font = .systemFont(ofSize: 18, weight: .regular)
-        inputTextView.backgroundColor = .systemGray5
+		inputTextView.backgroundColor = .secondarySystemBackground
         inputTextView.layer.cornerRadius = 5
         
-        inputTextView.placeholder = "Name..."
+        inputTextView.placeholder = "Bookshelf name"
         
         let buttonContainer = UIView()
         buttonContainer.addSubview(createButton)
@@ -76,7 +77,7 @@ class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint.activate([
             createButton.centerXAnchor.constraint(equalTo: buttonContainer.centerXAnchor),
             createButton.heightAnchor.constraint(equalTo: buttonContainer.heightAnchor),
-            createButton.widthAnchor.constraint(equalTo: buttonContainer.widthAnchor, multiplier: 0.8)
+            createButton.widthAnchor.constraint(equalTo: buttonContainer.widthAnchor, multiplier: 0.3)
         ])
         
         createButton.addTarget(self, action: #selector(createBookshelf), for: .touchUpInside)
@@ -88,7 +89,7 @@ class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func createBookshelf() {
         if let bookshelfName = bookshelfName {
-            dismiss(animated: true) { [weak self] in
+			self.dismiss(animated: true) { [weak self] in
                 guard let self = self else { return }
                 self.didCreateBookshelf?(bookshelfName)
             }
