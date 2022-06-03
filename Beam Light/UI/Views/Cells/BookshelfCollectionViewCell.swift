@@ -110,7 +110,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
     
     private func commonInit() {
         
-        collectionView.backgroundColor = .systemGray6
+		collectionView.backgroundColor = .clear
         
         let hStack = UIStackView(arrangedSubviews: [titleLabel, seeAllButton])
         hStack.axis = .horizontal

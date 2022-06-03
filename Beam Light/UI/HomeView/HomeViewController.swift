@@ -20,7 +20,6 @@ class HomeViewController: BaseCollectionViewController {
 	lazy var dataSource = createDataSource()
     
     // MARK: - Properties
-    lazy var loadingView: LoadingView = LoadingView(style: .medium)
     
     var searchCell: SearchCell?
     var searchQuery: String = ""
@@ -42,12 +41,8 @@ class HomeViewController: BaseCollectionViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     // MARK: - View Lifecycle
-    
+	
     override func viewDidLoad() {
 		
         super.viewDidLoad()
@@ -55,52 +50,53 @@ class HomeViewController: BaseCollectionViewController {
 		
 		analyticsService.log(event: HomeViewEvent.screenView)
         
-        title = "Beam Light"
-        // TODO: - Handle search resign first responder
-//        addTapToResignFirstResponder(with: #selector(resetSearchBarIfNeeded))
+        setup()
+		collectionViewConfiguration()
         addTapToResignFirstResponder()
         
-        setupObserver()
-        collectionViewConfiguration()
-        updateData()
-		
+		Task {
+			await viewModel.getAllBookshelf()
+		}
+
 		binding()
 
     }
     
     // MARK: - Methods
-    @objc private func updateData() {
-        viewModel.loadData { success in
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                if success {
-                    self.collectionView.reloadData()
-                    self.loadingView.stopAnimating()
-                } else {
-					#warning("TODO: Add Reload Option for Alert.")
-                    self.showAlertView(title: "Error", message: "Cannot Load Data")
-                }
-            }
-        }
-    }
-    
-    private func setupObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: .updatedBookshelves, object: nil)
-    }
-    
+	private func setup() {
+		title = "Beam Light"
+	}
+	
     private func collectionViewConfiguration() {
         collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.addSubview(loadingView)
     }
 	
 	private func createDataSource() -> DataSource {
 
-		let dataSource = DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, itemIdentifier in
-
-			let cell = self.generateCell(for: indexPath)
+		let dataSource = DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, bookshelf in
+			
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookshelfCollectionViewCell.reusableIdentifier, for: indexPath) as! BookshelfCollectionViewCell
+			
+			cell.showBookDetailViewHandler = { book in
+				self.handlePresentBookDetailView(book: book)
+			}
+			
+			cell.showBookshelfDetailHandler = { bookshelf in
+				self.handlePresentBookshelfDetailViewController(bookshelf: bookshelf)
+			}
+			
+			cell.titleLabel.text = bookshelf.title
+			cell.viewModel = BookshelfViewModel(bookshelf: bookshelf)
+			cell.imageService = imageService
 
 			return cell
+		}
+		
+		dataSource.supplementaryViewProvider = {
+			collectionView, kind, indexPath in
+			guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SearchCollectionViewHeader.reusableIdentifier, for: indexPath) as? SearchCollectionViewHeader else { return nil }
+			
+			return header
 		}
 		
 		return dataSource
@@ -117,31 +113,13 @@ class HomeViewController: BaseCollectionViewController {
 	}
 	
 	private func binding() {
-		viewModel.$bookshelves.receive(on: DispatchQueue.main).sink { items in
-			print(items.count)
+		viewModel.$bookshelves.receive(on: DispatchQueue.main).sink { [unowned self] items in
+			self.applySnapshot()
 		}.store(in: &subscription)
 	}
 }
 
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItems == 0 ? 1 : viewModel.numberOfItems
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = generateCell(for: indexPath)
-
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchCollectionViewHeader.reusableIdentifier, for: indexPath) as! SearchCollectionViewHeader
-        
-        header.searchBar.delegate = self
-        
-        return header
-    }
+extension HomeViewController: UICollectionViewDelegate {
     
     private func generateCell(for indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -219,7 +197,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         viewModel.save(title: title) { [weak self] success in
             guard let self = self else { return }
             if success {
-                self.updateData()
+				Task {
+					await self.viewModel.getAllBookshelf()
+				}
             }
         }
     }
