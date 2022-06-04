@@ -11,4 +11,8 @@ protocol BookshelfRepositoryProtocol {
 	func getAllBookshelf() async -> Result<[Bookshelf], CustomStorageError>
 	
 	func createBookshelf(id: String, data: Bookshelf) async -> Result<Bool, CustomStorageError>
+	
+	func deleteBookshelf(id: String) async -> Result<Bool, CustomStorageError>
+	
+	func updateBookshelf(id: String, data: Bookshelf) async -> Result<Bool, CustomStorageError>
 }

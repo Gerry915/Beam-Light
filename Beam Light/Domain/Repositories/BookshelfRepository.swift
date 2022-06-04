@@ -22,10 +22,26 @@ class BookshelfRepository: BookshelfRepositoryProtocol {
 	func createBookshelf(id: String, data: Bookshelf) async -> Result<Bool, CustomStorageError> {
 		do {
 			let dataToSave = try JSONEncoder().encode(data)
-			try await dataSource.create(id: id, data: dataToSave)
-			return .success(true)
+			
+			return await dataSource.create(id, dataToSave)
+			
 		} catch {
-			return .failure(.Create(message: "Can not Create your Bookshelf"))
+			return .failure(.Create(message: "Cannot encode data"))
+		}
+	}
+	
+	func deleteBookshelf(id: String) async -> Result<Bool, CustomStorageError> {
+		return await dataSource.delete(id)
+	}
+	
+	func updateBookshelf(id: String, data: Bookshelf) async -> Result<Bool, CustomStorageError> {
+		
+		do {
+			let dataToUpdate = try JSONEncoder().encode(data)
+			
+			return await dataSource.update(id, dataToUpdate)
+		} catch {
+			return .failure(.Create(message: "Cannot encode data"))
 		}
 	}
 	

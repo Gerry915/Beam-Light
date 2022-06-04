@@ -7,17 +7,14 @@
 
 import Foundation
 
-class DiskStorage {
-	
-	private let saveOnDiskBackgroundQueue = DispatchQueue(label: "au.com.genggao.saveOnDiskQueue", qos: .background)
-	private let fetchDataQueue = DispatchQueue(label: "au.com.genggao.fetchDataQueue", qos: .userInitiated)
+public final class DiskStorage {
 	
 	private var saveDirectory: URL {
 		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("BeamLight").appendingPathComponent("bookshelf")
 	}
 	
 	required init() {
-		createDirectory()
+		_createDirectory()
 	}
 	
 	func create(id: String, data: Data) throws {
@@ -29,9 +26,13 @@ class DiskStorage {
 	
 	func delete(id: String) throws {
 		
-		let path = locationOnDisk(for: id)
+		let path = _locationOnDisk(for: id)
 		
 		try FileManager.default.removeItem(at: path)
+	}
+	
+	func fetch(_ id: String) throws -> Data{
+		try Data(contentsOf: _locationOnDisk(for: id))
 	}
 	
 	func fetchAll() throws -> [Data] {
@@ -48,7 +49,14 @@ class DiskStorage {
 		return result
 	}
 	
-	private func createDirectory() {
+	func save(_ id: String, _ data: Data) throws {
+		let location = saveDirectory.appendingPathComponent(id)
+		try data.write(to: location)
+	}
+}
+
+private extension DiskStorage {
+	func _createDirectory() {
 		do {
 			try FileManager.default.createDirectory(at: saveDirectory, withIntermediateDirectories: true, attributes: nil)
 		} catch let error {
@@ -57,7 +65,7 @@ class DiskStorage {
 		}
 	}
 	
-	private func locationOnDisk(for bookshelfName: String) -> URL {
+	func _locationOnDisk(for bookshelfName: String) -> URL {
 		return saveDirectory.appendingPathComponent(bookshelfName)
 	}
 }

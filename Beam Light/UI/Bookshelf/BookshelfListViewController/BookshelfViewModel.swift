@@ -8,12 +8,15 @@
 import Foundation
 
 class BookshelfViewModel {
+	
+	private let updateBookshelfUseCase: UpdateBookshelfUseCaseProtocol
     
     private(set) var bookshelf: Bookshelf
-    
-    init(bookshelf: Bookshelf) {
-        self.bookshelf = bookshelf
-    }
+
+	init(updateBookshelfUseCase: UpdateBookshelfUseCaseProtocol, bookshelf: Bookshelf) {
+		self.updateBookshelfUseCase = updateBookshelfUseCase
+		self.bookshelf = bookshelf
+	}
     
     var bookCount: Int {
         bookshelf.books.count

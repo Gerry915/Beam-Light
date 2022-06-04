@@ -9,9 +9,7 @@ import Foundation
 import UIKit
 
 class BookshelfCollectionViewCell: UICollectionViewCell {
-    
-    var imageService: ImageCacheable?
-    
+
     var showBookDetailViewHandler: ((Book) -> Void)?
     var showBookshelfDetailHandler: ((Bookshelf) -> Void)?
     
@@ -166,7 +164,6 @@ extension BookshelfCollectionViewCell: UICollectionViewDataSource, UICollectionV
         }
         
         if let presentable = viewModel?.generate(for: indexPath.row) {
-            cell.imageService = imageService
             cell.configuration(presentable: presentable)
         }
         

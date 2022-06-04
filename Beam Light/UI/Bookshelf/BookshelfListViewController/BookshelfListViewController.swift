@@ -6,85 +6,89 @@
 //
 
 import UIKit
+import Combine
 
 class BookshelfListViewController: UITableViewController {
+	
+	typealias DataSource = UITableViewDiffableDataSource<Sections, Bookshelf>
+	typealias Snapshot = NSDiffableDataSourceSnapshot<Sections, Bookshelf>
+	
+	lazy var dataSource = createDataSource()
+
+    var viewModel: BookshelvesViewModel
+	
+	var subscription = Set<AnyCancellable>()
+	
+	var bookshelfSelected: ((Int) -> Void)?
     
-    var bookViewModel: BookViewModel
-    var bookshelvesViewModel: BookshelvesViewModel
-    
-    lazy var loadingView: UIActivityIndicatorView = LoadingView(style: .medium)
-    
-    init(bookshelvesViewModel: BookshelvesViewModel,
-         bookViewModel: BookViewModel, style: UITableView.Style = .insetGrouped) {
-        
-        self.bookViewModel = bookViewModel
-        self.bookshelvesViewModel = bookshelvesViewModel
+    init(bookshelvesViewModel: BookshelvesViewModel, style: UITableView.Style = .insetGrouped) {
+
+		self.viewModel = bookshelvesViewModel
         
         super.init(style: style)
         
-        commonInit()
+		setup()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    private func commonInit() {
-        title = "My Bookshelf"
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "listCellID")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.addSubview(loadingView)
-        
-        bookshelvesViewModel.loadData { success in
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                if success {
-                    self.tableView.reloadData()
-                    self.loadingView.stopAnimating()
-                } else {
-                    self.showAlertView(title: "Error", message: "Cannot Load Data")
-                }
-            }
-        }
+		
+		Task {
+			await viewModel.getAllBookshelf()
+			
+		}
+		binding()
     }
+	
+	private func createDataSource() -> DataSource {
+		
+		let dataSource = DataSource(tableView: tableView) { [unowned self] tableView, indexPath, itemIdentifier in
+			let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.reusableIdentifier, for: indexPath)
+			
+			let presentable = viewModel.getBookshelf(for: indexPath.row)
+			
+			// TODO: Update Content method
+			cell.textLabel?.text = presentable.title
+			
+			return cell
+		}
+		
+		dataSource.defaultRowAnimation = .automatic
+		
+		return dataSource
+	}
+	
+	private func applySnapshot(animated: Bool) {
+		var snapshot = Snapshot()
+		
+		snapshot.appendSections([.Bookshelf])
+		snapshot.appendItems(viewModel.bookshelves, toSection: .Bookshelf)
+		
+		dataSource.apply(snapshot, animatingDifferences: animated)
+	}
+	
+	private func binding() {
+		viewModel.$bookshelves.receive(on: DispatchQueue.main).sink { [weak self] _ in
+			guard let self = self else { return }
+			
+			self.applySnapshot(animated: true)
+		}.store(in: &subscription)
+	}
+	
+	private func setup() {
+		title = "My Bookshelf"
+		tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.reusableIdentifier)
+	}
+
 }
 
 extension BookshelfListViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        bookshelvesViewModel.numberOfItems
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "listCellID", for: indexPath)
-        
-        let presentable = bookshelvesViewModel.getBookshelf(for: indexPath.row)
-        
-        // TODO: Update Content method
-        cell.textLabel?.text = presentable.title
-        
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        bookshelvesViewModel.saveBookToBookshelf(at: indexPath.row, with: bookViewModel.book) { [weak self] success in
-            guard let self = self else { return }
-            if success {
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: nil)
-                    NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
-                }
-            } else {
-                print("TODO: Show Alert")
-            }
-        }
-    }
-}
-
-extension Notification.Name {
-    static let updatedBookshelves = Notification.Name("updatedBookshelves")
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		bookshelfSelected?(indexPath.row)
+		navigationController?.popViewController(animated: true)
+	}
 }

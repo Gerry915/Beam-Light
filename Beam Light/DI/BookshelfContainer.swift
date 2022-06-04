@@ -31,6 +31,14 @@ func buildContainer() -> Container {
 		return CreateBookshelf(repo: container.resolve(BookshelfRepositoryProtocol.self)!)
 	}.inObjectScope(.container)
 	
+	container.register(DeleteBookshelfUseCaseProtocol.self) { _ in
+		return DeleteBookshelf(repo: container.resolve(BookshelfRepositoryProtocol.self)!)
+	}.inObjectScope(.container)
+	
+	container.register(UpdateBookshelfUseCaseProtocol.self) { _ in
+		return UpdateBookshelfUseCase(repo: container.resolve(BookshelfRepositoryProtocol.self)!)
+	}.inObjectScope(.container)
+	
 	return container
 
 }

@@ -21,7 +21,7 @@ class MainTabViewController: UITabBarController, UITabBarControllerDelegate {
         super.init(nibName: nil, bundle: nil)
         
         self.viewControllers = viewControllers
-        
+		view.backgroundColor = .systemBackground
     }
     
     required init?(coder: NSCoder) {

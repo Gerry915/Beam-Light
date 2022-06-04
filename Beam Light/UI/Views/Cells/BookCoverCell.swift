@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol BookCoverCellPresentable {
     var trackName: String { get }
@@ -16,10 +17,7 @@ protocol BookCoverCellPresentable {
 extension Book: BookCoverCellPresentable {}
 
 class BookCoverCell: UICollectionViewCell {
-    
-    private var imageRequest: Cancellable?
-    
-    var imageService: ImageCacheable?
+
     
     let imageView = UIImageView()
     
@@ -66,8 +64,9 @@ class BookCoverCell: UICollectionViewCell {
         
         self.addGestureRecognizer(tap)
     }
+	
     override func prepareForReuse() {
-        imageRequest?.cancel()
+		imageView.image = nil
     }
     
     @objc fileprivate func didTapCover() {
@@ -82,9 +81,7 @@ class BookCoverCell: UICollectionViewCell {
         bookNameLabel.text = presentable.trackName
         
         if let url = URL(string: presentable.coverSmall) {
-            imageRequest = imageService?.cache(for: url, completion: { [weak self] image in
-                self?.imageView.image = image
-            })
+			imageView.sd_setImage(with: url)
         }
     }
 }

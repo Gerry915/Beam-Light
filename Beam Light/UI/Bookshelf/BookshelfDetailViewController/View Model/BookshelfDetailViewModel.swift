@@ -8,10 +8,10 @@
 import Foundation
 
 class BookshelfDetailViewModel {
-    
+	
     var bookshelf: Bookshelf
     
-    init(bookshelf: Bookshelf) {
+	init(bookshelf: Bookshelf) {
         self.bookshelf = bookshelf
     }
     

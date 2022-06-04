@@ -27,10 +27,19 @@ class BookshelfDetailViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = viewModel.title
-        view.backgroundColor = .systemGray6
-        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
+		setup()
+        tableViewConfigure()
+        
     }
+	
+	private func setup() {
+		title = viewModel.title
+		navigationController?.navigationBar.prefersLargeTitles = true
+		view.backgroundColor = .systemBackground
+	}
+	private func tableViewConfigure() {
+		tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
+	}
 }
 
 extension BookshelfDetailViewController {

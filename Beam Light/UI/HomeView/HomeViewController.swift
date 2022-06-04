@@ -17,56 +17,16 @@ class HomeViewController: BaseCollectionViewController {
 	typealias DataSource = UICollectionViewDiffableDataSource<Sections, Bookshelf>
 	typealias Snapshot = NSDiffableDataSourceSnapshot<Sections, Bookshelf>
 	
-	lazy var dataSource = createDataSource()
-	
-	lazy var emptyView: UIView = {
-		
-		let view = UIView()
-		view.isHidden = true
-		
-		let label = UILabel()
-		
-		label.text = "You have no bookshelves"
-		label.textColor = .systemGray2
-		
-		let button = UIButton()
-		
-		var config = UIButton.Configuration.filled()
-		config.cornerStyle = .capsule
-		config.contentInsets = .init(top: 8, leading: 24, bottom: 8, trailing: 24)
-		
-		config.title = "Create"
-		
-		button.configuration = config
-		
-		let stackView = UIStackView(arrangedSubviews: [label, button])
-		
-		stackView.axis = .vertical
-		stackView.alignment = .center
-		stackView.distribution = .equalCentering
-		stackView.spacing = 20
-		
-		stackView.translatesAutoresizingMaskIntoConstraints = false
-		
-		view.addSubview(stackView)
-		NSLayoutConstraint.activate([
-			stackView.topAnchor.constraint(equalTo: view.topAnchor),
-			stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-			stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-		])
-		
-		button.addTarget(self, action: #selector(handleCreateBookshelf), for: .touchUpInside)
-		
-		
-		return view
-	}()
-    
     // MARK: - Properties
 
     var searchQuery: String = ""
     var imageService: ImageCacheable
     var viewModel: BookshelvesViewModel
+	
+	lazy var dataSource = createDataSource()
+	lazy var emptyView = EmptyBookshelfCreationView { [weak self] in
+		self?.handleCreateBookshelf()
+	}
 	
 	var subscription = Set<AnyCancellable>()
     
@@ -82,41 +42,47 @@ class HomeViewController: BaseCollectionViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self)
+	}
     
     // MARK: - View Lifecycle
 	
-    override func viewDidLoad() {
-		
-        super.viewDidLoad()
+	override func loadView() {
+		super.loadView()
 		super.setupCollectionView()
+		startState(target: collectionView)
+	}
+	
+    override func viewDidLoad() {
+        super.viewDidLoad()
 		
 		analyticsService.log(event: HomeViewEvent.screenView)
-		
-		collectionView.addSubview(emptyView)
-		emptyView.translatesAutoresizingMaskIntoConstraints = false
-		
-		
-		NSLayoutConstraint.activate([
-			emptyView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-			emptyView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
-		])
-        
         setup()
+		setupObserver()
 		collectionViewConfiguration()
         addTapToResignFirstResponder()
         
 		Task {
 			await viewModel.getAllBookshelf()
-			binding()
+			intro(target: collectionView)
 		}
 
+		binding()
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		Task {
-			await viewModel.getAllBookshelf()
-		}
+	private func addEmptyView() {
+		collectionView.addSubview(emptyView)
+		
+		NSLayoutConstraint.activate([
+			emptyView.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+			emptyView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+		])
+	}
+	
+	private func removeEmptyView() {
+		emptyView.removeFromSuperview()
 	}
     
     // MARK: - Methods
@@ -160,16 +126,28 @@ class HomeViewController: BaseCollectionViewController {
 	}
 	
 	private func binding() {
-		viewModel.$bookshelves.receive(on: DispatchQueue.main).sink { [unowned self] items in
+		viewModel.$bookshelves.receive(on: DispatchQueue.main).sink { [weak self] items in
+			guard let self = self else { return }
 			self.applySnapshot()
-			emptyView.isHidden = true
 			if items.count == 0 {
-				emptyView.isHidden = false
+				self.addEmptyView()
 			} else {
-				emptyView.isHidden = true
+				self.removeEmptyView()
 			}
 			
 		}.store(in: &subscription)
+	}
+	
+	private func setupObserver() {
+		NotificationCenter.default.addObserver(self, selector: #selector(handleDataChange), name: .updatedBookshelves, object: nil)
+	}
+	
+	@objc
+	private func handleDataChange() {
+		print("trigger")
+		Task {
+			await viewModel.getAllBookshelf()
+		}
 	}
 }
 
@@ -197,15 +175,14 @@ extension HomeViewController: UICollectionViewDelegate {
         let bookshelf = viewModel.getBookshelf(for: indexPath.row)
         
         cell.titleLabel.text = bookshelf.title
-        cell.viewModel = BookshelfViewModel(bookshelf: bookshelf)
-        cell.imageService = imageService
+		cell.viewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
         
         return cell
     }
     
     private func handlePresentBookshelfDetailViewController(bookshelf: Bookshelf) {
 
-        let bookshelfViewModel = BookshelfViewModel(bookshelf: bookshelf)
+        let bookshelfViewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
         
         let VC = BookshelfDetailViewController(style: .insetGrouped,
                                                viewModel: bookshelfViewModel,
@@ -227,7 +204,6 @@ extension HomeViewController: UICollectionViewDelegate {
         navigationController?.present(navVC, animated: true)
     }
     
-	@objc
     private func handleCreateBookshelf() {
         let VC = CreateBookshelfViewController()
 		
@@ -297,4 +273,19 @@ extension HomeViewController {
             }
         }
     }
+}
+
+extension HomeViewController: ViewIntro {
+	
+	func intro(duration: Double = 0.25, target: UIView) {
+		UIView.animate(withDuration: duration, delay: 0, options: .curveEaseOut) {
+			target.alpha = 1
+			target.transform = .identity
+		}
+	}
+	
+	func startState(alpha: CGFloat = 0, transform: CGAffineTransform = .init(translationX: 0, y: -50), target: UIView) {
+		target.alpha = alpha
+		target.transform = transform
+	}
 }

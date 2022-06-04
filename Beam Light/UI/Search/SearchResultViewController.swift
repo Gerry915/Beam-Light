@@ -26,7 +26,19 @@ class SearchResultViewController: UIViewController {
     }
     
     var searchController: UISearchController!
-    var tableView: UITableView!
+	
+	lazy var tableView: UITableView = {
+		
+		let tableView = UITableView(frame: .zero, style: .plain)
+		tableView.translatesAutoresizingMaskIntoConstraints = false
+		tableView.delegate = self
+		tableView.dataSource = self
+		tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
+		tableView.backgroundColor = .clear
+		
+		return tableView
+	}()
+	
     var searchQuery: String
     
     // MARK: - Init
@@ -49,21 +61,18 @@ class SearchResultViewController: UIViewController {
     
     override func viewDidLoad() {
 
-        setupTableView()
         setupView()
         viewModel = BooksViewModel(service: iTunesService())
         
         tableView.addSubview(loadingView)
         loadingView.startAnimating()
-
-        title = "Results"
+		
     }
     
     private func setupView() {
         title = "Search Result"
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .systemBackground
         
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
@@ -72,14 +81,7 @@ class SearchResultViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
         ])
-        tableView.backgroundColor = .systemGray6
-    }
-    
-    private func setupTableView() {
-        tableView = UITableView(frame: .zero, style: .plain)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
+        
     }
 }
 

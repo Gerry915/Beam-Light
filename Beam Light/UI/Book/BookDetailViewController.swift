@@ -97,24 +97,23 @@ class BookDetailViewController: UICollectionViewController {
     private func handleAddToBookshelf() {
         print("Handle Add to bookshelf")
         
-		let bookshelvesViewModel = BookshelvesViewModel(loader: DiskStorageService.shared,
-											 getAllUseCase: GetAllBookshelf(
-												repo: BookshelfRepository(
-													dataSource: DiskStorageBookshelfDataSource(
-														dbWrapper: DiskStorageWrapper()
-													)
-												)
-											 ),
-											 createBookshelfUseCase: CreateBookshelf(
-												repo: BookshelfRepository(
-													dataSource: DiskStorageBookshelfDataSource(
-														dbWrapper: DiskStorageWrapper()
-													)
-												)
-											 )
+		let bookshelvesViewModel = BookshelvesViewModel(
+									getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
+									createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self),
+									deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self), updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
 		)
         
-        let VC = BookshelfListViewController(bookshelvesViewModel: bookshelvesViewModel, bookViewModel: bookViewModel)
+        let VC = BookshelfListViewController(bookshelvesViewModel: bookshelvesViewModel)
+		
+		VC.bookshelfSelected = { [weak self] idx in
+			guard let self = self else { return }
+			var bookshelf = bookshelvesViewModel.getBookshelf(for: idx)
+			bookshelf.books.append(self.bookViewModel.book)
+			Task {
+				await bookshelvesViewModel.updateBookshelf(bookshelf: bookshelf)
+				NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
+			}
+		}
         
         self.navigationController?.pushViewController(VC, animated: true)
     }
