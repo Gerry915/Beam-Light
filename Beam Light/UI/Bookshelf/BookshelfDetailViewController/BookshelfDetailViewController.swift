@@ -37,6 +37,7 @@ class BookshelfDetailViewController: UITableViewController {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		view.backgroundColor = .systemBackground
 	}
+	
 	private func tableViewConfigure() {
 		tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
 	}

@@ -68,11 +68,13 @@ class BookDetailViewController: UICollectionViewController {
         navigationItem.rightBarButtonItem = rightBarItem
     }
     
-    @objc private func dismissView() {
+    @objc
+	private func dismissView() {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc private func addToBookShelf() {
+    @objc
+	private func addToBookShelf() {
         let sheetView = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let actionAdd = UIAlertAction(title: "Add to a Bookshelf", style: .default) { [weak self] _ in
@@ -96,26 +98,25 @@ class BookDetailViewController: UICollectionViewController {
     
     private func handleAddToBookshelf() {
         print("Handle Add to bookshelf")
-        
-		let bookshelvesViewModel = BookshelvesViewModel(
-									getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
-									createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self),
-									deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self), updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
+		
+		let vm = BookshelfListViewModel(
+			getAllBookshelfUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
+			updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
 		)
         
-        let VC = BookshelfListViewController(bookshelvesViewModel: bookshelvesViewModel)
+        let vc = BookshelfListViewController(viewModel: vm)
 		
-		VC.bookshelfSelected = { [weak self] idx in
+		vc.bookshelfSelected = { [weak self] idx in
 			guard let self = self else { return }
-			var bookshelf = bookshelvesViewModel.getBookshelf(for: idx)
+			var bookshelf = vm.getBookshelf(for: idx)
 			bookshelf.books.append(self.bookViewModel.book)
 			Task {
-				await bookshelvesViewModel.updateBookshelf(bookshelf: bookshelf)
+				await vm.updateBookshelf(bookshelf)
 				NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
 			}
 		}
-        
-        self.navigationController?.pushViewController(VC, animated: true)
+        show(vc, sender: self)
+//        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func setupCollectionView() {

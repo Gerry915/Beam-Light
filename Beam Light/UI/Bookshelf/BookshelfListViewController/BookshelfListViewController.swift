@@ -15,15 +15,15 @@ class BookshelfListViewController: UITableViewController {
 	
 	lazy var dataSource = createDataSource()
 
-    var viewModel: BookshelvesViewModel
+    var viewModel: BookshelfListViewModel
 	
 	var subscription = Set<AnyCancellable>()
 	
 	var bookshelfSelected: ((Int) -> Void)?
     
-    init(bookshelvesViewModel: BookshelvesViewModel, style: UITableView.Style = .insetGrouped) {
+    init(viewModel: BookshelfListViewModel, style: UITableView.Style = .insetGrouped) {
 
-		self.viewModel = bookshelvesViewModel
+		self.viewModel = viewModel
         
         super.init(style: style)
         
