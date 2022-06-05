@@ -27,6 +27,7 @@
 		B753518027E812F800F4FE7D /* BookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753517F27E812F800F4FE7D /* BookViewModel.swift */; };
 		B753518227E8285D00F4FE7D /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753518127E8285D00F4FE7D /* LoadingView.swift */; };
 		B753518A27E8A8BB00F4FE7D /* Beam_LightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753518927E8A8BB00F4FE7D /* Beam_LightTests.swift */; };
+		B761BB4C284C51F0007BD1D8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B761BB4B284C51F0007BD1D8 /* README.md */; };
 		B76F07CC27BCE34000258A05 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07CB27BCE33F00258A05 /* MainTabViewController.swift */; };
 		B76F07CE27BCE4BF00258A05 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07CD27BCE4BF00258A05 /* HomeViewController.swift */; };
 		B76F07D027BCE4F000258A05 /* BookshelvesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07CF27BCE4F000258A05 /* BookshelvesViewController.swift */; };
@@ -124,6 +125,7 @@
 		B753518127E8285D00F4FE7D /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		B753518727E8A8BB00F4FE7D /* Beam LightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Beam LightTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B753518927E8A8BB00F4FE7D /* Beam_LightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beam_LightTests.swift; sourceTree = "<group>"; };
+		B761BB4B284C51F0007BD1D8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B76F07CB27BCE33F00258A05 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
 		B76F07CD27BCE4BF00258A05 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B76F07CF27BCE4F000258A05 /* BookshelvesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelvesViewController.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 		B713B6FF27B7DEF400591981 = {
 			isa = PBXGroup;
 			children = (
+				B761BB4B284C51F0007BD1D8 /* README.md */,
 				B713B70A27B7DEF500591981 /* Beam Light */,
 				B753518827E8A8BB00F4FE7D /* Beam LightTests */,
 				B713B70927B7DEF500591981 /* Products */,
@@ -806,6 +809,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B761BB4C284C51F0007BD1D8 /* README.md in Resources */,
 				B713B71B27B7DEF500591981 /* LaunchScreen.storyboard in Resources */,
 				B713B71827B7DEF500591981 /* Assets.xcassets in Resources */,
 			);
