@@ -10,8 +10,6 @@ import SDWebImage
 
 class BookTableViewCell: UITableViewCell {
     
-    private var imageRequest: Cancellable?
-    
     lazy var loadingView: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -103,7 +101,7 @@ class BookTableViewCell: UITableViewCell {
     
     private func commonInit() {
         
-        contentView.backgroundColor = .systemGray6
+        contentView.backgroundColor = .systemBackground
         let authorStackView = UIStackView(arrangedSubviews: [authorLabel, publishYearLabel])
         authorStackView.alignment = .leading
         authorStackView.spacing = 4
@@ -147,7 +145,6 @@ class BookTableViewCell: UITableViewCell {
         
         loadingView.startAnimating()
         thumbnailImageView.image = nil
-        imageRequest?.cancel()
     }
 }
 
@@ -170,12 +167,5 @@ extension BookTableViewCell {
 				self.loadingView.stopAnimating()
 			}
 		}
-		
-//        if let url = URL(string: presentable.coverSmall) {
-//            imageRequest = imageService.cache(for: url) { [weak self] image in
-//                self?.thumbnailImageView.image = image
-//                self?.loadingView.stopAnimating()
-//            }
-//        }
     }
 }
