@@ -52,6 +52,7 @@ class HomeViewController: BaseCollectionViewController {
 		super.loadView()
 		super.setupCollectionView()
 		view.alpha = 0
+		view.transform = .init(translationX: 0, y: -50)
 	}
 	
     override func viewDidLoad() {
@@ -65,8 +66,9 @@ class HomeViewController: BaseCollectionViewController {
         
 		Task {
 			await viewModel.getAllBookshelf()
-			view.animate([
-				.fadeIn(duration: 0.25)
+			view.animate(inParallel: [
+				.fadeIn(duration: 0.25),
+				.transformIdentity(duration: 0.35)
 			])
 		}
 

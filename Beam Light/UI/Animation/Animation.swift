@@ -24,4 +24,8 @@ extension Animation {
 	static func scale(duration: TimeInterval, to size: CGSize) -> Animation {
 		return Animation(duration: duration, closure: { $0.frame.size = size })
 	}
+	
+	static func transformIdentity(duration: TimeInterval) -> Animation {
+		return Animation(duration: duration, closure: { $0.transform = .identity })
+	}
 }

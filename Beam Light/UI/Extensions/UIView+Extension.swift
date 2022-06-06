@@ -16,12 +16,19 @@ extension UIView {
 		var animations = animations
 		let animation = animations.removeFirst()
 		
-		UIView.animate(withDuration: animation.duration, delay: 0.0, options: .curveEaseInOut) {
+		UIView.animate(withDuration: animation.duration) {
 			animation.closure(self)
 		} completion: { _ in
 			self.animate(animations)
 		}
-
+	}
+	
+	func animate(inParallel animations: [Animation]) {
+		for animation in animations {
+			UIView.animate(withDuration: animation.duration) {
+				animation.closure(self)
+			}
+		}
 	}
 }
 

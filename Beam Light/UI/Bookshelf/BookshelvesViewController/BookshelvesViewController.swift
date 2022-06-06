@@ -46,6 +46,7 @@ class BookshelvesViewController: UITableViewController {
 	override func loadView() {
 		super.loadView()
 		view.alpha = 0
+		view.transform = .init(translationX: 0, y: -50)
 	}
     
     override func viewDidLoad() {
@@ -56,8 +57,9 @@ class BookshelvesViewController: UITableViewController {
 		
 		Task {
 			await viewModel.getAllBookshelf()
-			view.animate([
-				.fadeIn(duration: 0.25)
+			view.animate(inParallel: [
+				.fadeIn(duration: 0.25),
+				.transformIdentity(duration: 0.35)
 			])
 		}
 		binding()
@@ -121,7 +123,7 @@ class BookshelvesViewController: UITableViewController {
         
         title = "Bookshelves"
         
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .systemBackground
         
         navigationItem.rightBarButtonItems = [editButtonItem]
         tableView.allowsMultipleSelectionDuringEditing = true

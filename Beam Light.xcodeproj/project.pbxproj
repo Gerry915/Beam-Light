@@ -77,7 +77,6 @@
 		B7C2361D284AEDF80065BD42 /* EmptyBookshelfCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C2361C284AEDF80065BD42 /* EmptyBookshelfCreationView.swift */; };
 		B7C2361F284AFB320065BD42 /* DeleteBookshelfUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C2361E284AFB320065BD42 /* DeleteBookshelfUseCaseProtocol.swift */; };
 		B7C23621284AFB6B0065BD42 /* DeleteBookshelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C23620284AFB6B0065BD42 /* DeleteBookshelf.swift */; };
-		B7C23644284B82F60065BD42 /* ViewIntro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C23643284B82F60065BD42 /* ViewIntro.swift */; };
 		B7C23646284B93BE0065BD42 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C23645284B93BD0065BD42 /* Notification+Extension.swift */; };
 		B7C23649284B99E60065BD42 /* UpdateBookshelfUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C23648284B99E60065BD42 /* UpdateBookshelfUseCaseProtocol.swift */; };
 		B7C2364B284B9CB30065BD42 /* UpdateBookshelfUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C2364A284B9CB30065BD42 /* UpdateBookshelfUseCase.swift */; };
@@ -182,7 +181,6 @@
 		B7C2361C284AEDF80065BD42 /* EmptyBookshelfCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBookshelfCreationView.swift; sourceTree = "<group>"; };
 		B7C2361E284AFB320065BD42 /* DeleteBookshelfUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteBookshelfUseCaseProtocol.swift; sourceTree = "<group>"; };
 		B7C23620284AFB6B0065BD42 /* DeleteBookshelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteBookshelf.swift; sourceTree = "<group>"; };
-		B7C23643284B82F60065BD42 /* ViewIntro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIntro.swift; sourceTree = "<group>"; };
 		B7C23645284B93BD0065BD42 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
 		B7C23648284B99E60065BD42 /* UpdateBookshelfUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBookshelfUseCaseProtocol.swift; sourceTree = "<group>"; };
 		B7C2364A284B9CB30065BD42 /* UpdateBookshelfUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBookshelfUseCase.swift; sourceTree = "<group>"; };
@@ -421,14 +419,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		B761BB55284D6A2C007BD1D8 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				B7C23643284B82F60065BD42 /* ViewIntro.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		B761BB5A284D9390007BD1D8 /* HomeViewControllerTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,7 +532,6 @@
 			children = (
 				B7CDDBBF27CF8C1F00C47E63 /* String+Extension.swift */,
 				B7C23645284B93BD0065BD42 /* Notification+Extension.swift */,
-				B761BB58284D6AF8007BD1D8 /* UIView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -815,6 +804,7 @@
 		B7C23619284AEDAC0065BD42 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B761BB58284D6AF8007BD1D8 /* UIView+Extension.swift */,
 				B76F07DD27BD051400258A05 /* UIColor+Extension.swift */,
 				B76F07DF27BD0E3800258A05 /* UIVIewController+Extension.swift */,
 			);
@@ -824,7 +814,6 @@
 		B7C23642284B82E50065BD42 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
-				B761BB55284D6A2C007BD1D8 /* Protocols */,
 				B761BB56284D6A47007BD1D8 /* Animation.swift */,
 			);
 			path = Animation;
@@ -1009,7 +998,6 @@
 				B753518227E8285D00F4FE7D /* LoadingView.swift in Sources */,
 				B705460A27D0812E003630C4 /* BookDetailViewController.swift in Sources */,
 				B705461027D0C47F003630C4 /* StretchyHeaderLayout.swift in Sources */,
-				B7C23644284B82F60065BD42 /* ViewIntro.swift in Sources */,
 				B7C23618284A4A090065BD42 /* Resolver.swift in Sources */,
 				B7A4C4242848F6DC000A9DB3 /* BookshelfRepository.swift in Sources */,
 				B7C23646284B93BE0065BD42 /* Notification+Extension.swift in Sources */,
