@@ -1,2 +1,3 @@
-# Beam-Light
+Beam-Light
+==========
 The Reading App
