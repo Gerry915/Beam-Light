@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/Gerry915/Beam-Light/blob/a99e494585be9f87b7ef09fa8790cb27de6585e1/Beam%20Light/Support%20Files/Assets.xcassets/AppIcon.appiconset/spotlight120.png" width="100%">
+</p>
+
 Beam-Light
 ==================
 An iOS app that lets you search for books from iTunes API and create your own bookshelves to manage your saved books.
