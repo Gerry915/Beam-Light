@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/Gerry915/Beam-Light/blob/f09e6c8ddf298e066eb67720f840314dc530012a/Beam%20Light/Support%20Files/Assets.xcassets/AppIcon.appiconset/appstore1024.png" width="33%">
+  <img src="https://github.com/Gerry915/Beam-Light/blob/f09e6c8ddf298e066eb67720f840314dc530012a/Beam%20Light/Support%20Files/Assets.xcassets/AppIcon.appiconset/appstore1024.png" width="33%" style="border-radius: 5px;">
 </p>
 
 Beam-Light
