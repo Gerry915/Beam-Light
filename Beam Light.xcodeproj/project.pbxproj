@@ -53,6 +53,7 @@
 		B772CD9427E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */; };
 		B7A3E18A284DDF540047F563 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B7A3E189284DDF540047F563 /* README.md */; };
 		B7A3E18C284DE2BB0047F563 /* screens.png in Resources */ = {isa = PBXBuildFile; fileRef = B7A3E18B284DE2BB0047F563 /* screens.png */; };
+		B7A3E190284E0A990047F563 /* beam_light_Store_ICON.png in Resources */ = {isa = PBXBuildFile; fileRef = B7A3E18F284E0A990047F563 /* beam_light_Store_ICON.png */; };
 		B7A4C40F2848E9AE000A9DB3 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B7A4C40E2848E9AE000A9DB3 /* SDWebImage */; };
 		B7A4C41D2848F52A000A9DB3 /* StorageErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C41C2848F52A000A9DB3 /* StorageErrors.swift */; };
 		B7A4C4212848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A4C4202848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift */; };
@@ -159,6 +160,7 @@
 		B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAnalyticsEngine.swift; sourceTree = "<group>"; };
 		B7A3E189284DDF540047F563 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B7A3E18B284DE2BB0047F563 /* screens.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screens.png; sourceTree = "<group>"; };
+		B7A3E18F284E0A990047F563 /* beam_light_Store_ICON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beam_light_Store_ICON.png; sourceTree = "<group>"; };
 		B7A4C41C2848F52A000A9DB3 /* StorageErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageErrors.swift; sourceTree = "<group>"; };
 		B7A4C4202848F61C000A9DB3 /* BookshelfRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfRepositoryProtocol.swift; sourceTree = "<group>"; };
 		B7A4C4232848F6DC000A9DB3 /* BookshelfRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfRepository.swift; sourceTree = "<group>"; };
@@ -487,6 +489,7 @@
 			isa = PBXGroup;
 			children = (
 				B7A3E18B284DE2BB0047F563 /* screens.png */,
+				B7A3E18F284E0A990047F563 /* beam_light_Store_ICON.png */,
 				B761BB6E284DDD36007BD1D8 /* 1.png */,
 				B761BB6F284DDD36007BD1D8 /* 2.png */,
 				B761BB71284DDD36007BD1D8 /* 3.png */,
@@ -923,6 +926,7 @@
 			files = (
 				B761BB75284DDD36007BD1D8 /* 4.png in Resources */,
 				B761BB72284DDD36007BD1D8 /* 5.png in Resources */,
+				B7A3E190284E0A990047F563 /* beam_light_Store_ICON.png in Resources */,
 				B761BB73284DDD36007BD1D8 /* 1.png in Resources */,
 				B761BB74284DDD36007BD1D8 /* 2.png in Resources */,
 				B713B71B27B7DEF500591981 /* LaunchScreen.storyboard in Resources */,
