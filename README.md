@@ -3,7 +3,7 @@
 An iOS app that lets you search for books from iTunes API and create your bookshelves to manage the saved books.
 <b>Note:</b> This is a personal project for learning propose.
 
-![Screenshots](/Beam\Light/Support\Files/Screenshots)
+![Screenshots](/Beam%20Light/Support%20Files/Screenshots)
 
 ## Application details
 
