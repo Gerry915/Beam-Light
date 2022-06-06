@@ -319,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				B7A3E189284DDF540047F563 /* README.md */,
+				B761BB6C284DDC91007BD1D8 /* Screenshots */,
 				B713B70A27B7DEF500591981 /* Beam Light */,
 				B753518827E8A8BB00F4FE7D /* Beam LightTests */,
 				B713B70927B7DEF500591981 /* Products */,
@@ -583,7 +584,6 @@
 		B7A4C40B2848E6AA000A9DB3 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				B761BB6C284DDC91007BD1D8 /* Screenshots */,
 				B713B71727B7DEF500591981 /* Assets.xcassets */,
 				B713B71927B7DEF500591981 /* LaunchScreen.storyboard */,
 				B713B71C27B7DEF500591981 /* Info.plist */,
