@@ -62,8 +62,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 							deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self), updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
 		)
         
-        let bookshelvesViewController = BookshelvesViewController(imageService: imageService, viewModel: viewModel)
-        bookshelvesViewController.storageService = DiskStorageService.shared
+        let bookshelvesViewController = BookshelvesViewController(viewModel: viewModel)
         let bookshelvesNavController = UINavigationController(rootViewController: bookshelvesViewController)
         let bookshelvesTabItem = UITabBarItem(title: "Bookshelves", image: UIImage(systemName: "books.vertical.circle"), tag: 1)
         bookshelvesNavController.tabBarItem = bookshelvesTabItem

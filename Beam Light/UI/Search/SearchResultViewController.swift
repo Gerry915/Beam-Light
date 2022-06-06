@@ -6,49 +6,41 @@
 //
 
 import UIKit
+import Combine
+
+enum SectionBook {
+	case Book
+}
 
 class SearchResultViewController: UIViewController {
+	
+	typealias DataSource = UITableViewDiffableDataSource<SectionBook, Book>
+	typealias Snapshot = NSDiffableDataSourceSnapshot<SectionBook, Book>
     
     lazy var loadingView: UIActivityIndicatorView = LoadingView(style: .medium)
-    
-    var imageService: ImageCacheable
 	
-    var viewModel: BooksViewModel? {
-        didSet {
-            viewModel?.fetchData(with: searchQuery, completion: { [weak self] success in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.loadingView.stopAnimating()
-                }
-            })
-        }
-    }
-    
-    var searchController: UISearchController!
+    var viewModel: BooksViewModel
+	
+	var subscription = Set<AnyCancellable>()
 	
 	lazy var tableView: UITableView = {
 		
 		let tableView = UITableView(frame: .zero, style: .plain)
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		tableView.delegate = self
-		tableView.dataSource = self
 		tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
 		tableView.backgroundColor = .clear
 		
 		return tableView
 	}()
 	
-    var searchQuery: String
+	lazy var dataSource = createDataSource()
     
     // MARK: - Init
     
-    init(searchQuery: String,
-         imageService: ImageCacheable
-        ) {
+	init(viewModel: BooksViewModel) {
         
-        self.searchQuery = searchQuery
-        self.imageService = imageService
+		self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,13 +52,12 @@ class SearchResultViewController: UIViewController {
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
-
         setupView()
-        viewModel = BooksViewModel(service: iTunesService())
-        
-        tableView.addSubview(loadingView)
-        loadingView.startAnimating()
-		
+		Task {
+			await viewModel.fetch()
+			binding()
+			loadingView.stopAnimating()
+		}
     }
     
     private func setupView() {
@@ -81,38 +72,66 @@ class SearchResultViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8)
         ])
-        
+		view.addSubview(loadingView)
+		loadingView.startAnimating()
     }
+	
+	private func createDataSource() -> DataSource {
+		
+		let dataSource = DataSource(tableView: tableView) { [weak self] tableView, indexPath, itemIdentifier in
+			
+			let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.reusableIdentifier, for: indexPath) as! BookTableViewCell
+			
+			if let presentable = self?.viewModel.generate(for: indexPath.row) {
+				cell.configure(presentable: presentable)
+			}
+			
+			return cell
+		}
+		
+		dataSource.defaultRowAnimation = .fade
+		
+		return dataSource
+	}
+	
+	private func applySnapshot(animated: Bool) {
+		
+		var snapshot = Snapshot()
+		
+		snapshot.appendSections([.Book])
+		if let books = viewModel.books?.results {
+			snapshot.appendItems(books, toSection: .Book)
+		}
+		
+		dataSource.apply(snapshot, animatingDifferences: animated)
+	}
+	
+	private func binding() {
+		viewModel.$books.receive(on: DispatchQueue.main).sink { [weak self] _ in
+			guard let self = self else { return }
+			self.applySnapshot(animated: true)
+		}.store(in: &subscription)
+	}
 }
 
-extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel?.resultCount ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.reusableIdentifier, for: indexPath) as! BookTableViewCell
-        
-        // TODO: ?? Should the viewController knows the book type????
-        if let book = viewModel?.getBookForIndex(index: indexPath.row) {
-            let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
-            cell.configure(presentable: viewModel, imageService: imageService)
-        }
-        
-        return cell
-    }
+extension SearchResultViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         180
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let book = viewModel?.getBookForIndex(index: indexPath.row) {
-            let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
-            let VC = BookDetailViewController(bookViewModel: viewModel, imageService: imageService)
-
-            navigationController?.pushViewController(VC, animated: true)
-        }
+		if let book = viewModel.generate(for: indexPath.row) {
+			let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+			let vc = BookDetailViewController(bookViewModel: viewModel)
+			
+			show(vc, sender: self)
+		}
+//        if let book = viewModel?.getBookForIndex(index: indexPath.row) {
+//            let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+//            let VC = BookDetailViewController(bookViewModel: viewModel, imageService: imageService)
+//
+//            navigationController?.pushViewController(VC, animated: true)
+//        }
     }
 }

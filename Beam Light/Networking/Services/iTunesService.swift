@@ -8,22 +8,14 @@
 import Foundation
 
 protocol iTunesServiceable {
-    func getSearchResult(terms: String, completion: @escaping (Result<Books, NetworkError>) -> Void)
+	func getSearchResult(terms: String) async -> Result<Books, NetworkError>
 }
 
-struct iTunesService: NetworkServiceable, iTunesServiceable {
-    func getSearchResult(terms: String, completion: @escaping (Result<Books, NetworkError>) -> Void) {
-        
-        makeRequest(with: iTunesEndpoint.search(searchTerms: terms)) { (result: Result<Books, NetworkError>) in
-            switch result {
-            case .success(let success):
-                completion(.success(success))
-            case .failure(let failure):
-                completion(.failure(failure))
-            }
-        }
-        
-    }
-    
-    
+struct iTunesService: HTTPClient, iTunesServiceable {
+	typealias ModelType = Books
+	
+	func getSearchResult(terms: String) async -> Result<Books, NetworkError> {
+		await fetch(endpoint: iTunesEndpoint.search(searchTerms: terms))
+	}
+
 }

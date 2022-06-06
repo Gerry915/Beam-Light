@@ -11,6 +11,8 @@ class BookshelfCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: BookshelfCell.reusableIdentifier)
+		contentView.backgroundColor = .clear
+		backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {

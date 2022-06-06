@@ -34,7 +34,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let lb = UILabel()
-        lb.font = .systemFont(ofSize: 18, weight: .regular)
+		lb.font = .systemFont(ofSize: 22, weight: .semibold)
         
         return lb
     }()
@@ -87,13 +87,13 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
         
         // Groups
         // Inner Group
-        let innerGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+		let innerGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         let innerGroup = NSCollectionLayoutGroup.vertical(layoutSize: innerGroupSize, subitems: [item])
         
         innerGroup.contentInsets = .init(top: 8, leading: 0, bottom: 8, trailing: 8)
         
         // Nested Group
-        let nestedGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(1.0))
+		let nestedGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(1.0))
         let nestedGroup = NSCollectionLayoutGroup.horizontal(layoutSize: nestedGroupSize, subitems: [innerGroup])
         
         let section = NSCollectionLayoutSection(group: nestedGroup)

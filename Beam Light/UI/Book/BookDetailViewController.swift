@@ -10,20 +10,20 @@ import UIKit
 class BookDetailViewController: UICollectionViewController {
     
     var bookViewModel: BookViewModel
-    var imageService: ImageCacheable
     var displayToolBar: Bool = true
     
     private let footerID = "footerID"
     
-    convenience init(bookViewModel: BookViewModel, imageService: ImageCacheable, displayToolBar: Bool) {
-        self.init(bookViewModel: bookViewModel, imageService: imageService)
+    convenience init(bookViewModel: BookViewModel,  displayToolBar: Bool) {
+        self.init(bookViewModel: bookViewModel)
         
         self.displayToolBar = displayToolBar
     }
 
-    init(bookViewModel: BookViewModel,
-         imageService: ImageCacheable
-        ) {
+    init(bookViewModel: BookViewModel) {
+		
+		let headerHeight:CGFloat = 400
+		
         let itemLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
         let item = NSCollectionLayoutItem(layoutSize: itemLayoutSize)
         
@@ -31,7 +31,7 @@ class BookDetailViewController: UICollectionViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(300))
+		let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(headerHeight))
         let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
         
         let header = NSCollectionLayoutBoundarySupplementaryItem.init(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading, absoluteOffset: .zero)
@@ -42,10 +42,10 @@ class BookDetailViewController: UICollectionViewController {
         
         section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
-        let layout = StretchyHeaderLayout(section: section, headerHeight: 300)
+		let layout = UICollectionViewCompositionalLayout(section: section)
+//        let layout = StretchyHeaderLayout(section: section, headerHeight: headerHeight)
         
         self.bookViewModel = bookViewModel
-        self.imageService = imageService
         
         super.init(collectionViewLayout: layout)
     }
@@ -123,12 +123,17 @@ class BookDetailViewController: UICollectionViewController {
         collectionView.register(BookDetailCell.self, forCellWithReuseIdentifier: BookDetailCell.reusableIdentifier)
         collectionView.register(BookHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: BookHeader.reusableIdentifier)
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerID)
-        collectionView.contentInset = .init(top: 20, left: 0, bottom: 20, right: 0)
+        collectionView.contentInset = .init(top: 0, left: 0, bottom: 20, right: 0)
     }
     
 }
 
 extension BookDetailViewController {
+	
+	override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+		false
+	}
+	
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         if kind == UICollectionView.elementKindSectionFooter {
@@ -153,7 +158,7 @@ extension BookDetailViewController {
         } else {
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: BookHeader.reusableIdentifier, for: indexPath) as! BookHeader
             
-            headerView.configure(coverImage: bookViewModel.coverLarge, imageService: imageService)
+            headerView.configure(coverImage: bookViewModel.coverLarge)
 
             return headerView
         }
@@ -167,7 +172,7 @@ extension BookDetailViewController {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookDetailCell.reusableIdentifier, for: indexPath) as! BookDetailCell
         
-        cell.configure(presentable: bookViewModel, imageService: imageService)
+        cell.configure(presentable: bookViewModel)
         
         return cell
     }

@@ -6,13 +6,12 @@
 //
 
 import UIKit
+import SDWebImage
 
 class BookHeader: UICollectionReusableView {
     
-    var cancellable: Cancellable?
-    
     let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .medium)
+        let view = UIActivityIndicatorView(style: .large)
         view.hidesWhenStopped = true
         view.startAnimating()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -31,9 +30,13 @@ class BookHeader: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         commonInit()
     }
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		layout()
+	}
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -41,39 +44,34 @@ class BookHeader: UICollectionReusableView {
     }
     
     private func commonInit() {
-        
         addSubview(loadingView)
-        
-        NSLayoutConstraint.activate([
-            loadingView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
-        
         addSubview(bookCoverImageView)
-        NSLayoutConstraint.activate([
-            bookCoverImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            bookCoverImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            bookCoverImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.4),
-            bookCoverImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8)
-        ])
-        
     }
+	
+	private func layout() {
+		NSLayoutConstraint.activate([
+			loadingView.centerXAnchor.constraint(equalTo: centerXAnchor),
+			loadingView.centerYAnchor.constraint(equalTo: centerYAnchor),
+			bookCoverImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+			bookCoverImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+			bookCoverImageView.heightAnchor.constraint(equalToConstant: 300),
+			bookCoverImageView.widthAnchor.constraint(equalToConstant: 200)
+		])
+	}
     
     // MARK: - Public API
-    func configure(coverImage: String, imageService: ImageCacheable) {
+    func configure(coverImage: String) {
         
         if let url = URL(string: coverImage) {
-            cancellable = imageService.cache(for: url) { [weak self] image in
-                self?.bookCoverImageView.image = image
-                self?.loadingView.stopAnimating()
-            }
+			bookCoverImageView.sd_setImage(with: url) { [weak self] _, _, _, _ in
+				self?.loadingView.stopAnimating()
+			}
         }
-        
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        cancellable?.cancel()
+		bookCoverImageView.image = nil
         loadingView.startAnimating()
     }
 }

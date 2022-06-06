@@ -17,10 +17,8 @@ class BookshelvesViewController: UITableViewController {
 	
 	lazy var dataSource = createDataSource()
     
-    var storageService: StorageService?
     var footerView: BookshelfFooter!
     var viewModel: BookshelvesViewModel
-    var imageService: ImageService
 	
 	var subscription = Set<AnyCancellable>()
     
@@ -29,8 +27,7 @@ class BookshelvesViewController: UITableViewController {
     
     // MARK: - Init
     
-    init(imageService: ImageService, viewModel: BookshelvesViewModel) {
-        self.imageService = imageService
+    init(viewModel: BookshelvesViewModel) {
         self.viewModel = viewModel
         
         super.init(style: .insetGrouped)
@@ -45,6 +42,11 @@ class BookshelvesViewController: UITableViewController {
     }
     
     // MARK: - View Lifecycle
+	
+	override func loadView() {
+		super.loadView()
+		view.alpha = 0
+	}
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +56,9 @@ class BookshelvesViewController: UITableViewController {
 		
 		Task {
 			await viewModel.getAllBookshelf()
+			view.animate([
+				.fadeIn(duration: 0.25)
+			])
 		}
 		binding()
     }
@@ -75,7 +80,7 @@ class BookshelvesViewController: UITableViewController {
 			let cell = tableView.dequeueReusableCell(withIdentifier: BookshelfCell.reusableIdentifier, for: indexPath) as! BookshelfCell
 			
 			let presentable = viewModel.getBookshelf(for: indexPath.row)
-			
+			cell.selectionStyle = .none
 			cell.configure(title: presentable.title, bookCount: presentable.books.count)
 			
 			return cell
@@ -224,7 +229,7 @@ extension BookshelvesViewController {
         let bookshelf = viewModel.getBookshelf(for: indexPath.row)
         let viewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
         
-        let VC = BookshelfDetailViewController(style: .insetGrouped, viewModel: viewModel, imageService: imageService)
+        let VC = BookshelfDetailViewController(style: .plain, viewModel: viewModel)
         
         VC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(VC, animated: true)

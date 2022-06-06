@@ -9,12 +9,10 @@ import Foundation
 import UIKit
 
 class BookshelfDetailViewController: UITableViewController {
-    
-    var imageService: ImageCacheable
+
     var viewModel: BookshelfViewModel
     
-    init(style: UITableView.Style, viewModel: BookshelfViewModel, imageService: ImageCacheable) {
-        self.imageService = imageService
+    init(style: UITableView.Style, viewModel: BookshelfViewModel) {
         self.viewModel = viewModel
         
         super.init(style: style)
@@ -39,11 +37,13 @@ class BookshelfDetailViewController: UITableViewController {
 	}
 	
 	private func tableViewConfigure() {
+		tableView.contentInset = .init(top: 0, left: 16, bottom: 0, right: -16)
 		tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
 	}
 }
 
 extension BookshelfDetailViewController {
+	
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.bookCount
     }
@@ -59,10 +59,10 @@ extension BookshelfDetailViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: BookTableViewCell.reusableIdentifier, for: indexPath) as! BookTableViewCell
-        
+		cell.selectionStyle = .none
         let book = viewModel.generate(for: indexPath.row)
-        let presentable = BookViewModel(book: book, loader: DiskStorageService.shared)
-        cell.configure(presentable: presentable, imageService: imageService)
+        
+        cell.configure(presentable: book)
         
         return cell
     }
@@ -91,8 +91,8 @@ extension BookshelfDetailViewController {
 
 extension BookshelfDetailViewController {
     private func presentBookDetailViewController(with bookViewModel: BookViewModel) {
-        let VC = BookDetailViewController(bookViewModel: bookViewModel, imageService: imageService, displayToolBar: false)
+        let VC = BookDetailViewController(bookViewModel: bookViewModel, displayToolBar: false)
         VC.title = bookViewModel.title
-        navigationController?.pushViewController(VC, animated: true)
+		show(VC, sender: self)
     }
 }

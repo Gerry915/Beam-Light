@@ -19,7 +19,6 @@ class HomeViewController: BaseCollectionViewController {
 	
     // MARK: - Properties
 
-    var searchQuery: String = ""
     var imageService: ImageCacheable
     var viewModel: BookshelvesViewModel
 	
@@ -52,7 +51,7 @@ class HomeViewController: BaseCollectionViewController {
 	override func loadView() {
 		super.loadView()
 		super.setupCollectionView()
-		startState(target: collectionView)
+		view.alpha = 0
 	}
 	
     override func viewDidLoad() {
@@ -66,7 +65,9 @@ class HomeViewController: BaseCollectionViewController {
         
 		Task {
 			await viewModel.getAllBookshelf()
-			intro(target: collectionView)
+			view.animate([
+				.fadeIn(duration: 0.25)
+			])
 		}
 
 		binding()
@@ -184,9 +185,8 @@ extension HomeViewController: UICollectionViewDelegate {
 
         let bookshelfViewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
         
-        let VC = BookshelfDetailViewController(style: .insetGrouped,
-                                               viewModel: bookshelfViewModel,
-                                               imageService: imageService)
+        let VC = BookshelfDetailViewController(style: .plain,
+                                               viewModel: bookshelfViewModel)
         
         VC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(VC, animated: true)
@@ -195,7 +195,7 @@ extension HomeViewController: UICollectionViewDelegate {
     
     private func handlePresentBookDetailView(book: Book) {
         let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
-        let VC = BookDetailViewController(bookViewModel: viewModel, imageService: imageService, displayToolBar: false)
+        let VC = BookDetailViewController(bookViewModel: viewModel, displayToolBar: false)
         VC.title = viewModel.title
 
         let navVC = UINavigationController(rootViewController: VC)
@@ -224,15 +224,12 @@ extension HomeViewController: UICollectionViewDelegate {
 
 extension HomeViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchQuery = searchText
-    }
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+		
+		guard let searchQuery = searchBar.text else { return }
+        		
         let searchResultViewController = SearchResultViewController(
-            searchQuery: searchQuery,
-            imageService: imageService
+			viewModel: BooksViewModel(service: iTunesService(), terms: searchQuery)
         )
         
         let navVC = UINavigationController(rootViewController: searchResultViewController)
@@ -273,19 +270,4 @@ extension HomeViewController {
             }
         }
     }
-}
-
-extension HomeViewController: ViewIntro {
-	
-	func intro(duration: Double = 0.25, target: UIView) {
-		UIView.animate(withDuration: duration, delay: 0, options: .curveEaseOut) {
-			target.alpha = 1
-			target.transform = .identity
-		}
-	}
-	
-	func startState(alpha: CGFloat = 0, transform: CGAffineTransform = .init(translationX: 0, y: -50), target: UIView) {
-		target.alpha = alpha
-		target.transform = transform
-	}
 }

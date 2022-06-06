@@ -20,6 +20,7 @@ class BookDetailCell: UICollectionViewCell {
     
     let authorLabel: UILabel = {
         let label = UILabel()
+		label.font = .systemFont(ofSize: 14, weight: .semibold)
         
         return label
     }()
@@ -32,10 +33,12 @@ class BookDetailCell: UICollectionViewCell {
         return label
     }()
     
+	lazy var stackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
+		layout()
     }
     
     required init?(coder: NSCoder) {
@@ -43,10 +46,8 @@ class BookDetailCell: UICollectionViewCell {
         commonInit()
     }
     
-    
     private func commonInit() {
-        
-        let stackView = UIStackView(arrangedSubviews: [
+        stackView = UIStackView(arrangedSubviews: [
             titleLabel,
             authorLabel,
             descriptionLabel
@@ -56,17 +57,19 @@ class BookDetailCell: UICollectionViewCell {
         
         contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
     }
+	
+	private func layout() {
+		NSLayoutConstraint.activate([
+			stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+			stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+			stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+		])
+	}
     
     // MARK: - Public API
-    func configure(presentable: SearchResultPresentable, imageService: ImageCacheable) {
+    func configure(presentable: SearchResultPresentable) {
         titleLabel.text = presentable.title
         authorLabel.text = presentable.author
         descriptionLabel.text = presentable.content.htmlToString

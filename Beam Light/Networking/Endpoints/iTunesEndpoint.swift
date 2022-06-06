@@ -13,8 +13,8 @@ enum iTunesEndpoint: Endpoint {
 
 extension iTunesEndpoint {
         
-    var baseURLString: String {
-        return CONSTANT.ENDPOINT.iTunesURLString
+    var baseURL: String {
+        return CONSTANT.ENDPOINT.iTunesBase
     }
     
     var method: HTTPMethod {
@@ -31,9 +31,9 @@ extension iTunesEndpoint {
         }
     }
     
-    var queryItems: [URLQueryItem]? {
+    var query: [URLQueryItem]? {
         switch self {
-        case .search(let term):
+		case .search(let term):
             var queryItems = [URLQueryItem(name: "media", value: "ebook"), URLQueryItem(name: "limit", value: "20")]
             let searchTerms = URLQueryItem(name: "term", value: term)
             queryItems.append(searchTerms)
@@ -41,27 +41,51 @@ extension iTunesEndpoint {
         }
     }
     
-    var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
+    var header: [String : String]? {
+		switch self {
+		case .search:
+			return [
+					"Content-Type": "application/json"
+			]
+		}
     }
     
     var body: [String : String]? {
-        return nil
+		switch self {
+		case .search:
+			return nil
+		}
     }
     
-    func buildURL() -> URL {
-        
-        var urlComponents = URLComponents()
-        urlComponents.scheme = "https"
-        urlComponents.host = baseURLString
-        urlComponents.path = self.path
-        urlComponents.queryItems = self.queryItems
-        
-        guard let url = urlComponents.url else {
-            fatalError("Invalid URL")
-        }
-        
-        return url
+    func composeRequest() throws -> URLRequest {
+		
+		var urlComponent = URLComponents(string: self.baseURL + self.path)
+
+		urlComponent?.scheme = "https"
+		
+		if let query = query {
+			urlComponent?.queryItems = query
+		}
+
+		guard let url = urlComponent?.url else {
+			throw NetworkError.badURL("Cannot get URL from url component")
+		}
+
+		var request = URLRequest(url: url)
+
+		request.httpMethod = self.method.rawValue
+		request.allHTTPHeaderFields = self.header
+		
+		if let body = body {
+			do {
+				let bodyData = try JSONSerialization.data(withJSONObject: body, options: [])
+				request.httpBody = bodyData
+			} catch {
+				throw NetworkError.invalidJSON("Cannot get body json data")
+			}
+		}
+		
+		return request
     }
 }
 
