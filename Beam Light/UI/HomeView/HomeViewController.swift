@@ -231,7 +231,7 @@ extension HomeViewController: UISearchBarDelegate {
 		guard let searchQuery = searchBar.text else { return }
         		
         let searchResultViewController = SearchResultViewController(
-			viewModel: BooksViewModel(service: iTunesService(), terms: searchQuery)
+			viewModel: BooksViewModel(service: iTunesAPIProvider(), terms: searchQuery)
         )
         
         let navVC = UINavigationController(rootViewController: searchResultViewController)

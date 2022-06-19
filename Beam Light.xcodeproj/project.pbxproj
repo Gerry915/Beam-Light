@@ -14,7 +14,7 @@
 		B705461427D0E68F003630C4 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B705461327D0E68F003630C4 /* CacheService.swift */; };
 		B706000727DF550F00A50EDE /* BookshelfListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B706000627DF550F00A50EDE /* BookshelfListViewController.swift */; };
 		B706000A27DF5CE500A50EDE /* BookshelfDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B706000927DF5CE500A50EDE /* BookshelfDetailViewModel.swift */; };
-		B7106C4427D8DFCB009648A0 /* iTunesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7106C4327D8DFCB009648A0 /* iTunesService.swift */; };
+		B7106C4427D8DFCB009648A0 /* iTunesAPIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7106C4327D8DFCB009648A0 /* iTunesAPIProvider.swift */; };
 		B713B70C27B7DEF500591981 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713B70B27B7DEF500591981 /* AppDelegate.swift */; };
 		B713B70E27B7DEF500591981 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713B70D27B7DEF500591981 /* SceneDelegate.swift */; };
 		B713B71627B7DEF500591981 /* Beam_Light.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B713B71427B7DEF500591981 /* Beam_Light.xcdatamodeld */; };
@@ -118,7 +118,7 @@
 		B705461327D0E68F003630C4 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		B706000627DF550F00A50EDE /* BookshelfListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfListViewController.swift; sourceTree = "<group>"; };
 		B706000927DF5CE500A50EDE /* BookshelfDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfDetailViewModel.swift; sourceTree = "<group>"; };
-		B7106C4327D8DFCB009648A0 /* iTunesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesService.swift; sourceTree = "<group>"; };
+		B7106C4327D8DFCB009648A0 /* iTunesAPIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesAPIProvider.swift; sourceTree = "<group>"; };
 		B713B70827B7DEF500591981 /* Beam Light.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Beam Light.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B713B70B27B7DEF500591981 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B713B70D27B7DEF500591981 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -301,7 +301,7 @@
 		B7106C4227D8DFB9009648A0 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				B7106C4327D8DFCB009648A0 /* iTunesService.swift */,
+				B7106C4327D8DFCB009648A0 /* iTunesAPIProvider.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -953,7 +953,7 @@
 			files = (
 				B76F07E027BD0E3800258A05 /* UIVIewController+Extension.swift in Sources */,
 				B7C2360E284A42660065BD42 /* CreateBookshelf.swift in Sources */,
-				B7106C4427D8DFCB009648A0 /* iTunesService.swift in Sources */,
+				B7106C4427D8DFCB009648A0 /* iTunesAPIProvider.swift in Sources */,
 				B7C1FDE627DAC829004EB3D1 /* BookshelfCollectionViewCell.swift in Sources */,
 				B76F07CC27BCE34000258A05 /* MainTabViewController.swift in Sources */,
 				B7A4C4342848F93E000A9DB3 /* DiskStorageWrapper.swift in Sources */,

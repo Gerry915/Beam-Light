@@ -7,15 +7,14 @@
 
 import Foundation
 
-protocol iTunesServiceable {
+protocol iTunesProviding {
 	func getSearchResult(terms: String) async -> Result<Books, NetworkError>
 }
 
-struct iTunesService: HTTPClient, iTunesServiceable {
-	typealias ModelType = Books
+struct iTunesAPIProvider: HTTPClient, iTunesProviding {
 	
 	func getSearchResult(terms: String) async -> Result<Books, NetworkError> {
-		await fetch(endpoint: iTunesEndpoint.search(searchTerms: terms))
+		await execute(endpoint: iTunesEndpoint.search(searchTerms: terms))
 	}
 
 }

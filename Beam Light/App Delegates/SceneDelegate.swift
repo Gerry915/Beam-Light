@@ -26,7 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = composeTabViewController()
         
         window?.makeKeyAndVisible()
-        
     }
     
     func composeTabViewController() -> MainTabViewController {

@@ -11,10 +11,10 @@ class BooksViewModel {
     
     @Published private(set) var books: Books?
     
-    private var service: iTunesServiceable
+    private var service: iTunesProviding
 	private var terms: String
     
-	init(service: iTunesServiceable, terms: String) {
+	init(service: iTunesProviding, terms: String) {
 		self.service = service
 		self.terms = terms
     }
