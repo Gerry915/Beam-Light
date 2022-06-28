@@ -63,6 +63,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		viewController.tabBarItem.title = title
 		viewController.tabBarItem.image = UIImage(systemName: image)
 		
+		navigationVC.navigationBar.prefersLargeTitles = true
+		
 		return navigationVC
 	}
 

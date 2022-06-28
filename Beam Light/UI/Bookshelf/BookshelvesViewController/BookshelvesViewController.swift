@@ -121,11 +121,10 @@ class BookshelvesViewController: UITableViewController {
     
     private func setupView() {
         
-        title = "Bookshelves"
-        
         view.backgroundColor = .systemBackground
         
         navigationItem.rightBarButtonItems = [editButtonItem]
+		
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.delegate = self
         

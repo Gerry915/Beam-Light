@@ -57,7 +57,6 @@ class HomeViewController: BaseCollectionViewController {
         super.viewDidLoad()
 		
 		analyticsService.log(event: HomeViewEvent.screenView)
-        setup()
 		setupObserver()
 		collectionViewConfiguration()
         addTapToResignFirstResponder()
@@ -87,10 +86,6 @@ class HomeViewController: BaseCollectionViewController {
 	}
     
     // MARK: - Methods
-	private func setup() {
-		title = "Beam Light"
-		navigationController?.navigationBar.prefersLargeTitles = true
-	}
 	
     private func collectionViewConfiguration() {
         collectionView.delegate = self
