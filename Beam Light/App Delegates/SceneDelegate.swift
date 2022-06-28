@@ -37,14 +37,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 						deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self), updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
 		)
         
-        let homeTabItem = UITabBarItem(title: "Beam Light", image: UIImage(systemName: "light.min"), tag: 0)
-        
         let homeViewController = HomeViewController(viewModel: viewModel)
-        
-        let homeNav = UINavigationController(rootViewController: homeViewController)
-        homeNav.tabBarItem = homeTabItem
-        
-        return homeNav
+		
+        return makeNav(for: homeViewController, title: "Beam Light", image: "light.min")
     }
     
     func makeBookshelfView() -> UINavigationController {
@@ -56,12 +51,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		)
         
         let bookshelvesViewController = BookshelvesViewController(viewModel: viewModel)
-        let bookshelvesNavController = UINavigationController(rootViewController: bookshelvesViewController)
-        let bookshelvesTabItem = UITabBarItem(title: "Bookshelves", image: UIImage(systemName: "books.vertical.circle"), tag: 1)
-        bookshelvesNavController.tabBarItem = bookshelvesTabItem
-        
-        return bookshelvesNavController
+		
+        return makeNav(for: bookshelvesViewController, title: "My Bookshelves", image: "books.vertical.circle")
     }
+	
+	func makeNav(for viewController: UIViewController, title: String, image: String) -> UINavigationController {
+		
+		let navigationVC = UINavigationController(rootViewController: viewController)
+		
+		viewController.title = title
+		viewController.tabBarItem.title = title
+		viewController.tabBarItem.image = UIImage(systemName: image)
+		
+		return navigationVC
+	}
 
     func sceneDidDisconnect(_ scene: UIScene) {}
 
