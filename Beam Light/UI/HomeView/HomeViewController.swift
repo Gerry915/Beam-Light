@@ -122,15 +122,13 @@ class HomeViewController: BaseCollectionViewController {
 	}
 	
 	private func binding() {
-		viewModel.$bookshelves.receive(on: DispatchQueue.main).sink { [weak self] items in
+		viewModel.$bookshelves
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] items in
+				
 			guard let self = self else { return }
 			self.applySnapshot()
-			if items.count == 0 {
-				self.addEmptyView()
-			} else {
-				self.removeEmptyView()
-			}
-			
+			items.count == 0 ? self.addEmptyView() : self.removeEmptyView()
 		}.store(in: &subscription)
 	}
 	
