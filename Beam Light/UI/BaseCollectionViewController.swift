@@ -20,11 +20,19 @@ class BaseCollectionViewController: UIViewController {
 		
 		return cv
 	}()
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		setupCollectionView()
+		fadeOut()
+		
+	}
 }
 
 extension BaseCollectionViewController {
 	
-    func setupCollectionView() {
+    private func setupCollectionView() {
 		view.backgroundColor = .systemBackground
 		view.addSubview(collectionView)
 		NSLayoutConstraint.activate([
@@ -35,7 +43,7 @@ extension BaseCollectionViewController {
 		])
     }
     
-    func createLayoutDiffSection() -> UICollectionViewLayout {
+    private func createLayoutDiffSection() -> UICollectionViewLayout {
         
             let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
                 layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in

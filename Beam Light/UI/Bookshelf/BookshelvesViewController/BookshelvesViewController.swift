@@ -42,12 +42,6 @@ class BookshelvesViewController: UITableViewController {
     }
     
     // MARK: - View Lifecycle
-	
-	override func loadView() {
-		super.loadView()
-		view.alpha = 0
-		view.transform = .init(translationX: 0, y: -50)
-	}
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,12 +49,11 @@ class BookshelvesViewController: UITableViewController {
         setupView()
         setupObserver()
 		
+		fadeOut()
+		
 		Task {
 			await viewModel.getAllBookshelf()
-			view.animate(inParallel: [
-				.fadeIn(duration: 0.25),
-				.transformIdentity(duration: 0.35)
-			])
+			fadeIn()
 		}
 		binding()
     }

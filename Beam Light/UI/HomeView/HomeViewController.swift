@@ -46,27 +46,27 @@ class HomeViewController: BaseCollectionViewController {
     
     // MARK: - View Lifecycle
 	
-	override func loadView() {
-		super.loadView()
-		super.setupCollectionView()
-		view.alpha = 0
-		view.transform = .init(translationX: 0, y: -50)
-	}
+//	override func loadView() {
+//		super.loadView()
+//		super.setupCollectionView()
+//		view.alpha = 0
+//		view.transform = .init(translationX: 0, y: -50)
+//	}
 	
     override func viewDidLoad() {
+		
         super.viewDidLoad()
 		
 		analyticsService.log(event: HomeViewEvent.screenView)
+		
 		setupObserver()
+		
 		collectionViewConfiguration()
         addTapToResignFirstResponder()
         
 		Task {
 			await viewModel.getAllBookshelf()
-			view.animate(inParallel: [
-				.fadeIn(duration: 0.25),
-				.transformIdentity(duration: 0.35)
-			])
+			fadeIn()
 		}
 
 		binding()
