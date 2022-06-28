@@ -34,7 +34,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		let viewModel = BookshelvesViewModel(
 						getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
 						createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self),
-						deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self), updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
+						deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self),
+						updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
 		)
         
         let homeViewController = HomeViewController(viewModel: viewModel)
@@ -47,7 +48,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		let viewModel = BookshelvesViewModel(
 							getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
 							createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self),
-							deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self), updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
+							deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self),
+							updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
 		)
         
         let bookshelvesViewController = BookshelvesViewController(viewModel: viewModel)
