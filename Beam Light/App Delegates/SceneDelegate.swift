@@ -10,12 +10,6 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    
-    // Image Service
-    private var imageService = ImageService(
-        maximumCacheSizeInMemory: 512 * 1024,
-        maximumCacheSizeOnDisk: 50 * 1024
-    )
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
@@ -29,13 +23,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func composeTabViewController() -> MainTabViewController {
-        let homeViewController = composeHomeViewController(imageService: imageService)
-        let bookshelvesViewController = composeBookshelfViewController(imageService: imageService)
+        let homeViewController = composeHomeViewController()
+        let bookshelvesViewController = composeBookshelfViewController()
         
         return MainTabViewController(viewControllers: [homeViewController,bookshelvesViewController])
     }
     
-    func composeHomeViewController(imageService: ImageCacheable) -> UINavigationController {
+    func composeHomeViewController() -> UINavigationController {
 		
 		let viewModel = BookshelvesViewModel(
 						getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
@@ -45,7 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let homeTabItem = UITabBarItem(title: "Beam Light", image: UIImage(systemName: "light.min"), tag: 0)
         
-        let homeViewController = HomeViewController(imageService: imageService, viewModel: viewModel)
+        let homeViewController = HomeViewController(viewModel: viewModel)
         
         let homeNav = UINavigationController(rootViewController: homeViewController)
         homeNav.tabBarItem = homeTabItem
@@ -53,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return homeNav
     }
     
-    func composeBookshelfViewController(imageService: ImageService) -> UINavigationController {
+    func composeBookshelfViewController() -> UINavigationController {
         
 		let viewModel = BookshelvesViewModel(
 							getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
@@ -77,11 +71,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillEnterForeground(_ scene: UIScene) {}
 
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
-        
-    }
+    func sceneDidEnterBackground(_ scene: UIScene) { (UIApplication.shared.delegate as? AppDelegate)?.saveContext() }
 
 }
 

@@ -19,7 +19,6 @@ class HomeViewController: BaseCollectionViewController {
 	
     // MARK: - Properties
 
-    var imageService: ImageCacheable
     var viewModel: BookshelvesViewModel
 	
 	lazy var dataSource = createDataSource()
@@ -32,9 +31,8 @@ class HomeViewController: BaseCollectionViewController {
     var analyticsService: AnalyticsEngine = FakeAnalyticsEngine()
     
     // MARK: - Init
-    init(imageService: ImageCacheable, viewModel: BookshelvesViewModel) {
+    init(viewModel: BookshelvesViewModel) {
         self.viewModel = viewModel
-        self.imageService = imageService
         super.init(nibName: nil, bundle: nil)
     }
     
