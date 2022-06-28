@@ -38,7 +38,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 						updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
 		)
         
-        let homeViewController = HomeViewController(viewModel: viewModel)
+		let homeViewController = HomeViewController(viewModel: viewModel)
+		homeViewController.createBookshelf = {
+			let createBookshelfVC = CreateBookshelfViewController()
+			
+			if let sheet = createBookshelfVC.sheetPresentationController {
+				sheet.detents = [.medium()]
+				sheet.prefersGrabberVisible = false
+			}
+			
+			homeViewController.showDetailViewController(createBookshelfVC, sender: homeViewController)
+			
+			createBookshelfVC.didCreateBookshelf = { title in
+				Task {
+					await viewModel.create(with: title)
+				}
+			}
+		}
 		
         return makeNav(for: homeViewController, title: "Beam Light", image: "light.min")
     }

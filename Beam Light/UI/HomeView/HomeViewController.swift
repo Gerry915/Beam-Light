@@ -22,6 +22,7 @@ class HomeViewController: BaseCollectionViewController {
     var viewModel: BookshelvesViewModel
 	
 	lazy var dataSource = createDataSource()
+	
 	lazy var emptyView = EmptyBookshelfCreationView { [weak self] in
 		self?.handleCreateBookshelf()
 	}
@@ -29,9 +30,11 @@ class HomeViewController: BaseCollectionViewController {
 	var subscription = Set<AnyCancellable>()
     
     var analyticsService: AnalyticsEngine = FakeAnalyticsEngine()
+	
+	var createBookshelf: (() -> Void)?
     
     // MARK: - Init
-    init(viewModel: BookshelvesViewModel) {
+	init(viewModel: BookshelvesViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -198,20 +201,7 @@ extension HomeViewController: UICollectionViewDelegate {
     }
     
     private func handleCreateBookshelf() {
-        let VC = CreateBookshelfViewController()
-		
-		if let sheet = VC.sheetPresentationController {
-			sheet.detents = [.medium()]
-			sheet.prefersGrabberVisible = false
-		}
-		
-		present(VC, animated: true) {
-			VC.didCreateBookshelf = { [unowned self] title in
-				Task {
-					await viewModel.create(with: title)
-				}
-			}
-		}
+		createBookshelf?()
     }
 }
 
