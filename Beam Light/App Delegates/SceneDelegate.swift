@@ -17,19 +17,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
      
-        window?.rootViewController = composeTabViewController()
+        window?.rootViewController = makeTabView()
         
         window?.makeKeyAndVisible()
     }
     
-    func composeTabViewController() -> MainTabViewController {
-        let homeViewController = composeHomeViewController()
-        let bookshelvesViewController = composeBookshelfViewController()
+    func makeTabView() -> MainTabViewController {
+        let homeViewController = makeHomeView()
+        let bookshelvesViewController = makeBookshelfView()
         
         return MainTabViewController(viewControllers: [homeViewController,bookshelvesViewController])
     }
     
-    func composeHomeViewController() -> UINavigationController {
+    func makeHomeView() -> UINavigationController {
 		
 		let viewModel = BookshelvesViewModel(
 						getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return homeNav
     }
     
-    func composeBookshelfViewController() -> UINavigationController {
+    func makeBookshelfView() -> UINavigationController {
         
 		let viewModel = BookshelvesViewModel(
 							getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
