@@ -23,10 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func makeTabView() -> MainTabViewController {
-        let homeViewController = makeHomeView()
-        let bookshelvesViewController = makeBookshelfView()
-        
-        return MainTabViewController(viewControllers: [homeViewController,bookshelvesViewController])
+        return MainTabViewController(viewControllers: [makeHomeView(), makeBookshelfView()])
     }
     
     func makeHomeView() -> UINavigationController {
