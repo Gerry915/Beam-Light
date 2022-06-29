@@ -37,7 +37,7 @@ class BookshelvesViewModelTests: XCTestCase {
 	
 	func test_get_all_bookshelf() async {
 		let sut = await makeSUT()
-		XCTAssertEqual(sut.bookshelves.count, 1, "bookshelf count")
+		XCTAssertEqual(sut.bookshelves.count, 2, "bookshelf count")
 	}
 	
 	func test_get_all_bookshelf_fail() async {
@@ -115,6 +115,15 @@ class BookshelvesViewModelTests: XCTestCase {
 		await sut.batchDelete(ids: [0])
 	}
 	
+	func test_save_bookshelf_order() async {
+		
+		let sut = await makeSUT()
+		
+		sut.saveBookshelfOrder(sourceIndex: 0, destinationIndex: 1)
+		
+		XCTAssertEqual(sut.bookshelves.first!.title, "test2")
+	}
+	
 	private func makeSUT() async -> BookshelvesViewModel {
 		let sut = BookshelvesViewModel(getAllUseCase: mockGetAllProtocol,
 									   createBookshelfUseCase: mockCreateProtocol,
@@ -132,12 +141,15 @@ class BookshelvesViewModelTests: XCTestCase {
 class MockGetAllBookshelfUseCaseProtocol: GetAllBookshelfUseCaseProtocol {
 	
 	var isSuccess = true
-	let stub = Bookshelf(id: UUID(), title: "test", books: [], createAt: Date(), modifiedAt: Date())
+	let stub = [
+		Bookshelf(id: UUID(), title: "test1", books: [], createAt: Date(), modifiedAt: Date()),
+		Bookshelf(id: UUID(), title: "test2", books: [], createAt: Date(), modifiedAt: Date())
+	]
 	
 	func execute() async -> Result<[Bookshelf], CustomStorageError> {
 		
 		if isSuccess {
-			return .success([stub])
+			return .success(stub)
 		} else {
 			return .failure(.Get(message: "Cannot Get"))
 		}
