@@ -17,6 +17,8 @@ class BookshelvesViewModel {
 	
     // MARK: - Properties
     @Published private(set) var bookshelves: [Bookshelf] = []
+	
+	var errorMessage: ((String) -> Void)?
     
     // MARK: - Init
 	init(
@@ -32,60 +34,65 @@ class BookshelvesViewModel {
     }
     
     // MARK: - Methods
+	func getAllBookshelf() async {
+		let result = await getAllUseCase.execute()
+		switch result {
+		case .success(let data):
+			bookshelves = data
+		case .failure(let error):
+			if case let .Get(message) = error {
+				errorMessage?(message)
+			}
+		}
+	}
     
     func getBookshelf(for idx: Int) -> Bookshelf {
         return bookshelves[idx]
     }
 	
-	func getAllBookshelf() async {
-		let result = await getAllUseCase.execute()
-		if case let .success(bookshelves) = result {
-			self.bookshelves = bookshelves
-		}
-	}
-	
     func saveBookshelfOrder(sourceIndex: Int, destinationIndex: Int) {
         bookshelves.swapAt(sourceIndex, destinationIndex)
-        bookshelves.forEach({print($0.title)})
     }
 	
 	func create(with title: String) async {
-		// 1. Create UUID for bookshelf
 		let uuid = UUID()
 		
-		// 2. Create bookshelf with id, title, and empty books array
 		let bookshelf = Bookshelf(id: uuid, title: title, books: [], createAt: Date(), modifiedAt: Date())
 		
-		let result = await createBookshelfUseCase.execute(id: uuid.uuidString, data: bookshelf)
-		
-		if case .success(_) = result {
-			await getAllBookshelf()
-		}
-		
+		await _updateState(result: createBookshelfUseCase.execute(id: uuid.uuidString, data: bookshelf))
 	}
 	
 	func deleteBookshelf(_ id: String) async {
-		let result = await deleteBookshelfUseCase.execute(id: id)
-		
-		if case .success(_) = result {
-			await getAllBookshelf()
-		}
+		await _updateState(result: deleteBookshelfUseCase.execute(id: id))
 	}
 	
 	func updateBookshelf(bookshelf: Bookshelf) async {
-		let result = await updateBookshelfUseCase.execute(bookshelf.id.uuidString, bookshelf)
-		
-		if case .success(_) = result {
+		await _updateState(result: updateBookshelfUseCase.execute(bookshelf.id.uuidString, bookshelf))
+	}
+	
+	private func _updateState(result: Result<Bool, CustomStorageError>) async {
+		switch result {
+		case .success(_):
 			await getAllBookshelf()
+		case .failure(let error):
+			if case let .Delete(message) = error {
+				errorMessage?(message)
+			}
+			if case let .Update(message) = error {
+				errorMessage?(message)
+			}
+			if case let .Create(message) = error {
+				errorMessage?(message)
+			}
+			if case let .Get(message) = error {
+				errorMessage?(message)
+			}
 		}
 	}
     
-	func batchDelete(ids: [Int]) {
-		ids.forEach { id in
-			let bookshelf = getBookshelf(for: id)
-			Task {
-				await deleteBookshelf(bookshelf.id.uuidString)
-			}
+	func batchDelete(ids: [Int]) async {
+		for id in ids {
+			await deleteBookshelf(getBookshelf(for: id).id.uuidString)
 		}
 	}
 }

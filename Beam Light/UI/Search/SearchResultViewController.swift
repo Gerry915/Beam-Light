@@ -122,7 +122,7 @@ extension SearchResultViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let book = viewModel.generate(for: indexPath.row) {
-			let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+			let viewModel = BookViewModel(book: book)
 			let vc = BookDetailViewController(bookViewModel: viewModel)
 			
 			show(vc, sender: self)

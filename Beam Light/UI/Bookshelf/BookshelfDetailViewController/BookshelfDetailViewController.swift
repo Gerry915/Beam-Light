@@ -51,7 +51,7 @@ extension BookshelfDetailViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let book = viewModel.generate(for: indexPath.row)
-        let bookViewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+        let bookViewModel = BookViewModel(book: book)
         
         presentBookDetailViewController(with: bookViewModel)
     }

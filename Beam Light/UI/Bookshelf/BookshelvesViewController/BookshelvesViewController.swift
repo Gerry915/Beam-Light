@@ -136,7 +136,10 @@ class BookshelvesViewController: UITableViewController {
 		
 		let ids = selectedRows.map({ $0.row })
 		
-		viewModel.batchDelete(ids: ids)
+		Task {
+			await viewModel.batchDelete(ids: ids)
+		}
+		
 		postNotificationForBookshelfUpdate()
 		
 //        selectedRows.sort(by: >)

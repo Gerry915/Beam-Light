@@ -28,12 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func makeHomeView() -> UINavigationController {
 		
-		let viewModel = BookshelvesViewModel(
-						getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
-						createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self),
-						deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self),
-						updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
-		)
+		let viewModel = makeBookshelvesViewModel()
         
 		let homeViewController = HomeViewController(viewModel: viewModel)
 		homeViewController.createBookshelf = {
@@ -58,12 +53,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func makeBookshelfView() -> UINavigationController {
         
-		let viewModel = BookshelvesViewModel(
-							getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
-							createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self),
-							deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self),
-							updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
-		)
+		let viewModel = makeBookshelvesViewModel()
         
         let bookshelvesViewController = BookshelvesViewController(viewModel: viewModel)
 		
@@ -81,6 +71,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		navigationVC.navigationBar.prefersLargeTitles = true
 		
 		return navigationVC
+	}
+	
+	func makeBookshelvesViewModel() -> BookshelvesViewModel {
+		return BookshelvesViewModel(
+							getAllUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
+							createBookshelfUseCase: Resolver.shared.resolve(CreateBookshelfUseCaseProtocol.self),
+							deleteBookshelfUseCase: Resolver.shared.resolve(DeleteBookshelfUseCaseProtocol.self),
+							updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)
+		)
 	}
 
     func sceneDidDisconnect(_ scene: UIScene) {}

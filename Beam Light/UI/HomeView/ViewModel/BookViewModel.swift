@@ -11,11 +11,8 @@ class BookViewModel {
     
     private(set) var book: Book
     
-    var loader: StorageService
-    
-    init(book: Book, loader: StorageService) {
+    init(book: Book) {
         self.book = book
-        self.loader = loader
     }
     
     var title: String {

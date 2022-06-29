@@ -190,7 +190,7 @@ extension HomeViewController: UICollectionViewDelegate {
     }
     
     private func handlePresentBookDetailView(book: Book) {
-        let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
+        let viewModel = BookViewModel(book: book)
         let VC = BookDetailViewController(bookViewModel: viewModel, displayToolBar: false)
         VC.title = viewModel.title
 
