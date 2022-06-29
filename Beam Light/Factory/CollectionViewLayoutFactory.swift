@@ -24,10 +24,6 @@ class CollectionViewLayoutFactory {
 			
 			let section = NSCollectionLayoutSection(group: group)
 			
-			let header = NSCollectionLayoutBoundarySupplementaryItem.init(layoutSize: .init(widthDimension:.fractionalWidth(1.0), heightDimension: .absolute(64)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
-			
-			section.boundarySupplementaryItems = [header]
-			
 			section.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
 			
 			return section

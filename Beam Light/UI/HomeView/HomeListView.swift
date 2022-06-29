@@ -12,7 +12,7 @@ enum Sections {
 	case Bookshelf
 }
 
-class HomeViewController: UICollectionViewController {
+class HomeListView: UICollectionViewController {
 	
 	typealias DataSource = UICollectionViewDiffableDataSource<Sections, Bookshelf>
 	typealias Snapshot = NSDiffableDataSourceSnapshot<Sections, Bookshelf>
@@ -62,7 +62,6 @@ class HomeViewController: UICollectionViewController {
 		Task {
 			await viewModel.getAllBookshelf()
 			fadeIn()
-
 		}
     }
 	
@@ -75,7 +74,6 @@ class HomeViewController: UICollectionViewController {
 	private func configureCollectionView() {
 		collectionView.register(EmptyBookshelvesCell.self, forCellWithReuseIdentifier: EmptyBookshelvesCell.reusableIdentifier)
 		collectionView.register(BookshelfCollectionViewCell.self, forCellWithReuseIdentifier: BookshelfCollectionViewCell.reusableIdentifier)
-		collectionView.register(SearchCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchCollectionViewHeader.reusableIdentifier)
 	}
 	
 	private func addEmptyView() {
@@ -94,20 +92,8 @@ class HomeViewController: UICollectionViewController {
     // MARK: - Methods
 	
 	private func createDataSource() -> DataSource {
-
 		let dataSource = DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, bookshelf in
-			
 			generateCell(for: indexPath)
-			
-		}
-		
-		dataSource.supplementaryViewProvider = {
-			collectionView, kind, indexPath in
-			guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SearchCollectionViewHeader.reusableIdentifier, for: indexPath) as? SearchCollectionViewHeader else { return nil }
-			
-			header.searchBar.delegate = self
-			
-			return header
 		}
 		
 		return dataSource
@@ -146,7 +132,7 @@ class HomeViewController: UICollectionViewController {
 	}
 }
 
-extension HomeViewController {
+extension HomeListView {
     
     private func generateCell(for indexPath: IndexPath) -> UICollectionViewCell {
 		renderBookshelfCell(for: indexPath)
@@ -156,9 +142,12 @@ extension HomeViewController {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookshelfCollectionViewCell.reusableIdentifier, for: indexPath) as! BookshelfCollectionViewCell
         
-        cell.showBookDetailViewHandler = handlePresentBookDetailView(book:)
-        
-        cell.showBookshelfDetailHandler = handlePresentBookshelfDetailViewController(bookshelf:)
+		cell.showBookDetailViewHandler = { [weak self] book in
+			self?.presentBookDetailView?(book)
+		}
+		cell.showBookshelfDetailHandler = { [weak self] bookshelf in
+			self?.presentBookshelf?(bookshelf)
+		}
         
         let bookshelf = viewModel.getBookshelf(for: indexPath.row)
         
@@ -166,31 +155,6 @@ extension HomeViewController {
 		cell.viewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
         
         return cell
-    }
-    
-    private func handlePresentBookshelfDetailViewController(bookshelf: Bookshelf) {
-		presentBookshelf?(bookshelf)
-    }
-    
-    private func handlePresentBookDetailView(book: Book) {
-		presentBookDetailView?(book)
-    }
-}
-
-extension HomeViewController: UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-		
-		guard let searchQuery = searchBar.text else { return }
-        		
-        let searchResultViewController = SearchResultViewController(
-			viewModel: BooksViewModel(service: iTunesAPIProvider(), terms: searchQuery)
-        )
-        
-        let navVC = UINavigationController(rootViewController: searchResultViewController)
-        searchBar.resignFirstResponder()
-
-		show(navVC, sender: self)
     }
 }
 

@@ -27,16 +27,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		mainTabViewController.viewControllers = [makeHomeView(), makeBookshelfView()]
         return mainTabViewController
     }
+	
+	func makeHomeView() -> UINavigationController {
+		let containerView = HomeViewContainerView()
+		
+		let headerView = HomeSearchView()
+		
+		headerView.handleSearch = { [headerView] query in
+			let searchResultViewController = SearchResultViewController(
+				viewModel: BooksViewModel(service: iTunesAPIProvider(), terms: query)
+			)
+			searchResultViewController.hidesBottomBarWhenPushed = true
+			headerView.show(searchResultViewController, sender: headerView)
+		}
+		
+		containerView.headerView = headerView
+		containerView.listView = makeHomeListView()
+		
+		return makeNav(for: containerView, title: "Beam Light", image: "light.min")
+	}
     
-    func makeHomeView() -> UINavigationController {
+    func makeHomeListView() -> UIViewController {
 		
 		let viewModel = makeBookshelvesViewModel()
         
-		let homeViewController = HomeViewController(viewModel: viewModel,
+		let listView = HomeListView(viewModel: viewModel,
 													layout: CollectionViewLayoutFactory().makeHomeViewLayout()
 		)
 		
-		homeViewController.createBookshelf = { [homeViewController] in
+		listView.createBookshelf = { [listView] in
 			let createBookshelfVC = CreateBookshelfViewController()
 			
 			if let sheet = createBookshelfVC.sheetPresentationController {
@@ -44,7 +63,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 				sheet.prefersGrabberVisible = false
 			}
 			
-			homeViewController.showDetailViewController(createBookshelfVC, sender: homeViewController)
+			listView.showDetailViewController(createBookshelfVC, sender: listView)
 			
 			createBookshelfVC.didCreateBookshelf = { title in
 				Task {
@@ -53,7 +72,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			}
 		}
 		
-		homeViewController.presentBookDetailView = { [weak self, homeViewController] book in
+		listView.presentBookDetailView = { [weak self, listView] book in
 			let viewModel = BookViewModel(book: book)
 			let vc = BookDetailViewController(bookViewModel: viewModel, displayToolBar: false)
 			vc.title = viewModel.title
@@ -61,22 +80,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			if let nav = self?.makeNav(for: vc, title: viewModel.title, image: nil, largeTitle: false) {
 				
 				nav.modalPresentationStyle = .pageSheet
-				homeViewController.showDetailViewController(nav, sender: homeViewController)
+				listView.showDetailViewController(nav, sender: listView)
 				
 			}
 		}
 		
-		homeViewController.presentBookshelf = { [homeViewController] bookshelf in
+		listView.presentBookshelf = { [listView] bookshelf in
 			let bookshelfViewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
 			
 			let vc = BookshelfDetailViewController(style: .plain,
 												   viewModel: bookshelfViewModel)
 			vc.hidesBottomBarWhenPushed = true
 			
-			homeViewController.show(vc, sender: homeViewController)
+			listView.show(vc, sender: listView)
 		}
 		
-        return makeNav(for: homeViewController, title: "Beam Light", image: "light.min")
+		return listView
     }
     
     func makeBookshelfView() -> UINavigationController {

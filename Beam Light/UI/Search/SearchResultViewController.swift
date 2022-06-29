@@ -112,6 +112,8 @@ class SearchResultViewController: UIViewController {
 			self.applySnapshot(animated: true)
 		}.store(in: &subscription)
 	}
+	
+	
 }
 
 extension SearchResultViewController: UITableViewDelegate {

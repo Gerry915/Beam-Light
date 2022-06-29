@@ -37,7 +37,7 @@
 		B761BB75284DDD36007BD1D8 /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = B761BB70284DDD36007BD1D8 /* 4.png */; };
 		B761BB76284DDD36007BD1D8 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = B761BB71284DDD36007BD1D8 /* 3.png */; };
 		B76F07CC27BCE34000258A05 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07CB27BCE33F00258A05 /* MainTabViewController.swift */; };
-		B76F07CE27BCE4BF00258A05 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07CD27BCE4BF00258A05 /* HomeViewController.swift */; };
+		B76F07CE27BCE4BF00258A05 /* HomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07CD27BCE4BF00258A05 /* HomeListView.swift */; };
 		B76F07D027BCE4F000258A05 /* BookshelvesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07CF27BCE4F000258A05 /* BookshelvesViewController.swift */; };
 		B76F07D527BD026300258A05 /* EmptyBookshelvesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07D427BD026300258A05 /* EmptyBookshelvesCell.swift */; };
 		B76F07D827BD027F00258A05 /* ReuseableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07D727BD027F00258A05 /* ReuseableView.swift */; };
@@ -95,6 +95,8 @@
 		B7D5FDF6286C5B8F000460E9 /* BookshelfViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D5FDF5286C5B8F000460E9 /* BookshelfViewModelTests.swift */; };
 		B7D5FDF8286C5D1D000460E9 /* BookshelfListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D5FDF7286C5D1D000460E9 /* BookshelfListViewModel.swift */; };
 		B7D5FDFB286C624B000460E9 /* CollectionViewLayoutFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D5FDFA286C624B000460E9 /* CollectionViewLayoutFactory.swift */; };
+		B7D5FDFD286C7F6D000460E9 /* HomeViewContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D5FDFC286C7F6D000460E9 /* HomeViewContainerView.swift */; };
+		B7D5FDFF286C849B000460E9 /* HomeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D5FDFE286C849B000460E9 /* HomeSearchView.swift */; };
 		B7D6DAF527E0512500B66818 /* SearchCollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D6DAF427E0512500B66818 /* SearchCollectionViewHeader.swift */; };
 		B7E345B027D328D300A86547 /* Bookshelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E345AF27D328D300A86547 /* Bookshelf.swift */; };
 		B7E345B227D33CDE00A86547 /* BookshelfViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E345B127D33CDE00A86547 /* BookshelfViewModel.swift */; };
@@ -150,7 +152,7 @@
 		B761BB70284DDD36007BD1D8 /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
 		B761BB71284DDD36007BD1D8 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
 		B76F07CB27BCE33F00258A05 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
-		B76F07CD27BCE4BF00258A05 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		B76F07CD27BCE4BF00258A05 /* HomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListView.swift; sourceTree = "<group>"; };
 		B76F07CF27BCE4F000258A05 /* BookshelvesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelvesViewController.swift; sourceTree = "<group>"; };
 		B76F07D427BD026300258A05 /* EmptyBookshelvesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBookshelvesCell.swift; sourceTree = "<group>"; };
 		B76F07D727BD027F00258A05 /* ReuseableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseableView.swift; sourceTree = "<group>"; };
@@ -206,6 +208,8 @@
 		B7D5FDF5286C5B8F000460E9 /* BookshelfViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfViewModelTests.swift; sourceTree = "<group>"; };
 		B7D5FDF7286C5D1D000460E9 /* BookshelfListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfListViewModel.swift; sourceTree = "<group>"; };
 		B7D5FDFA286C624B000460E9 /* CollectionViewLayoutFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewLayoutFactory.swift; sourceTree = "<group>"; };
+		B7D5FDFC286C7F6D000460E9 /* HomeViewContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewContainerView.swift; sourceTree = "<group>"; };
+		B7D5FDFE286C849B000460E9 /* HomeSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchView.swift; sourceTree = "<group>"; };
 		B7D6DAF427E0512500B66818 /* SearchCollectionViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewHeader.swift; sourceTree = "<group>"; };
 		B7E345AF27D328D300A86547 /* Bookshelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookshelf.swift; sourceTree = "<group>"; };
 		B7E345B127D33CDE00A86547 /* BookshelfViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfViewModel.swift; sourceTree = "<group>"; };
@@ -622,7 +626,9 @@
 			isa = PBXGroup;
 			children = (
 				B7C1FDE227DAC46F004EB3D1 /* ViewModel */,
-				B76F07CD27BCE4BF00258A05 /* HomeViewController.swift */,
+				B76F07CD27BCE4BF00258A05 /* HomeListView.swift */,
+				B7D5FDFE286C849B000460E9 /* HomeSearchView.swift */,
+				B7D5FDFC286C7F6D000460E9 /* HomeViewContainerView.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -1074,6 +1080,7 @@
 				B713E38827CCE41200315020 /* Books.swift in Sources */,
 				B7E345B227D33CDE00A86547 /* BookshelfViewModel.swift in Sources */,
 				B706000A27DF5CE500A50EDE /* BookshelfDetailViewModel.swift in Sources */,
+				B7D5FDFF286C849B000460E9 /* HomeSearchView.swift in Sources */,
 				B76F07E227BD108F00258A05 /* SearchResultViewController.swift in Sources */,
 				B7AA85D22849CFFF00F47B21 /* GetAllBookshelfUseCaseProtocol.swift in Sources */,
 				B7D6DAF527E0512500B66818 /* SearchCollectionViewHeader.swift in Sources */,
@@ -1097,7 +1104,7 @@
 				B7E345B727D36B3D00A86547 /* BookshelfFooter.swift in Sources */,
 				B7E345B027D328D300A86547 /* Bookshelf.swift in Sources */,
 				B713B71627B7DEF500591981 /* Beam_Light.xcdatamodeld in Sources */,
-				B76F07CE27BCE4BF00258A05 /* HomeViewController.swift in Sources */,
+				B76F07CE27BCE4BF00258A05 /* HomeListView.swift in Sources */,
 				B7C79592286AE9AE0042B1AC /* UIViewController+Extension.swift in Sources */,
 				B706000727DF550F00A50EDE /* BookshelfListViewController.swift in Sources */,
 				B7C23621284AFB6B0065BD42 /* DeleteBookshelf.swift in Sources */,
@@ -1105,6 +1112,7 @@
 				B7E345B927D3711900A86547 /* CreateBookshelfViewController.swift in Sources */,
 				B76F07E427BD1B1500258A05 /* Const.swift in Sources */,
 				B7A4C4372848F97E000A9DB3 /* DiskStorageWrapperProtocol.swift in Sources */,
+				B7D5FDFD286C7F6D000460E9 /* HomeViewContainerView.swift in Sources */,
 				B7C2364B284B9CB30065BD42 /* UpdateBookshelfUseCase.swift in Sources */,
 				B772CD9227E2B9CD00D9B3C5 /* Analytics.swift in Sources */,
 			);
