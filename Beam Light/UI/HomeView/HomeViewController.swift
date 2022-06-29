@@ -12,7 +12,7 @@ enum Sections {
 	case Bookshelf
 }
 
-class HomeViewController: BaseCollectionViewController {
+class HomeViewController: UICollectionViewController {
 	
 	typealias DataSource = UICollectionViewDiffableDataSource<Sections, Bookshelf>
 	typealias Snapshot = NSDiffableDataSourceSnapshot<Sections, Bookshelf>
@@ -23,20 +23,20 @@ class HomeViewController: BaseCollectionViewController {
 	
 	lazy var dataSource = createDataSource()
 	
-	lazy var emptyView = EmptyBookshelfCreationView { [weak self] in
-		self?.handleCreateBookshelf()
-	}
-	
 	var subscription = Set<AnyCancellable>()
-    
-    var analyticsService: AnalyticsEngine = FakeAnalyticsEngine()
 	
 	var createBookshelf: (() -> Void)?
+	var presentBookDetailView: ((Book) -> Void)?
+	var presentBookshelf: ((Bookshelf) -> Void)?
+	
+	lazy var emptyView = EmptyBookshelfCreationView { [weak self] in
+		self?.createBookshelf?()
+	}
     
     // MARK: - Init
-	init(viewModel: BookshelvesViewModel) {
+	init(viewModel: BookshelvesViewModel, layout: UICollectionViewLayout) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+		super.init(collectionViewLayout: layout)
     }
     
     required init?(coder: NSCoder) {
@@ -49,31 +49,34 @@ class HomeViewController: BaseCollectionViewController {
     
     // MARK: - View Lifecycle
 	
-//	override func loadView() {
-//		super.loadView()
-//		super.setupCollectionView()
-//		view.alpha = 0
-//		view.transform = .init(translationX: 0, y: -50)
-//	}
-	
     override func viewDidLoad() {
 		
         super.viewDidLoad()
 		
-		analyticsService.log(event: HomeViewEvent.screenView)
-		
+		setupUI()
+		configureCollectionView()
 		setupObserver()
-		
-		collectionViewConfiguration()
         addTapToResignFirstResponder()
+		binding()
         
 		Task {
 			await viewModel.getAllBookshelf()
 			fadeIn()
-		}
 
-		binding()
+		}
     }
+	
+	private func setupUI() {
+		view.backgroundColor = .systemBackground
+		collectionView.backgroundColor = .clear
+		fadeOut()
+	}
+	
+	private func configureCollectionView() {
+		collectionView.register(EmptyBookshelvesCell.self, forCellWithReuseIdentifier: EmptyBookshelvesCell.reusableIdentifier)
+		collectionView.register(BookshelfCollectionViewCell.self, forCellWithReuseIdentifier: BookshelfCollectionViewCell.reusableIdentifier)
+		collectionView.register(SearchCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchCollectionViewHeader.reusableIdentifier)
+	}
 	
 	private func addEmptyView() {
 		collectionView.addSubview(emptyView)
@@ -89,10 +92,6 @@ class HomeViewController: BaseCollectionViewController {
 	}
     
     // MARK: - Methods
-	
-    private func collectionViewConfiguration() {
-        collectionView.delegate = self
-    }
 	
 	private func createDataSource() -> DataSource {
 
@@ -141,14 +140,13 @@ class HomeViewController: BaseCollectionViewController {
 	
 	@objc
 	private func handleDataChange() {
-		print("trigger")
 		Task {
 			await viewModel.getAllBookshelf()
 		}
 	}
 }
 
-extension HomeViewController: UICollectionViewDelegate {
+extension HomeViewController {
     
     private func generateCell(for indexPath: IndexPath) -> UICollectionViewCell {
 		renderBookshelfCell(for: indexPath)
@@ -158,16 +156,9 @@ extension HomeViewController: UICollectionViewDelegate {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookshelfCollectionViewCell.reusableIdentifier, for: indexPath) as! BookshelfCollectionViewCell
         
-        cell.showBookDetailViewHandler = { [weak self]  book in
-            guard let self = self else { return }
-            self.handlePresentBookDetailView(book: book)
-        }
+        cell.showBookDetailViewHandler = handlePresentBookDetailView(book:)
         
-        cell.showBookshelfDetailHandler = { [weak self] bookshelf in
-            guard let self = self else { return }
-            
-            self.handlePresentBookshelfDetailViewController(bookshelf: bookshelf)
-        }
+        cell.showBookshelfDetailHandler = handlePresentBookshelfDetailViewController(bookshelf:)
         
         let bookshelf = viewModel.getBookshelf(for: indexPath.row)
         
@@ -178,30 +169,11 @@ extension HomeViewController: UICollectionViewDelegate {
     }
     
     private func handlePresentBookshelfDetailViewController(bookshelf: Bookshelf) {
-
-        let bookshelfViewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
-        
-        let VC = BookshelfDetailViewController(style: .plain,
-                                               viewModel: bookshelfViewModel)
-        
-        VC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(VC, animated: true)
-        
+		presentBookshelf?(bookshelf)
     }
     
     private func handlePresentBookDetailView(book: Book) {
-        let viewModel = BookViewModel(book: book)
-        let VC = BookDetailViewController(bookViewModel: viewModel, displayToolBar: false)
-        VC.title = viewModel.title
-
-        let navVC = UINavigationController(rootViewController: VC)
-        navVC.modalPresentationStyle = .pageSheet
-
-        navigationController?.present(navVC, animated: true)
-    }
-    
-    private func handleCreateBookshelf() {
-		createBookshelf?()
+		presentBookDetailView?(book)
     }
 }
 
@@ -218,39 +190,7 @@ extension HomeViewController: UISearchBarDelegate {
         let navVC = UINavigationController(rootViewController: searchResultViewController)
         searchBar.resignFirstResponder()
 
-        navigationController?.present(navVC, animated: true, completion: nil)
-        
-        analyticsService.log(event: HomeViewEvent.buttonPressed)
+		show(navVC, sender: self)
     }
 }
 
-extension HomeViewController {
-    private enum HomeViewEvent: AnalyticsEvent {
-        
-        case screenView
-        case buttonPressed
-        case loginFailed(reason: String)
-        
-        var name: String {
-            switch self {
-            case .screenView:
-                return "Screen Viewed"
-            case .buttonPressed:
-                return "Button Pressed"
-            case .loginFailed(let reason):
-                return reason
-            }
-        }
-        
-        var metaData: [String : String] {
-            switch self {
-            case .screenView:
-                return ["View": "1"]
-            case .buttonPressed:
-                return ["Pressed": "1"]
-            case .loginFailed(let reason):
-                return ["Reason": reason]
-            }
-        }
-    }
-}

@@ -7,24 +7,12 @@
 
 import UIKit
 
-class MainTabViewController: UITabBarController, UITabBarControllerDelegate {
+class MainTabViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        self.delegate = self
-        tabBar.backgroundColor = .systemGray6
-    }
-    
-    init(viewControllers: [UIViewController]) {
-        
-        super.init(nibName: nil, bundle: nil)
-        
-        self.viewControllers = viewControllers
+        tabBar.backgroundColor = .secondarySystemBackground
 		view.backgroundColor = .systemBackground
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

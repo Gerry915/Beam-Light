@@ -23,15 +23,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func makeTabView() -> MainTabViewController {
-        return MainTabViewController(viewControllers: [makeHomeView(), makeBookshelfView()])
+		let mainTabViewController = MainTabViewController()
+		mainTabViewController.viewControllers = [makeHomeView(), makeBookshelfView()]
+        return mainTabViewController
     }
     
     func makeHomeView() -> UINavigationController {
 		
 		let viewModel = makeBookshelvesViewModel()
         
-		let homeViewController = HomeViewController(viewModel: viewModel)
-		homeViewController.createBookshelf = {
+		let homeViewController = HomeViewController(viewModel: viewModel,
+													layout: CollectionViewLayoutFactory().makeHomeViewLayout()
+		)
+		
+		homeViewController.createBookshelf = { [homeViewController] in
 			let createBookshelfVC = CreateBookshelfViewController()
 			
 			if let sheet = createBookshelfVC.sheetPresentationController {
@@ -48,6 +53,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			}
 		}
 		
+		homeViewController.presentBookDetailView = { [weak self, homeViewController] book in
+			let viewModel = BookViewModel(book: book)
+			let vc = BookDetailViewController(bookViewModel: viewModel, displayToolBar: false)
+			vc.title = viewModel.title
+
+			if let nav = self?.makeNav(for: vc, title: viewModel.title, image: nil, largeTitle: false) {
+				
+				nav.modalPresentationStyle = .pageSheet
+				homeViewController.showDetailViewController(nav, sender: homeViewController)
+				
+			}
+		}
+		
+		homeViewController.presentBookshelf = { [homeViewController] bookshelf in
+			let bookshelfViewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)
+			
+			let vc = BookshelfDetailViewController(style: .plain,
+												   viewModel: bookshelfViewModel)
+			vc.hidesBottomBarWhenPushed = true
+			
+			homeViewController.show(vc, sender: homeViewController)
+		}
+		
         return makeNav(for: homeViewController, title: "Beam Light", image: "light.min")
     }
     
@@ -60,15 +88,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return makeNav(for: bookshelvesViewController, title: "My Bookshelves", image: "books.vertical.circle")
     }
 	
-	func makeNav(for viewController: UIViewController, title: String, image: String) -> UINavigationController {
+	func makeNav(for viewController: UIViewController, title: String?, image: String?, largeTitle: Bool = true) -> UINavigationController {
 		
 		let navigationVC = UINavigationController(rootViewController: viewController)
 		
 		viewController.title = title
-		viewController.tabBarItem.title = title
-		viewController.tabBarItem.image = UIImage(systemName: image)
 		
-		navigationVC.navigationBar.prefersLargeTitles = true
+		if let image = image {
+			viewController.tabBarItem.title = title
+			viewController.tabBarItem.image = UIImage(systemName: image)
+		}
+		
+		navigationVC.navigationBar.prefersLargeTitles = largeTitle
 		
 		return navigationVC
 	}
