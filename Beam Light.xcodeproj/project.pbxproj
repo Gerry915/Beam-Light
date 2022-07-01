@@ -49,6 +49,14 @@
 		B76F07EC27BD286C00258A05 /* NetworkingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F07EB27BD286C00258A05 /* NetworkingError.swift */; };
 		B772CD9227E2B9CD00D9B3C5 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */; };
 		B772CD9427E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */; };
+		B78051CE286F1B0100BAD2B6 /* MainCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051CD286F1B0100BAD2B6 /* MainCompositeTests.swift */; };
+		B78051D1286F1BBD00BAD2B6 /* MockCreateBookshelfUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051D0286F1BBD00BAD2B6 /* MockCreateBookshelfUseCase.swift */; };
+		B78051D3286F1BDF00BAD2B6 /* MockDeleteBookshelfUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051D2286F1BDF00BAD2B6 /* MockDeleteBookshelfUseCase.swift */; };
+		B78051D5286F1C1F00BAD2B6 /* MockUpdateBookshelfUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051D4286F1C1F00BAD2B6 /* MockUpdateBookshelfUseCase.swift */; };
+		B78051D7286F1C4700BAD2B6 /* MockGetAllBookshelfUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051D6286F1C4700BAD2B6 /* MockGetAllBookshelfUseCase.swift */; };
+		B78051D9286F25A400BAD2B6 /* HomeContainerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051D8286F25A400BAD2B6 /* HomeContainerViewTests.swift */; };
+		B78051DB286F27A000BAD2B6 /* HomeSearchViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051DA286F27A000BAD2B6 /* HomeSearchViewTests.swift */; };
+		B78051DD286F305300BAD2B6 /* HomeListViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78051DC286F305300BAD2B6 /* HomeListViewTests.swift */; };
 		B7A3E18A284DDF540047F563 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B7A3E189284DDF540047F563 /* README.md */; };
 		B7A3E18C284DE2BB0047F563 /* screens.png in Resources */ = {isa = PBXBuildFile; fileRef = B7A3E18B284DE2BB0047F563 /* screens.png */; };
 		B7A3E190284E0A990047F563 /* beam_light_Store_ICON.png in Resources */ = {isa = PBXBuildFile; fileRef = B7A3E18F284E0A990047F563 /* beam_light_Store_ICON.png */; };
@@ -165,6 +173,14 @@
 		B76F07EB27BD286C00258A05 /* NetworkingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingError.swift; sourceTree = "<group>"; };
 		B772CD9127E2B9CD00D9B3C5 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		B772CD9327E2BA7000D9B3C5 /* FakeAnalyticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAnalyticsEngine.swift; sourceTree = "<group>"; };
+		B78051CD286F1B0100BAD2B6 /* MainCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCompositeTests.swift; sourceTree = "<group>"; };
+		B78051D0286F1BBD00BAD2B6 /* MockCreateBookshelfUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCreateBookshelfUseCase.swift; sourceTree = "<group>"; };
+		B78051D2286F1BDF00BAD2B6 /* MockDeleteBookshelfUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDeleteBookshelfUseCase.swift; sourceTree = "<group>"; };
+		B78051D4286F1C1F00BAD2B6 /* MockUpdateBookshelfUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUpdateBookshelfUseCase.swift; sourceTree = "<group>"; };
+		B78051D6286F1C4700BAD2B6 /* MockGetAllBookshelfUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGetAllBookshelfUseCase.swift; sourceTree = "<group>"; };
+		B78051D8286F25A400BAD2B6 /* HomeContainerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContainerViewTests.swift; sourceTree = "<group>"; };
+		B78051DA286F27A000BAD2B6 /* HomeSearchViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchViewTests.swift; sourceTree = "<group>"; };
+		B78051DC286F305300BAD2B6 /* HomeListViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewTests.swift; sourceTree = "<group>"; };
 		B7A3E189284DDF540047F563 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B7A3E18B284DE2BB0047F563 /* screens.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screens.png; sourceTree = "<group>"; };
 		B7A3E18F284E0A990047F563 /* beam_light_Store_ICON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beam_light_Store_ICON.png; sourceTree = "<group>"; };
@@ -377,6 +393,7 @@
 		B753518827E8A8BB00F4FE7D /* Beam LightTests */ = {
 			isa = PBXGroup;
 			children = (
+				B78051CC286F1AEB00BAD2B6 /* Composition */,
 				B7D5FDF3286C5B77000460E9 /* BookshelfView */,
 				B7C7959F286B1FA50042B1AC /* HomeView */,
 				B7C7959E286B1F900042B1AC /* Helpers */,
@@ -446,6 +463,7 @@
 		B761BB5B284D982D007BD1D8 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
+				B78051CF286F1BA400BAD2B6 /* UseCases */,
 				B761BB5C284D983A007BD1D8 /* Data */,
 			);
 			path = Mock;
@@ -587,6 +605,25 @@
 				B7E345AF27D328D300A86547 /* Bookshelf.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B78051CC286F1AEB00BAD2B6 /* Composition */ = {
+			isa = PBXGroup;
+			children = (
+				B78051CD286F1B0100BAD2B6 /* MainCompositeTests.swift */,
+			);
+			path = Composition;
+			sourceTree = "<group>";
+		};
+		B78051CF286F1BA400BAD2B6 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				B78051D0286F1BBD00BAD2B6 /* MockCreateBookshelfUseCase.swift */,
+				B78051D2286F1BDF00BAD2B6 /* MockDeleteBookshelfUseCase.swift */,
+				B78051D4286F1C1F00BAD2B6 /* MockUpdateBookshelfUseCase.swift */,
+				B78051D6286F1C4700BAD2B6 /* MockGetAllBookshelfUseCase.swift */,
+			);
+			path = UseCases;
 			sourceTree = "<group>";
 		};
 		B7A4C40B2848E6AA000A9DB3 /* Support Files */ = {
@@ -875,6 +912,9 @@
 			isa = PBXGroup;
 			children = (
 				B7C795A0286B1FA90042B1AC /* ViewModel */,
+				B78051D8286F25A400BAD2B6 /* HomeContainerViewTests.swift */,
+				B78051DA286F27A000BAD2B6 /* HomeSearchViewTests.swift */,
+				B78051DC286F305300BAD2B6 /* HomeListViewTests.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -1128,15 +1168,23 @@
 			files = (
 				B761BB62284D9C99007BD1D8 /* MockBookshelfDataSource.swift in Sources */,
 				B761BB69284DBD94007BD1D8 /* DiskStorageDataSourceTests.swift in Sources */,
+				B78051DD286F305300BAD2B6 /* HomeListViewTests.swift in Sources */,
 				B7D5FDF6286C5B8F000460E9 /* BookshelfViewModelTests.swift in Sources */,
 				B7C79596286B18BA0042B1AC /* BookModelTests.swift in Sources */,
 				B7C7959A286B1DB20042B1AC /* BookshelfModelTests.swift in Sources */,
 				B7C795A4286B22080042B1AC /* BookshelvesViewModelTests.swift in Sources */,
+				B78051CE286F1B0100BAD2B6 /* MainCompositeTests.swift in Sources */,
 				B7C7959D286B1EE10042B1AC /* BookFactory.swift in Sources */,
+				B78051D7286F1C4700BAD2B6 /* MockGetAllBookshelfUseCase.swift in Sources */,
 				B7C795A2286B1FB70042B1AC /* BookViewModelTests.swift in Sources */,
 				B7D5FDF8286C5D1D000460E9 /* BookshelfListViewModel.swift in Sources */,
+				B78051D1286F1BBD00BAD2B6 /* MockCreateBookshelfUseCase.swift in Sources */,
 				B7C79598286B1D050042B1AC /* BooksModelTests.swift in Sources */,
+				B78051DB286F27A000BAD2B6 /* HomeSearchViewTests.swift in Sources */,
+				B78051D3286F1BDF00BAD2B6 /* MockDeleteBookshelfUseCase.swift in Sources */,
+				B78051D9286F25A400BAD2B6 /* HomeContainerViewTests.swift in Sources */,
 				B761BB6B284DBDD6007BD1D8 /* MockDiskStorage.swift in Sources */,
+				B78051D5286F1C1F00BAD2B6 /* MockUpdateBookshelfUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

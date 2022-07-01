@@ -42,9 +42,9 @@ class HomeSearchView: UIViewController {
 
 extension HomeSearchView: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-		if let query = searchBar.text {
-			searchBar.resignFirstResponder()
-			handleSearch?(query)
-		}
+		guard let query = searchBar.text, query.trimmingCharacters(in: .whitespaces) != "" else { return }
+		
+		searchBar.resignFirstResponder()
+		handleSearch?(query)
 	}
 }

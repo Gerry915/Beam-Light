@@ -23,14 +23,14 @@ class MainComposite {
 		let mainTabViewController = MainTabViewController()
 		
 		mainTabViewController.viewControllers = [
-			makeHomeView(),
+			makeHomeContainerView(),
 			makeBookshelfView()
 		]
 		
 		return mainTabViewController
 	}
 	
-	private func makeHomeView() -> UIViewController {
+	private func makeHomeContainerView() -> UIViewController {
 		
 		let containerView = HomeViewContainerView()
 		
@@ -61,9 +61,9 @@ class MainComposite {
 		)
 		
 		listView.createBookshelf = { [listView] in
-			
+
 			let createBookshelfVC = CreateBookshelfViewController()
-			
+
 			createBookshelfVC.didCreateBookshelf = { [weak self] title in
 				if let vm = self?.viewModel {
 					Task {
@@ -71,14 +71,14 @@ class MainComposite {
 					}
 				}
 			}
-			
+
 			if let sheet = createBookshelfVC.sheetPresentationController {
 				sheet.detents = [.medium()]
 				sheet.prefersGrabberVisible = false
 			}
-			
+
 			listView.showDetailViewController(createBookshelfVC, sender: listView)
-	
+
 		}
 		
 		listView.presentBookDetailView = { [weak self] book in

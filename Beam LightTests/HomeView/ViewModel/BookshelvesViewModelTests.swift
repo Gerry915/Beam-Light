@@ -10,16 +10,16 @@ import XCTest
 
 class BookshelvesViewModelTests: XCTestCase {
 	
-	var mockUpdateProtocol: MockUpdateBookshelfUseCaseProtocol!
-	var mockDeleteProtocol: MockDeleteBookshelfUseCaseProtocol!
-	var mockGetAllProtocol: MockGetAllBookshelfUseCaseProtocol!
-	var mockCreateProtocol: MockCreateBookshelfUseCaseProtocol!
+	var mockUpdateProtocol: MockUpdateBookshelfUseCase!
+	var mockDeleteProtocol: MockDeleteBookshelfUseCase!
+	var mockGetAllProtocol: MockGetAllBookshelfUseCase!
+	var mockCreateProtocol: MockCreateBookshelfUseCase!
 	
 	override func setUpWithError() throws {
-		mockUpdateProtocol = MockUpdateBookshelfUseCaseProtocol()
-		mockDeleteProtocol = MockDeleteBookshelfUseCaseProtocol()
-		mockCreateProtocol = MockCreateBookshelfUseCaseProtocol()
-		mockGetAllProtocol = MockGetAllBookshelfUseCaseProtocol()
+		mockUpdateProtocol = MockUpdateBookshelfUseCase()
+		mockDeleteProtocol = MockDeleteBookshelfUseCase()
+		mockCreateProtocol = MockCreateBookshelfUseCase()
+		mockGetAllProtocol = MockGetAllBookshelfUseCase()
 	}
 
 	func test_can_init_instance() async {
@@ -136,62 +136,5 @@ class BookshelvesViewModelTests: XCTestCase {
 		return sut
 	}
 
-}
-
-class MockGetAllBookshelfUseCaseProtocol: GetAllBookshelfUseCaseProtocol {
-	
-	var isSuccess = true
-	let stub = [
-		Bookshelf(id: UUID(), title: "test1", books: [], createAt: Date(), modifiedAt: Date()),
-		Bookshelf(id: UUID(), title: "test2", books: [], createAt: Date(), modifiedAt: Date())
-	]
-	
-	func execute() async -> Result<[Bookshelf], CustomStorageError> {
-		
-		if isSuccess {
-			return .success(stub)
-		} else {
-			return .failure(.Get(message: "Cannot Get"))
-		}
-	}
-}
-
-class MockCreateBookshelfUseCaseProtocol: CreateBookshelfUseCaseProtocol {
-	var isSuccess = true
-	var isCreated = false
-	func execute(id: String, data: Bookshelf) async -> Result<Bool, CustomStorageError> {
-		if isSuccess {
-			isCreated = true
-			return .success(true)
-		} else {
-			return .failure(.Create(message: "Cannot create"))
-		}
-	}
-}
-
-class MockDeleteBookshelfUseCaseProtocol: DeleteBookshelfUseCaseProtocol {
-	var isSuccess = true
-	var isDeleted = false
-	func execute(id: String) async -> Result<Bool, CustomStorageError> {
-		if isSuccess {
-			isDeleted = true
-			return .success(true)
-		} else {
-			return .failure(.Delete(message: "Cannot delete"))
-		}
-	}
-}
-
-class MockUpdateBookshelfUseCaseProtocol: UpdateBookshelfUseCaseProtocol {
-	var isSuccess = true
-	var isUpdated = false
-	func execute(_ id: String, _ data: Bookshelf) async -> Result<Bool, CustomStorageError> {
-		if isSuccess {
-			isUpdated = true
-			return .success(true)
-		} else {
-			return .failure(.Update(message: "Cannot update"))
-		}
-	}
 }
 
