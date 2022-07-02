@@ -69,11 +69,6 @@ class BookDetailViewController: UICollectionViewController {
     }
     
     @objc
-	private func dismissView() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc
 	private func addToBookShelf() {
         let sheetView = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
