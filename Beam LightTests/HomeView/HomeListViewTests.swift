@@ -32,9 +32,7 @@ class HomeListViewTests: XCTestCase {
 		
 		sut.loadViewIfNeeded()
 		
-		let delayExpectation = XCTestExpectation()
-		delayExpectation.isInverted = true
-		wait(for: [delayExpectation], timeout: 0.1)
+		wait(for: 0.1)
 		
 		XCTAssertEqual(sut.emptyView.superview, sut.collectionView)
 	}
@@ -54,9 +52,7 @@ class HomeListViewTests: XCTestCase {
 		
 		sut.loadViewIfNeeded()
 		
-		let delayExpectation = XCTestExpectation()
-		delayExpectation.isInverted = true
-		wait(for: [delayExpectation], timeout: 0.1)
+		wait(for: 0.1)
 		
 		let cell = sut.collectionView.dataSource?.collectionView(sut.collectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? BookshelfCollectionViewCell
 		
@@ -64,6 +60,12 @@ class HomeListViewTests: XCTestCase {
 		XCTAssertNotNil(cell?.showBookDetailViewHandler, "showBookDetailViewHandler")
 		XCTAssertNotNil(cell?.showBookshelfDetailHandler, "showBookshelfDetailHandler")
 		
+	}
+	
+	private func wait(for time: TimeInterval) {
+		let delayExpectation = XCTestExpectation()
+		delayExpectation.isInverted = true
+		wait(for: [delayExpectation], timeout: time)
 	}
 
 	
