@@ -46,6 +46,16 @@ class HomeListViewTests: XCTestCase {
 		XCTAssertEqual(sut.emptyView.superview, nil)
 	}
 	
+	func test_bookshelf_cell_render_count() {
+		let sut = makeSUT()
+		
+		sut.loadViewIfNeeded()
+		
+		wait(for: 0.1)
+		
+		XCTAssertEqual(sut.numberOfCell, 2, "number of cell in section 0")
+	}
+	
 	func test_empty_view_render_cell() {
 		
 		let sut = makeSUT()
@@ -54,11 +64,28 @@ class HomeListViewTests: XCTestCase {
 		
 		wait(for: 0.1)
 		
-		let cell = sut.collectionView.dataSource?.collectionView(sut.collectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as? BookshelfCollectionViewCell
+		let cell = sut.cell(at: 0) as? BookshelfCollectionViewCell
 		
 		XCTAssertNotNil(cell, "BookshelfCollectionViewCell")
 		XCTAssertNotNil(cell?.showBookDetailViewHandler, "showBookDetailViewHandler")
 		XCTAssertNotNil(cell?.showBookshelfDetailHandler, "showBookshelfDetailHandler")
+		XCTAssertNotNil(cell?.viewModel)
+		
+	}
+	
+	func test_empty_view_render_cell_with_correct_content() {
+		
+		let sut = makeSUT()
+		
+		sut.loadViewIfNeeded()
+		
+		wait(for: 0.1)
+		
+		let cell = sut.cell(at: 0) as? BookshelfCollectionViewCell
+		let cell2 = sut.cell(at: 1) as? BookshelfCollectionViewCell
+		
+		XCTAssertEqual(cell?.titleLabel.text, "test1")
+		XCTAssertEqual(cell2?.titleLabel.text, "test2")
 		
 	}
 	
@@ -68,7 +95,6 @@ class HomeListViewTests: XCTestCase {
 		wait(for: [delayExpectation], timeout: time)
 	}
 
-	
 	private func makeSUT() -> HomeListView {
 		HomeListView(viewModel: BookshelvesViewModel(
 			getAllUseCase: MockGetAllBookshelfUseCase(),
@@ -83,5 +109,23 @@ class HomeListViewTests: XCTestCase {
 		func execute() async -> Result<[Bookshelf], CustomStorageError> {
 			.success([])
 		}
+	}
+}
+
+private extension HomeListView {
+	
+	var bookshelfSection: Int { 0 }
+	
+	var dataSource: UICollectionViewDataSource? {
+		self.collectionView.dataSource
+	}
+	
+	var numberOfCell: Int? {
+		dataSource?.collectionView(self.collectionView, numberOfItemsInSection: bookshelfSection)
+	}
+	
+	func cell(at row: Int) -> UICollectionViewCell? {
+		
+		return dataSource?.collectionView(self.collectionView, cellForItemAt: IndexPath(row: row, section: bookshelfSection))
 	}
 }

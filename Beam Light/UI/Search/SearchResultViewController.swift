@@ -129,11 +129,5 @@ extension SearchResultViewController: UITableViewDelegate {
 			
 			show(vc, sender: self)
 		}
-//        if let book = viewModel?.getBookForIndex(index: indexPath.row) {
-//            let viewModel = BookViewModel(book: book, loader: DiskStorageService.shared)
-//            let VC = BookDetailViewController(bookViewModel: viewModel, imageService: imageService)
-//
-//            navigationController?.pushViewController(VC, animated: true)
-//        }
     }
 }
