@@ -117,6 +117,8 @@
 		B7E345BB27D37F9200A86547 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E345BA27D37F9200A86547 /* PaddingTextField.swift */; };
 		B7E345BD27D386E700A86547 /* DiskStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E345BC27D386E700A86547 /* DiskStorageService.swift */; };
 		B7E345BF27D3882400A86547 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E345BE27D3882400A86547 /* StorageService.swift */; };
+		B7E6D7D12871CA99004962DE /* EmptyBookshelfCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6D7D02871CA99004962DE /* EmptyBookshelfCellTests.swift */; };
+		B7E6D7D32871CC03004962DE /* BookshelfCollectionViewCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E6D7D22871CC03004962DE /* BookshelfCollectionViewCellTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +243,8 @@
 		B7E345BA27D37F9200A86547 /* PaddingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
 		B7E345BC27D386E700A86547 /* DiskStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskStorageService.swift; sourceTree = "<group>"; };
 		B7E345BE27D3882400A86547 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		B7E6D7D02871CA99004962DE /* EmptyBookshelfCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBookshelfCellTests.swift; sourceTree = "<group>"; };
+		B7E6D7D22871CC03004962DE /* BookshelfCollectionViewCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfCollectionViewCellTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -669,6 +673,7 @@
 		B7A4C4112848EB42000A9DB3 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				B7E6D7CD2871CA41004962DE /* View */,
 				B7C1FDE227DAC46F004EB3D1 /* ViewModel */,
 				B76F07CD27BCE4BF00258A05 /* HomeListView.swift */,
 				B7D5FDFE286C849B000460E9 /* HomeSearchView.swift */,
@@ -915,12 +920,9 @@
 		B7C7959F286B1FA50042B1AC /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				B7E6D7CF2871CA79004962DE /* View */,
+				B7E6D7CE2871CA71004962DE /* Controllers */,
 				B7C795A0286B1FA90042B1AC /* ViewModel */,
-				B78051D8286F25A400BAD2B6 /* HomeContainerViewTests.swift */,
-				B78051DA286F27A000BAD2B6 /* HomeSearchViewTests.swift */,
-				B78051DC286F305300BAD2B6 /* HomeListViewTests.swift */,
-				B78051DE2870393200BAD2B6 /* SearchResultViewTests.swift */,
-				B78051E22870502500BAD2B6 /* BookDetailViewTests.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -937,11 +939,9 @@
 		B7CDDBB027CE28E500C47E63 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				B76F07D427BD026300258A05 /* EmptyBookshelvesCell.swift */,
 				B7CDDBB127CE28F500C47E63 /* BookTableViewCell.swift */,
 				B705461127D0C74D003630C4 /* BookDetailCell.swift */,
 				B7E345B327D33DFB00A86547 /* BookshelfCell.swift */,
-				B7C1FDE527DAC829004EB3D1 /* BookshelfCollectionViewCell.swift */,
 				B7C1FDE727DB5A74004EB3D1 /* BookCoverCell.swift */,
 			);
 			path = Cells;
@@ -970,6 +970,36 @@
 				B7D5FDFA286C624B000460E9 /* CollectionViewLayoutFactory.swift */,
 			);
 			path = Factory;
+			sourceTree = "<group>";
+		};
+		B7E6D7CD2871CA41004962DE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B7C1FDE527DAC829004EB3D1 /* BookshelfCollectionViewCell.swift */,
+				B76F07D427BD026300258A05 /* EmptyBookshelvesCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B7E6D7CE2871CA71004962DE /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B78051D8286F25A400BAD2B6 /* HomeContainerViewTests.swift */,
+				B78051DA286F27A000BAD2B6 /* HomeSearchViewTests.swift */,
+				B78051DC286F305300BAD2B6 /* HomeListViewTests.swift */,
+				B78051DE2870393200BAD2B6 /* SearchResultViewTests.swift */,
+				B78051E22870502500BAD2B6 /* BookDetailViewTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		B7E6D7CF2871CA79004962DE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B7E6D7D02871CA99004962DE /* EmptyBookshelfCellTests.swift */,
+				B7E6D7D22871CC03004962DE /* BookshelfCollectionViewCellTests.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1173,6 +1203,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B761BB62284D9C99007BD1D8 /* MockBookshelfDataSource.swift in Sources */,
+				B7E6D7D32871CC03004962DE /* BookshelfCollectionViewCellTests.swift in Sources */,
+				B7E6D7D12871CA99004962DE /* EmptyBookshelfCellTests.swift in Sources */,
 				B761BB69284DBD94007BD1D8 /* DiskStorageDataSourceTests.swift in Sources */,
 				B78051DD286F305300BAD2B6 /* HomeListViewTests.swift in Sources */,
 				B78051E32870502500BAD2B6 /* BookDetailViewTests.swift in Sources */,
