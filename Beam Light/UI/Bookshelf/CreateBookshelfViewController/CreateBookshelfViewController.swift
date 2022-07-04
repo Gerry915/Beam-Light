@@ -52,8 +52,7 @@ class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
     }
 	
 	private func setup() {
-//		view.backgroundColor = .systemBackground
-		setupBlurLayer()
+		view.backgroundColor = .systemBackground
 		
 		inputTextView = PaddingTextField()
 		inputTextView.delegate = self
@@ -89,25 +88,19 @@ class CreateBookshelfViewController: UIViewController, UITextFieldDelegate {
 		
 		createButton.addTarget(self, action: #selector(createBookshelf), for: .touchUpInside)
 	}
-	
-	private func setupBlurLayer() {
-		let blurEffect = UIBlurEffect(style: .prominent)
-		let effectView = UIVisualEffectView(effect: blurEffect)
-		view.addSubview(effectView)
-		effectView.frame = view.frame
-	}
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         bookshelfName = textField.text
     }
     
     @objc private func createBookshelf() {
-        if let bookshelfName = bookshelfName {
+		if let bookshelfName = bookshelfName, bookshelfName.trimmingCharacters(in: .whitespaces) != "" {
 			self.dismiss(animated: true) { [weak self] in
                 guard let self = self else { return }
                 self.didCreateBookshelf?(bookshelfName)
             }
         }
     }
+
 }
 

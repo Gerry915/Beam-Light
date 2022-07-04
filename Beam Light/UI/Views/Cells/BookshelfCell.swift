@@ -8,19 +8,21 @@
 import UIKit
 
 class BookshelfCell: UITableViewCell {
-    
+	
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: BookshelfCell.reusableIdentifier)
+		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		contentView.backgroundColor = .clear
 		backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        nil
     }
     
     func configure(title: String, bookCount: Int) {
-        var content = self.defaultContentConfiguration()
+		
+		var content = self.defaultContentConfiguration()
+		
         content.text = title
         content.secondaryText = "\(bookCount) books"
         

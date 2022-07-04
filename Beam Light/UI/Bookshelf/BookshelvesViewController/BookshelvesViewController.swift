@@ -47,8 +47,6 @@ class BookshelvesViewController: UITableViewController {
         super.viewDidLoad()
 		
         setupView()
-        setupObserver()
-		
 		fadeOut()
 		
 		Task {
@@ -96,10 +94,6 @@ class BookshelvesViewController: UITableViewController {
 		
 		dataSource.apply(snapshot, animatingDifferences: animated)
 	}
-    
-    private func setupObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleDataChange), name: .updatedBookshelves, object: nil)
-    }
 	
 	@objc
 	private func handleDataChange() {
@@ -107,10 +101,6 @@ class BookshelvesViewController: UITableViewController {
 			await viewModel.getAllBookshelf()
 		}
 	}
-    
-    private func postNotificationForBookshelfUpdate() {
-        NotificationCenter.default.post(name: .updatedBookshelves, object: nil)
-    }
     
     private func setupView() {
         
@@ -139,8 +129,6 @@ class BookshelvesViewController: UITableViewController {
 		Task {
 			await viewModel.batchDelete(ids: ids)
 		}
-		
-		postNotificationForBookshelfUpdate()
 		
 //        selectedRows.sort(by: >)
 //
@@ -208,7 +196,6 @@ extension BookshelvesViewController {
 			
 			Task {
 				await self.viewModel.deleteBookshelf(bookshelf.id.uuidString)
-				self.postNotificationForBookshelfUpdate()
 			}
         }
         
@@ -239,7 +226,6 @@ extension BookshelvesViewController {
         vc.didCreateBookshelf = { [unowned self] title in
 			Task {
 				await viewModel.create(with: title)
-				postNotificationForBookshelfUpdate()
 			}
         }
         

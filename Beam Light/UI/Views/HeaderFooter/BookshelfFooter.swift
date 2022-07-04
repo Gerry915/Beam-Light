@@ -54,7 +54,8 @@ class BookshelfFooter: UITableViewHeaderFooterView {
         ])
     }
     
-    @objc private func handleAction() {
+    @objc
+	private func handleAction() {
         handleButtonTap?()
     }
 }
