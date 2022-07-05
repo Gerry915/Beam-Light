@@ -28,7 +28,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
     
     let emptyBookMessage: UILabel = {
         let lb = UILabel()
-        lb.text = "You have no books in this shelf"
+        lb.text = "You have no book on this shelf"
         lb.textAlignment = .center
 		lb.font = .systemFont(ofSize: 20, weight: .light)
         lb.textColor = .systemGray3
