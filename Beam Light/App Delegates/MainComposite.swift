@@ -45,7 +45,7 @@ class MainComposite {
 		
 		headerView.handleSearch = { [headerView] query in
 			let searchResultViewController = SearchResultViewController(
-				viewModel: BooksViewModel(service: iTunesAPIProvider(), terms: query)
+				viewModel: BooksViewModel(service: iTunesAPIProvider(httpClient: Networking.shared), terms: query)
 			)
 			searchResultViewController.hidesBottomBarWhenPushed = true
 			headerView.show(searchResultViewController, sender: headerView)

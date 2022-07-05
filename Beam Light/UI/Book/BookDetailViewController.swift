@@ -92,8 +92,7 @@ class BookDetailViewController: UICollectionViewController {
     }
     
     private func handleAddToBookshelf() {
-        print("Handle Add to bookshelf")
-		
+        
 		let vm = BookshelfListViewModel(
 			getAllBookshelfUseCase: Resolver.shared.resolve(GetAllBookshelfUseCaseProtocol.self),
 			updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self)

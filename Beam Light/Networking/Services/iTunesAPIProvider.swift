@@ -11,10 +11,12 @@ protocol iTunesProviding {
 	func getSearchResult(terms: String) async -> Result<Books, NetworkError>
 }
 
-struct iTunesAPIProvider: HTTPClient, iTunesProviding {
+struct iTunesAPIProvider: iTunesProviding {
+	
+	let httpClient: HTTPClient
 	
 	func getSearchResult(terms: String) async -> Result<Books, NetworkError> {
-		await execute(endpoint: iTunesEndpoint.search(searchTerms: terms))
+		await httpClient.execute(endpoint: iTunesEndpoint.search(searchTerms: terms))
 	}
 
 }

@@ -44,3 +44,11 @@ extension HTTPClient {
 		}
 	}
 }
+
+class Networking: HTTPClient {
+	
+	static let shared = Networking()
+	
+	private init() {}
+	
+}
