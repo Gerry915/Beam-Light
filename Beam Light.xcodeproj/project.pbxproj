@@ -346,17 +346,17 @@
 				B761BB50284C9FE3007BD1D8 /* Protocols */,
 				B761BB4D284C9EFA007BD1D8 /* HTTPClient */,
 				B76F07E527BD1EC500258A05 /* Endpoints */,
-				B7106C4227D8DFB9009648A0 /* Services */,
+				B7106C4227D8DFB9009648A0 /* Provider */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		B7106C4227D8DFB9009648A0 /* Services */ = {
+		B7106C4227D8DFB9009648A0 /* Provider */ = {
 			isa = PBXGroup;
 			children = (
 				B7106C4327D8DFCB009648A0 /* iTunesAPIProvider.swift */,
 			);
-			path = Services;
+			path = Provider;
 			sourceTree = "<group>";
 		};
 		B7106C4527D9B687009648A0 /* Bookshelf */ = {

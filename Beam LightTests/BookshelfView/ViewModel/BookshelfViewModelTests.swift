@@ -62,6 +62,18 @@ class BookshelfViewModelTests: XCTestCase {
 		
 		XCTAssertEqual(sut.bookCount, 0)
 	}
+	
+	func test_preview_count_should_be_three() {
+		let sut = BookshelfViewModel(updateBookshelfUseCase: MockUpdateBookshelfUseCase(), bookshelf: Bookshelf(id: UUID(), title: "test", books: [BookFactory.aBook, BookFactory.aBook, BookFactory.aBook, BookFactory.aBook, BookFactory.aBook, BookFactory.aBook], createAt: Date(), modifiedAt: Date()))
+		
+		XCTAssertEqual(sut.previewCount, sut.previewCountNumber)
+	}
+	
+	func test_preview_count_two() {
+		let sut = BookshelfViewModel(updateBookshelfUseCase: MockUpdateBookshelfUseCase(), bookshelf: Bookshelf(id: UUID(), title: "test", books: [BookFactory.aBook, BookFactory.aBook], createAt: Date(), modifiedAt: Date()))
+		
+		XCTAssertEqual(sut.previewCount, 2)
+	}
 
 }
 

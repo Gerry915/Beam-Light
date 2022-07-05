@@ -93,7 +93,7 @@ class HomeListView: UICollectionViewController {
 	
 	private func createDataSource() -> DataSource {
 		let dataSource = DataSource(collectionView: collectionView) { [unowned self] collectionView, indexPath, bookshelf in
-			generateCell(for: indexPath)
+			return generateCell(for: indexPath)
 		}
 		
 		return dataSource
@@ -149,7 +149,7 @@ extension HomeListView {
 			self?.presentBookshelf?(bookshelf)
 		}
         
-        let bookshelf = viewModel.getBookshelf(for: indexPath.row)
+		let bookshelf = viewModel.getBookshelf(for: indexPath.row)
         
         cell.titleLabel.text = bookshelf.title
 		cell.viewModel = BookshelfViewModel(updateBookshelfUseCase: Resolver.shared.resolve(UpdateBookshelfUseCaseProtocol.self), bookshelf: bookshelf)

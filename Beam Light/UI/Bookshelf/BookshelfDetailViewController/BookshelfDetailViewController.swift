@@ -37,7 +37,6 @@ class BookshelfDetailViewController: UITableViewController {
 	}
 	
 	private func tableViewConfigure() {
-		tableView.contentInset = .init(top: 0, left: 16, bottom: 0, right: -16)
 		tableView.register(BookTableViewCell.self, forCellReuseIdentifier: BookTableViewCell.reusableIdentifier)
 	}
 }

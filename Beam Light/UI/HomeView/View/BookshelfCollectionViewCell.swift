@@ -15,9 +15,13 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
     
     var viewModel: BookshelfViewModel? {
         didSet {
-            if viewModel?.bookCount != 0 {
+			guard let viewModel = viewModel else {
+				return
+			}
+            if viewModel.bookCount != 0 {
                 emptyBookMessage.isHidden = true
             }
+			
             collectionView.reloadData()
         }
     }
@@ -149,7 +153,7 @@ class BookshelfCollectionViewCell: UICollectionViewCell {
 extension BookshelfCollectionViewCell: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.bookCount ?? 0
+		viewModel?.previewCount ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

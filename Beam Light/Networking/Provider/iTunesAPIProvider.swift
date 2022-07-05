@@ -8,6 +8,9 @@
 import Foundation
 
 protocol iTunesProviding {
+	
+	var httpClient: HTTPClient { get }
+	
 	func getSearchResult(terms: String) async -> Result<Books, NetworkError>
 }
 

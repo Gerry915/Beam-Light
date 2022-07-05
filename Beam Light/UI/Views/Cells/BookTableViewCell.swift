@@ -128,9 +128,9 @@ class BookTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             HStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            HStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            HStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             HStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            HStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            HStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8)
         ])
 		
 		contentView.addSubview(loadingView)

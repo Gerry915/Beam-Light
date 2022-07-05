@@ -12,6 +12,8 @@ class BookshelfViewModel {
 	private let updateBookshelfUseCase: UpdateBookshelfUseCaseProtocol
     
     private(set) var bookshelf: Bookshelf
+	
+	private(set) var previewCountNumber: Int = 5
 
 	init(updateBookshelfUseCase: UpdateBookshelfUseCaseProtocol, bookshelf: Bookshelf) {
 		self.updateBookshelfUseCase = updateBookshelfUseCase
@@ -21,6 +23,10 @@ class BookshelfViewModel {
     var bookCount: Int {
         bookshelf.books.count
     }
+	
+	var previewCount: Int {
+		bookshelf.books.count > previewCountNumber ? previewCountNumber : bookshelf.books.count
+	}
     
     var title: String {
         bookshelf.title

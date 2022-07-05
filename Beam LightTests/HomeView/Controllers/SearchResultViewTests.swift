@@ -101,10 +101,14 @@ class SearchResultViewTests: XCTestCase {
 	}
 
 	private class MockProvider: iTunesProviding {
+		var httpClient: HTTPClient = FakeHTTP()
+		
 		func getSearchResult(terms: String) async -> Result<Books, NetworkError> {
 			.success(Books(resultCount: 1, results: [BookFactory.aBook]))
 		}
 	}
+	
+	private class FakeHTTP: HTTPClient {}
 	
 	private func wait(for time: TimeInterval) {
 		let delayExpectation = XCTestExpectation()
